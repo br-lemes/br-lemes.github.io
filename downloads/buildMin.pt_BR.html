@@ -1,0 +1,716 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<HTML>
+<HEAD>
+ <META NAME="GENERATOR" CONTENT="LinuxDoc-Tools 0.9.65">
+ <TITLE>Como Construir um Sistema Linux Mínimo do Código Fonte</TITLE>
+</HEAD>
+<BODY>
+<H1>Como Construir um Sistema Linux Mínimo do Código Fonte</H1>
+
+<H2>Greg O'Keefe, <CODE>gcokeefe@postoffice.utas.edu.au</CODE></H2>v0.9, Novembro 2000
+<HR>
+<EM>Essas são instruções para construir um sistema linux mínimo do código
+fonte. Este documento fazia parte do 
+<A HREF="http://www.linuxdoc.org/HOWTO/From-PowerUp-To-Bash-Prompt-HOWTO.html">From PowerUp to Bash Prompt</A> mas eu os separei para manter
+ambos os documentos curtos e objetivos. O sistema que vamos construir
+aqui é <EM>muito</EM> mínimo, e não é adequado para o trabalho de
+verdade. Se quiser construir um sistema prático do zero, veja o 
+<A HREF="http://www.linuxfromscratch.org">Linux From Scratch HOWTO</A> de Gerard Beekmans em vez deste.</EM>
+<HR>
+<H2><A NAME="s1">1. O Que Você Vai Precisar</A></H2>
+
+<P>Vamos instalar uma distribuição de Linux como a Red Hat em uma
+partição, e usar ela para construir um novo sistema Linux em outra
+partição. Vou chamar o sistema que estaremos construindo de ``alvo'' e
+o sitema que estaremos usando para construi-lo de ``fonte'' (não
+confunda com <EM>código fonte</EM> que também estaremos usando.)</P>
+
+<P>De forma que você vai precisar de uma máquina com duas partições
+separadas. Você pode usar uma instalação de Linux já existente como
+seu sistema fonte, mas não recomendaria isto. Se você errar um dos
+parâmetro de um dos comandos que vamos usar, você poderia
+acidentalmente instalar bobagens em seus sistema. Isso poderia levar à
+incompatibilidades e conflitos.</P>
+
+<P>Hardware antigo de PC, a maior parte dos 486's e anteriores, tem uma
+limitação irritante em suas bios. Eles não podem ler o disco rígido
+depois dos primeiros 512M. Isso não é muito problemático para o Linux,
+porque uma vez em funcionamento, ele faz seu próprio io (input/output
+- entrada/saída), ignorando a bios. Porém para Linux que será
+carregado por essas máquinas velhas, o kernel tem de residir em algum
+lugar abaixo dos 512M. Se você tem uma dessas máquinas, vai precisar
+separar uma partição completamente abaixo dos 512M, para montar como
+<CODE>/boot</CODE> em qualquer partição que estiver acima dos 512M.</P>
+
+<P>A última vez que fiz isso, usei um Red Hat 6.1 como sistema
+fonte. Instalei o sistema base mais:</P>
+<P>
+<UL>
+<LI>cpp</LI>
+<LI>egcs</LI>
+<LI>egcs-c++</LI>
+<LI>patch</LI>
+<LI>make</LI>
+<LI>dev86 </LI>
+<LI>ncurses-devel</LI>
+<LI>glibc-devel </LI>
+<LI>kernel-headers </LI>
+</UL>
+ </P>
+<P>Eu também tinha o X-window e o Mozilla, assim eu podia ler a
+documentação fácilmente, mas isto não é realmente necessário. No
+momento em que terminei o trabalho, isto usou cerca de 350M de espaço
+em disco. (parece bastante, gostaria de saber porquê?)</P>
+
+<P>O sistema alvo acabado tomou 650M, mas isto inclui todo o código fonte
+e os arquivos intermediários da construção. Se o espaço for pouco,
+você deve fazer um <CODE>make clean</CODE> depois de cada pacote que for
+construído. Ainda assim é quantidade que causa um pouco de
+preocupação.</P>
+
+<P>Finalmente, você precisa do código fonte para o sistema que estaremos
+construindo. Esses são os ``pacotes'' que eu discuti nesse
+documento. Eles podem ser obtidos num CD de código fontes, ou na
+Internet. Eu darei URL's para os sítios nos EUA e para os espelhos na
+Autrália.</P>
+
+<P>
+<A NAME="downloads"></A> 
+<UL>
+<LI>MAKEDEV     
+<A HREF="ftp://tsx-11.mit.edu/pub/linux/sources/sbin">EUA</A>
+outro sítio nos 
+<A HREF="ftp://sunsite.unc.edu/pub/Linux/system/admin">EUA</A>.
+</LI>
+<LI>Lilo 
+<A HREF="ftp://brun.dyndns.org/pub/linux//lilo/">EUA</A>,
+<A HREF="ftp://mirror.aarnet.edu.au/pub/metalab/system/boot/lilo/">Austrália</A>.
+</LI>
+<LI>Kernel Linux, prefira usar um dos espelhos listados na 
+<A HREF="http://www.kernel.org">página web</A> ao 
+<A HREF="ftp://ftp.kernel.org/pub/linux/kernel">EUA</A> porque ele
+está sempre sobrecarregado. 
+<A HREF="ftp://kernel.mirror.aarnet.edu.au/pub/linux/kernel/">Australia</A>
+</LI>
+<LI>A GNU libc e o complemento linuxthreads estão em 
+<A HREF="ftp://ftp.gnu.org/pub/gnu/glibc">EUA</A> 
+<A HREF="ftp://mirror.aarnet.edu.au/pub/gnu/glibc">Austrália</A>
+</LI>
+<LI>Complementos da GNU libc. Você também vai precisar dos complementos
+linuxthreads e libcryot. Se libcrypt não estiver lá é por causa de
+algumas leis de exportação dos EUA. Você pode obtê-lo em 
+<A HREF="ftp://ftp.gwdg.de/pub/linux/glibc">libcrypt</A>. O
+complemento linuxthreads está junto com a própria libc.
+</LI>
+<LI>GNU ncurses 
+<A HREF="ftp://ftp.gnu.org/gnu/ncurses">EUA</A> 
+<A HREF="ftp://mirror.aarnet.edu.au/pub/gnu/ncurses">Austrália</A>.
+</LI>
+<LI>SysVinit 
+<A HREF="ftp://sunsite.unc.edu/pub/Linux/system/daemons/init">EUA</A>
+<A HREF="ftp://mirror.aarnet.edu.au/pub/linux/metalab/system/daemons/init">Austrália</A>.
+</LI>
+<LI>GNU Bash 
+<A HREF="ftp://ftp.gnu.org/gnu/bash">EUA</A> 
+<A HREF="ftp://mirror.aarnet.edu.au/pub/gnu/bash">Austrália</A>.
+</LI>
+<LI>GNU sh-utils 
+<A HREF="ftp://ftp.gnu.org/gnu/sh-utils">EUA</A>
+<A HREF="ftp://mirror.aarnet.edu.au/pub/gnu/sh-utils">Austrália</A>.
+</LI>
+<LI>util-linux 
+<A HREF="ftp://ftp.win.tue.nl/pub/linux/utils/util-linux/">Algum outro lugar</A> 
+<A HREF="ftp://mirror.aarnet.edu.au/pub/linux/metalab/system/misc">Austrália</A> Esse pacote contém <CODE>agetty</CODE> e <CODE>login</CODE>
+</LI>
+</UL>
+</P>
+
+<P>Para somá-los, você vai precisar:</P>
+<P>
+<UL>
+<LI>Uma máquina com duas partições separadas de aproximadamente 400M e
+700M repectivamente apesar que você poderia se virar com menos.
+</LI>
+<LI>Uma distribuição de Linux (um CD da Red Hat, por exemplo) e um meio de
+instalar (ex: um drive de CDROM).
+</LI>
+<LI>Os tarballs de código fonte listados acima.
+</LI>
+</UL>
+</P>
+
+<P>Presumo que você pode instalar o sistema fonte sozinho, sem nenhuma
+ajuda minha. Daqui em diante presumo que isto já está feito.</P>
+
+<P>A primeira marca nesse pequeno projeto é tornar o kernel inicializável
+e mostrar uma mensagem ``panic'' porque ele não pode encontrar um
+<CODE>init</CODE>. Isso significa que teremos que instalar um kernel, e o
+lilo. Contudo para instalar o lilo agradavelmente, precisaremos dos
+arquivos de dispositivos no diretório <CODE>/dev</CODE> do alvo. O lilo
+precisa deles para fazer o acesso de baixo nível necessário para
+escrever o setor de boot. MAKEDEV é o roteiro (script) que cria esses
+arquivos de dispositivos. (Você pode apenas copiá-los do sistema fonte
+é claro, mas isto é trapaça!) Mas antes de tudo, precisamos de um
+sistema de arquivos para colocar tudo isso nele.</P>
+
+
+<H2><A NAME="s2">2. O Sistema de Arquivos</A></H2>
+
+<P>Nosso novo sistema estará em um sistema de arquivos. Portanto,
+primeiro precisamos criar um sistema de arquivos usando
+<CODE>mke2fs</CODE>. Em seguida montá-lo em algum lugar. Sugiro
+<CODE>/mnt/target</CODE>. No que segue, assumo que este é ele onde
+está. Você pode poupar um bocado do seu tempo colocando uma entrada em
+<CODE>/etc/fstab</CODE> de forma que quando ligar o sistema será montado
+automaticamente.</P>
+
+<P>Quando inicializarmos o sistema alvo, o que agora está em
+<CODE>/mnt/target</CODE> estará em <CODE>/</CODE>.</P>
+
+<P>Precisamos uma estrutura de diretórios no alvo. Dê uma olhada no FHS
+(File Heirarchy Standard - Padrão de Hierarquia de Arquivos, veja 
+<A HREF="#FHS">Links</A>) para verificar o que isso deveria ser, ou
+apenas vá para onde o alvo está montado (<CODE>cd</CODE>) e cegamente
+faça:</P>
+<P>
+<PRE>
+ 
+        mkdir bin boot dev etc home lib mnt root sbin tmp usr var
+        cd var; mkdir lock log run spool  
+        cd ../usr; mkdir bin include lib local sbin share src
+        cd share/; mkdir man; cd man 
+        mkdir man1 man2 man3 ... man9
+</PRE>
+</P>
+<P>Visto que o FHS e a maior parte dos pacotes discordam sobre onde as
+páginas de manual deveriam ir, precisamos de um vinculo simbólico:</P>
+<P>
+<PRE>
+ 
+        cd ../..; ln -s share/man man
+</PRE>
+</P>
+
+
+<H2><A NAME="s3">3. MAKEDEV</A></H2>
+
+<P>Colocaremos o código fonte no diretório <CODE>/usr/src</CODE> do alvo. Por
+exemplo, se o sistema de arquivos do alvo está montado em
+<CODE>/mnt/target</CODE> e seus tarballs estão em <CODE>/root</CODE>, você
+faria:</P>
+<P>
+<PRE>
+ 
+        cd /mnt/target/usr/src
+        tar -xzvf /root/MAKEDEV-2.5.tar.gz
+</PRE>
+</P>
+
+<P>Não seja um completo idiota copiando o tarball para o lugar onde você
+o vai extrair ;-></P>
+
+<P>Normalmente quando você instala software, você instala ele no sistema
+que está rodando. Contudo nós não queremos fazer isto, queremos
+instalar como se <CODE>/mnt/target</CODE> fosse o sistema de arquivos
+raiz. Diferentes pacotes tem diferentes meios de permitir isso. Para o
+MAKEDEV você faz:</P>
+<P>
+<PRE>
+        ROOT=/mnt/target make install
+</PRE>
+</P>
+
+
+<P>Você deve procurar por essas opções nos arquivos README e INSTALL ou
+fazendo um <CODE>./configure --help</CODE>.</P>
+
+<P>Dê uma olhada no <CODE>Makefile</CODE> para ver o que ele faz com a
+variável <CODE>ROOT</CODE> que definimos neste comando. Em seguida dê uma
+olhada na página de manual fazendo <CODE>man ./MAKEDEV.man</CODE> para ver
+como isto funciona. Você verá que o jeito de criar nossos arquivos de
+dispositivos é <CODE>cd /mnt/target/dev</CODE> e fazer <CODE>./MAKEDEV
+generic</CODE>. Faça um <CODE>ls</CODE> para ver todos os maravilhosos
+arquivos de dispositivos ele fez para você.</P>
+
+
+<H2><A NAME="s4">4. Kernel</A></H2>
+
+<P>Em seguida construiremos um kernel. Presumo que você já vez isso
+antes, portanto vou ser breve. É mais fácil instalar o lilo se o
+kernel que ele deverá inicializar já estiver ali. Volte ao diretório
+<CODE>usr/src</CODE> do alvo e descompacte o kernel linux ali. Entre na
+árvore de diretórios do linux (<CODE>cd linux</CODE>) e configure o kernel
+usando seu método favorito, por exemplo <CODE>make menuconfig</CODE>. Você
+pode tornar a vida levemente mais fácil para você configurando um
+kernel sem módulos. Se você configurar algum módulo, então terá de
+editar o <CODE>Makefile</CODE>, encontrar <CODE>INSTALL_MOD_PATH</CODE> e
+definir ele para <CODE>/mnt/target</CODE>.</P>
+
+<P>Agora você pode <CODE>make dep</CODE>, <CODE>make bzImage</CODE>, e se você
+configurou módulos: <CODE>make modules</CODE>, <CODE>make
+modules_install</CODE>. Copie o kernel <CODE>arch/i386/boot/bzImage</CODE>
+e o mapa do sistema <CODE>System.map</CODE> para o diretório
+<CODE>/mnt/target/boot</CODE> do alvo, e estamos prontos para instalar o
+lilo.</P>
+
+
+<H2><A NAME="s5">5. Lilo</A></H2>
+
+<P>O lilo vem com um ótimo roteiro chamado <CODE>QuickInst</CODE>.
+Descompacte o código fonte do lilo no diretório de fontes do alvo,
+rode este roteiro com o comando <CODE>ROOT=/mnt/target
+./QuickInst</CODE>. Ele vai fazer perguntas à você sobre como quer que o
+lilo seja instalado.</P>
+
+<P>Lembre-se, já que definimos <CODE>ROOT</CODE> para a partição alvo, iremos
+informar os nomes relativos a esta. Portanto, quando ele perguntar
+qual o kernel inicializar por padrão, responda <CODE>/boot/bzImage</CODE>
+<EM>não</EM> <CODE>/mnt/target/boot/bzImage</CODE>. Encontrei um pequeno
+erro (bug) no roteiro, ele diz:</P>
+<P>
+<PRE>
+        ./QuickInst: /boot/bzImage: no such file 
+</PRE>
+</P>
+<P>mas você pode simplismente ignorá-lo.</P>
+
+<P>Onde devemons instruir ao <CODE>QuickInst</CODE> colocar o setor de boot?
+Quando reiniciarmos queremos ter a escolha de inicializar no sistema
+fonte ou no sistema alvo, ou qualquer outro sistema que tivermos. E
+queremos que o lilo que estamos construindo agora carregue o kernel de
+nosso novo sistema. Como conseguiremos alcançar ambos os resultados?
+Vamos divagar um pouco para ver como o lilo inicializa o DOS em um
+sistema Linux de dupla inicialização (dual boot). O arquivo
+<CODE>lilo.conf</CODE> num sistema destes provavelmente é parecido com
+esse:</P>
+
+<P>
+<PRE>
+prompt
+timeout = 50
+default = linux
+
+image = /boot/bzImage
+        label  = linux
+        root   = /dev/hda1
+        read-only
+
+other = /dev/hda2
+        label = dos
+</PRE>
+</P>
+
+
+<P>Se a máquina for configurada deste modo, então o MBR (Master Boot
+Record - Registro Mestre de Inicialização) é lido e carregado pela
+bios, ela carrega o inicializador lilo que fornece uma linha de
+comandos (prompt). Se você digitar <CODE>dos</CODE> nele, o lilo carrega o
+setor de boot de hda2, carregando o DOS.</P>
+
+<P>O que faremos é exatamente a mesma coisa, exceto que o setor de boot
+em hda2 terá um outro lilo nele - é ele que <CODE>QuickInst</CODE> vai
+instalar. Assim o lilo da distribuição Linux vai carregar o lilo que
+construimos, e ele vai carregar o kernel que construimos. Você verá
+dois lilos quando reiniciar.</P>
+
+<P>Para encurtar a história, quando o <CODE>QuickInst</CODE> perguntar onde
+colocar o setor de boot, diga a ele o dispositivo onde seu sistema de
+arquivos alvo está, por exemplo <CODE>/dev/hda2</CODE>.</P>
+
+<P>Agora modifique o <CODE>lilo.conf</CODE> em seu sistema fonte, de forma
+que tenha uma linha como esta:</P>
+<P>
+<PRE>
+ 
+other = /dev/hda2
+        label = target
+</PRE>
+</P>
+<P>rode o lilo e estaremos apto para inicializar o sistema alvo pela
+primeira vez.</P>
+
+<H2><A NAME="s6">6. Glibc</A></H2>
+
+<P>Em seguida queremos instalar o <CODE>init</CODE>, mas como praticamente
+todos programas que rodam em Linux, o <CODE>init</CODE> usa funções de
+bibliotecas fornecidas pela biblioteca GNU C, glibc. Portanto teremos
+que instalar esta primeiro.</P>
+
+<P>Glibc é um pacote muito grande e complicado. Ela levou 90 horas para
+compilar em meu velho 386sx/16 com 8M de RAM. Mas levou apenas 33
+minutos em meu Celeron 433 com 64M. Penso que a memória é a principal
+questão aqui. Se você tem apenas 8M de RAM (ou pior, menos!)
+prepare-se para uma longa compilação.</P>
+
+<P>A documentação de instalação da glibc recomenda compilar em um
+diretório separado. Isso permite que você recomesse facilmente, apenas
+removendo este diretório. Você também pode querer fazer isto para
+poupar cerca de 265M do seu espaço em disco.</P>
+
+<P>Descompacte o tarball <CODE>glibc-2.1.3.tar.gz</CODE> (ou qualquer que
+seja a versão) em <CODE>/mnt/target/usr/src</CODE> como de costume. Agora,
+precisamos descompactar os adicionais (add-ons) no diretório da
+glibc. Então <CODE>cd glib-2.1.3</CODE>, e descompacte os tarballs
+<CODE>glibc-crypt-2-1-3.tar.gz</CODE> e
+<CODE>glibc-linuxthreads-2.1.3.tar.gz</CODE> aqui.</P>
+
+<P>Agora podemos criar o diretório para compilação, configurar, construir
+e instalar a glibc. Estes são os comandos que usei, mas leia a
+documentação você mesmo para ter certeza que você está fazendo o
+melhor para sua circunstância. Contudo antes que você o faça, você
+pode querer dar o comando <CODE>df</CODE> para ver quanto espaço livre
+você tem. Você pode dar o comando novamente depois que você construir
+e instalar a glibc, para ver como ele consome espaço.</P>
+
+<P>
+<PRE>
+        cd ..
+        mkdir glibc-build
+        ../glibc-2.1.3/configure --enable-add-ons --prefix=/usr
+        make
+        make install_root=/mnt/target install
+</PRE>
+</P>
+
+<P>Repare que temos outras formas de dizer ao pacote onde instalar.</P>
+
+<H2><A NAME="s7">7. SysVinit </A></H2>
+
+<P>Compilar e instalar binários do SysVinit é simples e direto. Há uma
+pequena modificação a ser feita no <CODE>Makefile</CODE> do subdiretório
+<CODE>src/</CODE>. Nas últimas quatro linhas, você precisa por
+<CODE>$(ROOT)</CODE> exatamente antes de <CODE>/dev/initctl</CODE>, desta
+maneira:</P>
+
+<P>
+<PRE>
+        @ if [ ! -p /dev/initctl ]; then \
+</PRE>
+</P>
+<P>se torna:</P>
+
+<P>
+<PRE>
+        @ if [ ! -p $(ROOT)/dev/initctl ]; then \
+</PRE>
+</P>
+
+<P>Esse arquivo de dispositivo <CODE>initctl</CODE> é um meio de comunição
+com o init. Por exemplo, a página de manual do <CODE>init</CODE> diz que
+este arquivo de dispositivo deveria ser usado no lugar de SIGPWR para
+fazer o init desligar quando a energia estiver falhando, se estivermos
+usando um no-break. A modificação que acabamos de fazer garante que
+isso será feito no sistema alvo, não no fonte.</P>
+
+<P>Logo que isto for feito, no subdiretório <CODE>src</CODE> simplesmente
+faça:</P>
+
+<P>
+<PRE>
+        make
+        ROOT=/mnt/target make install
+</PRE>
+</P>
+
+<P>Também existe um porção de roteiros associados com o
+<CODE>init</CODE>. Mas você terá que instalá-los manualmente. Eles são
+definidos em uma hierarquia sob <CODE>debian/etc</CODE> na árvore do
+código fonte do SysVinit. Você pode simplesmente copiá-los direto para
+o diretório <CODE>etc</CODE> no sistema alvo, com alguma coisa como:
+<CODE>cd ../debian/etc; cp -r * /mnt/target/etc</CODE>. Obiviamente você
+vai querer olhá-los antes de copiá-los!</P>
+
+<P>Tudo está pronto para o kernel alvo carregar o <CODE>init</CODE> quando
+reiniciarmos. O problema agora é que os roteiros não irão rodar,
+porque o <CODE>bash</CODE> não está lá para interpretá-los. O
+<CODE>init</CODE> também tentará rodar os <CODE>getty</CODE>, mas não há
+<CODE>getty</CODE> para ele rodar. Reinicie agora e certifique-se de que
+não há mais nada errado.</P>
+
+<H2><A NAME="s8">8. Ncurses</A></H2>
+
+<P>A próxima coisa que precisamos é do Bash, mas o bash precisa do
+ncurses, portanto instalaremos ele primeiro. Ncurses substitui o
+termcap como forma de manipular telas de texto, mas ele também fornece
+compatibilidade regressiva suportando as chamadas do termcap. No
+interesse de ter um sistema limpo, simples e moderno, penso que é
+melhor desativar o velho método termcap. Você pode enfrentar problemas
+depois se compilar um aplicativo antigo que usa o termcap. Mas pelo
+menos você saberá o que está usando o que. Se precisar você pode
+recompilar o ncurses com suporte ao termcap.</P>
+
+<P>Os comandos que usei são:</P>
+
+<P>
+<PRE>
+        ./configure --prefix=/usr --with-install-prefix=/mnt/target --with-shared --disable-termcap 
+        make 
+        make install
+</PRE>
+</P>
+
+<H2><A NAME="s9">9. Bash</A></H2>
+
+<P>Fazer o Bash se instalar no lugar devido me custou bastante leitura,
+reflexão, tentativa e erro. As opções de configuração que usei são:</P>
+
+<P>
+<PRE>
+        ./configure --prefix=/mnt/target/usr/local --exec-prefix=/mnt/target --with-curses 
+</PRE>
+</P>
+
+<P>Uma vez compilado e instalado o Bash, você precisa criar um vínculo
+simbólico (symlink) como este: <CODE>cd /mnt/target/bin; ln -s bash
+sh</CODE>. Isso é porque os roteiros normalmente tem a primeira linha
+como essa:</P>
+
+<P>
+<PRE>
+        #!/bin/sh
+</PRE>
+</P>
+
+<P>Se você não fizer o vínculo simbólico, seus roteiros não serão capazes
+de rodar, porque estarão procurando por <CODE>/bin/sh</CODE> não
+<CODE>/bin/bash</CODE>.</P>
+
+<P>Você poderia reiniciar novamente nesse ponto se quiser. Você deve
+notar que agora os roteiros realmente rodam, embora você ainda não
+pode efetuar login, porque não existem os programas <CODE>getty</CODE> nem
+<CODE>login</CODE>.</P>
+
+<H2><A NAME="s10">10. Util-linux (getty e login)</A></H2>
+
+<P>O pacote util-linux contém <CODE>agetty</CODE> e <CODE>login</CODE>.
+Precisamos de ambos para podermos efetuar login e obter o prompt do
+bash. Depois de instalado, crie um vínculo simbólico de
+<CODE>agetty</CODE> para <CODE>getty</CODE> no diretório <CODE>/sbin</CODE> no
+alvo. O <CODE>getty</CODE> é um dos programas que presupostos a existir em
+todos os sistemas Unix, por isso o vínculo é uma idéia melhor que
+modificar o <CODE>inittab</CODE> para rodar <CODE>agetty</CODE>.</P>
+
+<P>Ainda tenho um problema não resolvido com a compilação do
+util-linux. O pacote também contém o programa <CODE>more</CODE>, e não fui
+capaz de persuadir o processo do <CODE>make</CODE> vincular o
+<CODE>more</CODE> contra a biblioteca ncurses 5 no sistema alvo em vez da
+ncurses 4 no sistema fonte. Vou dar uma olhada mais de perto nisso.</P>
+
+<P>Você também vai precisar de um arquivo <CODE>/etc/passwd</CODE> no sistema
+alvo. Esse é onde o programa <CODE>login</CODE> vai verificar para saber
+se você está autorizado. Já que esse é apenas um sistema experimental
+nesse estágio, você pode fazer coisas como definir apenas o usuário
+root, e não solicitar senha!! Apenas coloque isso no
+<CODE>/etc/passwd</CODE> do alvo:</P>
+
+<P>
+<PRE>
+        root::0:0:root:/root:/bin/bash
+</PRE>
+</P>
+
+<P>Os campos são separados por dois pontos, e da esquerda para direita
+eles são o id do usuário, senha (codificada), número do usuário,
+número do grupo, nome do usuário, diretório pessoal (home) e o shell
+padrão.</P>
+
+<H2><A NAME="s11">11. Sh-utils</A></H2>
+
+<P>O último pacote que precisamos é o GNU sh-utils. O único programa que
+precisamos dele nesse estágio é o <CODE>stty</CODE>, que é usado no
+<CODE>/etc/init.d/rc</CODE> que é usado para mudar os níveis de execução
+(runlevels), e para entrar no nível de execução inicial. Na verdade eu
+tenho e uso um pacote que contém apenas o <CODE>stty</CODE>, mas não me
+lembro de onde ele veio. É melhor idéia usar o pacote GNU, porque
+existem outras coisas nele que você vai precisar se aumentar o sistema
+para fazê-lo usável.</P>
+
+<P>Bom isto é tudo. Agora você deve ter um sistema que vai inicializar e
+pedir um login. Digite ``root'' e você deverá ter um shell. Você não
+será capaz de fazer muita coisa com ele. Não há nem mesmo um comando
+<CODE>ls</CODE> aqui para você ver seu trabalho manual. Pressione tab duas
+vezes para ver os comandos disponíveis. Essa foi a coisa mais
+satisfatória que eu consegui fazer.</P>
+
+<H2><A NAME="s12">12. Customizando </A></H2>
+
+<P>Pode parecer que fizemos um sistema inútil aqui. Mas na verdade não
+falta muito para que ele seja útil. Uma das primeiras coisas que você
+teria que fazer é montar o sistema de arquivos raiz para leitura e
+gravação. Há um roteiro do pacote SysVinit em
+<CODE>/etc/init.d/mountall.sh</CODE> que faz isso, e um <CODE>mount -a</CODE>
+de forma que tudo é montado da forma que você especificar em
+<CODE>/etc/fstab</CODE>. Coloque um vínculo simbólico para ele com um nome
+parecido com <CODE>S05mountall</CODE> no diretório <CODE>etc/rc2.d</CODE> do
+alvo.</P>
+
+<P>Você pode descobrir que esse roteiro usará comandos que você ainda não
+instalou. Nesse caso, encontre o pacote que contém os comandos e
+instale-o. Veja a seção 
+<A HREF="#finding">Dicas Aleatórias</A>
+para ajudar em como encontrar pacotes.</P>
+
+<P>Dê uma olhada nos outros roteiros em <CODE>/etc/init.d</CODE>. A maioria
+deles será necessário em qualquer sistema sério. Vá colocando um por
+um, certifique-se de que tudo está funcionando bem antes de colocar
+mais.</P>
+
+<P>Confira o FHS (veja a seção 
+<A HREF="#FHS">Links</A>). Ele tem
+listas dos comandos que deveriam estar em <CODE>/bin</CODE> e
+<CODE>/sbin</CODE>. Tenha certeza de ter todos esses comandos
+instalados. Ou melhor ainda, encontre a documentação Posix que
+especifica isso.</P>
+
+<P>Daí em diante, é realmente apenas uma questão de lançar-se em mais e
+mais pacotes até tudo que você quer estiver lá. Quanto antes você por
+as ferramentas de construção como <CODE>gcc</CODE> e <CODE>make</CODE>
+melhor. Uma vez feito isto, você pode usar o próprio sistema alvo para
+construir, o que é muito menos complicado.</P>
+
+<H2><A NAME="s13">13. Mais Informações</A></H2>
+
+<H2><A NAME="finding"></A> <A NAME="ss13.1">13.1 Dicas Aleatórias  </A>
+</H2>
+
+<P>Se você tiver um comando chamado <CODE>coisa</CODE> num sistema Linux com
+RPM, e quer uma ajuda para saber de onde obter os fontes, você pode
+usar o comando:</P>
+<P>
+<PRE>
+        rpm -qif `which coisa`
+</PRE>
+</P>
+<P>E se você tem o CD de fontes do Red Hat, você pode instalar o código
+fonte usando:</P>
+<P>
+<PRE>
+        rpm -i /mnt/cdrom/SRPMS/o.que.ele.acabou.de.dizer-1.2.srpm
+</PRE>
+</P>
+
+<P>Isso vai colocar o tarball e qualquer patch da Red Hat em
+<CODE>/usr/src/redhat/SOURCES</CODE>.</P>
+
+<H2><A NAME="ss13.2">13.2 Links</A>
+</H2>
+
+<P>
+<UL>
+<LI>Há um mini-comofazer sobre compilar software, o 
+<A HREF="http://www.linuxdoc.org/HOWTO/Software-Building.html">Software Building mini-HOWTO</A>.
+</LI>
+<LI>Também há um COMO FAZER sobre construir um sistema Linux do zero. Ele
+focaliza muito mais em construir um sistema usável em lugar de apenas
+fazer isto como um exercício de aprendizagem. 
+<A HREF="http://www.linuxfromscratch.org">The Linux From Scratch HOWTO</A>
+</LI>
+<LI>
+<A NAME="FHS"></A>  
+<A HREF="ftp://tsx-11.mit.edu/pub/linux/docs/linux-standards/fsstnd/">Unix File System Standard</A> outro 
+<A HREF="http://www.pathname.com/fhs/">link</A> para o Padrão de
+Sistema de Arquivos do Unix. Ele descreve o que deveria ir, onde e porque
+em um sistema de arquivos Unix. Ele também tem os requisitos mínimos
+para o conteúdo de <CODE>/bin</CODE>, <CODE>/sbin</CODE> e assim por
+diante. Essa é uma boa referência se seu objetivo é fazer um sistema
+mínimo mas completo.
+</LI>
+</UL>
+</P>
+
+
+<H2><A NAME="s14">14. Administrivia</A></H2>
+
+<H2><A NAME="ss14.1">14.1 Copyright</A>
+</H2>
+
+<P>Os direitos autorais deste documento pertencem à Greg O'Keefe -
+Copyright (c) 1999, 2000 Greg O'Keefe. Você pode usar, copiar,
+distribuir ou modificar isto, sem ônus, sob os termos da 
+<A HREF="http://www.gnu.org/copyleft/gpl.html">GNU General Public Licence</A>. Por favor, me cite como autor se usar todo ou partes deste
+documento em outro documento.</P>
+
+
+<H2><A NAME="ss14.2">14.2 Página Web</A>
+</H2>
+
+<P>A versão mais recente deste documento está em 
+<A HREF="http://learning.taslug.org.au/power2bash">From Powerup To Bash Prompt</A></P>
+
+
+<H2><A NAME="ss14.3">14.3 Retorno </A>
+</H2>
+
+<P>Gostaria de ouvir quaisquer comentários, críticas ou sugestões de
+melhoras que você tenha. Por favor, envie-as para 
+<A HREF="mailto:gcokeefe@postoffice.utas.edu.au">Greg O'Keefe</A></P>
+
+
+<H2><A NAME="acknowledge"></A> <A NAME="ss14.4">14.4 Agradecimentos </A>
+</H2>
+
+<P>Os nome de produtos são marcas registradas de seus respectivos
+proprietários, e por meio disto considerado adequadamente
+reconhecidos.</P>
+
+<P>Existem algumas pessoas que quero agradecer, por ajudar que isto
+acontecesse.</P>
+
+<P>
+<DL>
+
+<DT><B>Michael Emery</B><DD>
+<P>Por me lembrar sobre o Unios</P>
+
+<DT><B>Tim Little</B><DD>
+<P>Por várias boas dicas sobre <CODE>/etc/passwd</CODE></P>
+
+<DT><B>sPaKr on #linux in efnet</B><DD>
+<P>Quem me avisou que o syslogd precisa de <CODE>/etc/services</CODE>, e me
+apresentou a frase ``rolling your own'' para descrever a construção de
+um sistema a partir do código fonte.</P>
+
+<DT><B>Alex Aitkin</B><DD>
+<P>Por me chamar a atenção sobre Vico e seu ``verum ipsum factum'' (o
+conhecimento vem pela prática).</P>
+
+<DT><B>Dennis Scott</B><DD>
+<P>Por corrigir minha aritimética hexadecimal.</P>
+
+<DT><B>jdd</B><DD>
+<P>Por me mostrar alguns erros tipográficos.</P>
+
+</DL>
+</P>
+
+<H2><A NAME="ss14.5">14.5 Histórico de modificações</A>
+</H2>
+
+<H3>0.8 -> 0.9</H3>
+
+<P>
+<UL>
+<LI>Adicionada uma modificação ao makefile do sysvinit. Essa informação é
+devido a grande fama do ``Linux From Scratch'' do Gerard Beekmans.</LI>
+</UL>
+</P>
+
+<H3>0.8</H3>
+
+<P>
+<UL>
+<LI>Versão inicial. Separado do ``From PowerUp to Bash Prompt''.</LI>
+</UL>
+</P>
+
+<H2><A NAME="ss14.6">14.6 TODO (Tarefas a fazer)</A>
+</H2>
+
+<P>
+<UL>
+<LI>Converter para docbook.</LI>
+</UL>
+</P>
+
+</BODY>
+</HTML>

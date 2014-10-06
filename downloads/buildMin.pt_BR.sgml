@@ -1,0 +1,1303 @@
+<!doctype linuxdoc system>
+
+
+<ARTICLE>
+
+
+<TITLE>Como Construir um Sistema Linux Mínimo do Código Fonte
+<AUTHOR>Greg O'Keefe, <tt>gcokeefe@postoffice.utas.edu.au</tt>
+<DATE>v0.9, Novembro 2000
+
+
+<ABSTRACT>
+<!--
+These are instructions for building a minimal linux system from source
+code. It used to be part of <URL
+URL="http://www.linuxdoc.org/HOWTO/From-PowerUp-To-Bash-Prompt-HOWTO.html"
+NAME="From PowerUp to Bash Prompt"> but I've separated it to keep
+both documents short and focussed. The system we build here is
+<EM>very</EM> minimal, and not ready for real work. If you want to
+build a practical system from scratch, see Gerard Beekmans' <URL
+URL="http://www.linuxfromscratch.org" NAME="Linux From Scratch HOWTO">
+instead.
+-->
+Essas são instruções para construir um sistema linux mínimo do código
+fonte. Este documento fazia parte do <URL
+URL="http://www.linuxdoc.org/HOWTO/From-PowerUp-To-Bash-Prompt-HOWTO.html"
+NAME="From PowerUp to Bash Prompt"> mas eu os separei para manter
+ambos os documentos curtos e objetivos. O sistema que vamos construir
+aqui é <EM>muito</EM> mínimo, e não é adequado para o trabalho de
+verdade. Se quiser construir um sistema prático do zero, veja o <URL
+URL="http://www.linuxfromscratch.org"
+NAME="Linux From Scratch HOWTO"> de Gerard Beekmans em vez deste.
+</ABSTRACT>
+
+
+<TOC>
+
+
+<SECT>O Que Você Vai Precisar
+<P>
+<!--
+We will install a Linux distribution like Red Hat in one partition,
+and use that to build a new Linux system in another partition. I will
+call the system we are building the ``target'' and the system we are
+using to build it with, the ``source'' (not to be confused with
+<EM>source code</EM> which we will also be using.)
+-->
+Vamos instalar uma distribuição de Linux como a Red Hat em uma
+partição, e usar ela para construir um novo sistema Linux em outra
+partição. Vou chamar o sistema que estaremos construindo de ``alvo'' e
+o sitema que estaremos usando para construi-lo de ``fonte'' (não
+confunda com <EM>código fonte</EM> que também estaremos usando.)
+
+<P>
+<!--
+So you are going to need a machine with two spare partitions on it. If
+you can, use a machine with nothing important on it. You could use an
+existing Linux installation as the source system, but I wouldn't
+recommend that. If you leave a parameter out of one of the commands we
+will issue, you could accidentally install stuff to this system. This
+could lead to incompatibilites and strife.
+-->
+De forma que você vai precisar de uma máquina com duas partições
+separadas. Você pode usar uma instalação de Linux já existente como
+seu sistema fonte, mas não recomendaria isto. Se você errar um dos
+parâmetro de um dos comandos que vamos usar, você poderia
+acidentalmente instalar bobagens em seus sistema. Isso poderia levar à
+incompatibilidades e conflitos.
+
+<P>
+<!--
+Older PC hardware, mostly 486's and earlier, have an annoying
+limitation in their bios. They can not read from a hard disk past the
+first 512M. This is not too much of a problem for Linux, because once
+it is up, it does its own disk io, bypassing the bios. But for Linux
+to get loaded by these old machines, the kernel has to reside
+somewhere below 512M. If you have one of these machines you will need
+to have a separate partition completely below the 512M mark, to mount
+as <TT>/boot</TT> for any partitions that are over that 512M mark.
+-->
+Hardware antigo de PC, a maior parte dos 486's e anteriores, tem uma
+limitação irritante em suas bios. Eles não podem ler o disco rígido
+depois dos primeiros 512M. Isso não é muito problemático para o Linux,
+porque uma vez em funcionamento, ele faz seu próprio io (input/output
+- entrada/saída), ignorando a bios. Porém para Linux que será
+carregado por essas máquinas velhas, o kernel tem de residir em algum
+lugar abaixo dos 512M. Se você tem uma dessas máquinas, vai precisar
+separar uma partição completamente abaixo dos 512M, para montar como
+<TT>/boot</TT> em qualquer partição que estiver acima dos 512M.
+
+<P>
+<!--
+Last time I did this, I used Red Hat 6.1 as a source system. I
+installed the base system plus
+-->
+A última vez que fiz isso, usei um Red Hat 6.1 como sistema
+fonte. Instalei o sistema base mais:
+
+<ITEMIZE>
+<ITEM>cpp
+<ITEM>egcs
+<ITEM>egcs-c++
+<ITEM>patch
+<ITEM>make
+<ITEM>dev86 
+<ITEM>ncurses-devel
+<ITEM>glibc-devel 
+<ITEM>kernel-headers 
+</ITEMIZE> 
+
+<!--
+I also had X-window and Mozilla so I could read documentation easily,
+but that's not really necessary.  By the time I had finished working,
+it had used about 350M of disk space. (Seems a bit high, I wonder
+why?)
+-->
+Eu também tinha o X-window e o Mozilla, assim eu podia ler a
+documentação fácilmente, mas isto não é realmente necessário. No
+momento em que terminei o trabalho, isto usou cerca de 350M de espaço
+em disco. (parece bastante, gostaria de saber porquê?)
+
+<P>
+<!--
+The finished target system took 650M, but that includes all the source
+code and intermediate build files. If space is tight, you should do a
+<TT>make clean</TT> after each package is built. Still, this mind
+boggling bloat is a bit of a worry.
+-->
+O sistema alvo acabado tomou 650M, mas isto inclui todo o código fonte
+e os arquivos intermediários da construção. Se o espaço for pouco,
+você deve fazer um <TT>make clean</TT> depois de cada pacote que for
+construído. Ainda assim é quantidade que causa um pouco de
+preocupação.
+
+<P>
+<!--
+Finally, you are going to need the source code for the system we are
+going to build. These are the ``packages'' that I have discussed in
+this document. These can be obtained from a source cd, or from the
+internet. I'll give URL's for the USA sites and for Australian
+mirrors.
+-->
+Finalmente, você precisa do código fonte para o sistema que estaremos
+construindo. Esses são os ``pacotes'' que eu discuti nesse
+documento. Eles podem ser obtidos num CD de código fontes, ou na
+Internet. Eu darei URL's para os sítios nos EUA e para os espelhos na
+Autrália.
+
+<P>
+<LABEL ID="downloads">
+<ITEMIZE>
+<ITEM>
+<!--
+MAKEDEV	<URL URL="ftp://tsx-11.mit.edu/pub/linux/sources/sbin" NAME="USA">
+Another <URL URL="ftp://sunsite.unc.edu/pub/Linux/system/admin"
+NAME="USA">
+-->
+MAKEDEV	<URL URL="ftp://tsx-11.mit.edu/pub/linux/sources/sbin" NAME="EUA">
+outro sítio nos <URL URL="ftp://sunsite.unc.edu/pub/Linux/system/admin"
+NAME="EUA">.
+
+<ITEM>
+<!--
+Lilo <URL URL="ftp://brun.dyndns.org/pub/linux//lilo/" NAME="USA">,
+<URL URL="ftp://mirror.aarnet.edu.au/pub/metalab/system/boot/lilo/"
+NAME="Australia">.
+-->
+Lilo <URL URL="ftp://brun.dyndns.org/pub/linux//lilo/" NAME="EUA">,
+<URL URL="ftp://mirror.aarnet.edu.au/pub/metalab/system/boot/lilo/"
+NAME="Austrália">.
+
+<ITEM>
+<!--
+Linux Kernel Use one of the mirrors listed at <URL
+URL="http://www.kernel.org" NAME="home page"> rather than <URL
+URL="ftp://ftp.kernel.org/pub/linux/kernel" NAME="USA"> because they
+are always overloaded. <URL
+URL="ftp://kernel.mirror.aarnet.edu.au/pub/linux/kernel/"
+NAME="Australia">
+-->
+Kernel Linux, prefira usar um dos espelhos listados na <URL
+URL="http://www.kernel.org" NAME="página web"> ao <URL
+URL="ftp://ftp.kernel.org/pub/linux/kernel" NAME="EUA"> porque ele
+está sempre sobrecarregado. <URL
+URL="ftp://kernel.mirror.aarnet.edu.au/pub/linux/kernel/"
+NAME="Australia">
+
+<ITEM>
+<!--
+GNU libc itself, and the linuxthreads addon are at <URL
+URL="ftp://ftp.gnu.org/pub/gnu/glibc" NAME="USA"> <URL
+URL="ftp://mirror.aarnet.edu.au/pub/gnu/glibc" NAME="Australia">
+-->
+A GNU libc e o complemento linuxthreads estão em <URL
+URL="ftp://ftp.gnu.org/pub/gnu/glibc" NAME="EUA"> <URL
+URL="ftp://mirror.aarnet.edu.au/pub/gnu/glibc" NAME="Austrália">
+
+<ITEM>
+<!--
+GNU libc addons You will also need the linuxthreads and libcrypt
+addons. If libcrypt is not there it is because of some US export
+laws. You can get it at <URL URL="ftp://ftp.gwdg.de/pub/linux/glibc"
+NAME="libcrypt"> The linuxthreads addon is in the same places as libc
+itself
+-->
+Complementos da GNU libc. Você também vai precisar dos complementos
+linuxthreads e libcryot. Se libcrypt não estiver lá é por causa de
+algumas leis de exportação dos EUA. Você pode obtê-lo em <URL
+URL="ftp://ftp.gwdg.de/pub/linux/glibc" NAME="libcrypt">. O
+complemento linuxthreads está junto com a própria libc.
+
+<ITEM>
+<!--
+GNU ncurses <URL URL="ftp://ftp.gnu.org/gnu/ncurses" NAME="USA"> <URL
+URL="ftp://mirror.aarnet.edu.au/pub/gnu/ncurses" NAME="Australia">
+-->
+GNU ncurses <URL URL="ftp://ftp.gnu.org/gnu/ncurses" NAME="EUA"> <URL
+URL="ftp://mirror.aarnet.edu.au/pub/gnu/ncurses" NAME="Austrália">.
+
+<ITEM>
+<!--
+SysVinit <URL
+URL="ftp://sunsite.unc.edu/pub/Linux/system/daemons/init" NAME="USA">
+<URL
+URL="ftp://mirror.aarnet.edu.au/pub/linux/metalab/system/daemons/init"
+NAME="Australia">
+-->
+SysVinit <URL
+URL="ftp://sunsite.unc.edu/pub/Linux/system/daemons/init" NAME="EUA">
+<URL
+URL="ftp://mirror.aarnet.edu.au/pub/linux/metalab/system/daemons/init"
+NAME="Austrália">.
+
+<ITEM>
+<!--
+GNU Bash <URL URL="ftp://ftp.gnu.org/gnu/bash" NAME="USA"> <URL
+URL="ftp://mirror.aarnet.edu.au/pub/gnu/bash" NAME="Australia">
+-->
+GNU Bash <URL URL="ftp://ftp.gnu.org/gnu/bash" NAME="EUA"> <URL
+URL="ftp://mirror.aarnet.edu.au/pub/gnu/bash" NAME="Austrália">.
+
+<ITEM>
+<!--
+GNU sh-utils <URL URL="ftp://ftp.gnu.org/gnu/sh-utils" NAME="USA">
+<URL URL="ftp://mirror.aarnet.edu.au/pub/gnu/sh-utils"
+NAME="Australia">
+-->
+GNU sh-utils <URL URL="ftp://ftp.gnu.org/gnu/sh-utils" NAME="EUA">
+<URL URL="ftp://mirror.aarnet.edu.au/pub/gnu/sh-utils"
+NAME="Austrália">.
+
+<ITEM>
+<!--
+util-linux <URL URL="ftp://ftp.win.tue.nl/pub/linux/utils/util-linux/"
+NAME="Somewhere else"> <URL
+URL="ftp://mirror.aarnet.edu.au/pub/linux/metalab/system/misc"
+NAME="Australia"> This package contains <TT>agetty</TT> and
+<TT>login</TT>.
+-->
+util-linux <URL URL="ftp://ftp.win.tue.nl/pub/linux/utils/util-linux/"
+NAME="Algum outro lugar"> <URL
+URL="ftp://mirror.aarnet.edu.au/pub/linux/metalab/system/misc"
+NAME="Austrália"> Esse pacote contém <TT>agetty</TT> e <TT>login</TT>
+
+</ITEMIZE>
+
+<P>
+<!--
+To sum up then, you will need:
+-->
+Para somá-los, você vai precisar:
+
+<ITEMIZE>
+<ITEM>
+<!--
+A machine with two spare partitions of about 400M and 700M
+respectively though you could probably get away with less
+-->
+Uma máquina com duas partições separadas de aproximadamente 400M e
+700M repectivamente apesar que você poderia se virar com menos.
+
+<ITEM>
+<!--
+A Linux distribution (eg. a Red Hat cd) and a way of installing it
+(eg. a cdrom drive)
+-->
+Uma distribuição de Linux (um CD da Red Hat, por exemplo) e um meio de
+instalar (ex: um drive de CDROM).
+
+<ITEM>
+<!--
+The source code tarballs listed above
+-->
+Os tarballs de código fonte listados acima.
+
+</ITEMIZE>
+
+<P>
+<!--
+I'm assuming that you can install the source system yourself, without
+any help from me. From here on, I'll assume that its done.
+-->
+Presumo que você pode instalar o sistema fonte sozinho, sem nenhuma
+ajuda minha. Daqui em diante presumo que isto já está feito.
+
+<P>
+<!--
+The first milestone in this little project is getting the kernel to
+boot up and panic because it can't find an <TT>init</TT>. This means
+we are going to have to install a kernel, and install lilo. To install
+lilo nicely though, we will need the device files in the target
+<TT>/dev</TT> directory. Lilo needs them to do the low level disk
+access necessary to write the boot sector. MAKEDEV is the script that
+creates these device files. (You can just copy them from the source
+system of course, but that's cheating!) But first of all, we need a
+filesystem to put all of this into.
+-->
+A primeira marca nesse pequeno projeto é tornar o kernel inicializável
+e mostrar uma mensagem ``panic'' porque ele não pode encontrar um
+<TT>init</TT>. Isso significa que teremos que instalar um kernel, e o
+lilo. Contudo para instalar o lilo agradavelmente, precisaremos dos
+arquivos de dispositivos no diretório <TT>/dev</TT> do alvo. O lilo
+precisa deles para fazer o acesso de baixo nível necessário para
+escrever o setor de boot. MAKEDEV é o roteiro (script) que cria esses
+arquivos de dispositivos. (Você pode apenas copiá-los do sistema fonte
+é claro, mas isto é trapaça!) Mas antes de tudo, precisamos de um
+sistema de arquivos para colocar tudo isso nele.
+
+
+<SECT>O Sistema de Arquivos
+
+<P>
+<!--
+Our new system is going to live in a file system. So first, we have to
+make that file system using <TT>mke2fs</TT>. Then mount it
+somewhere. I'd suggest <TT>/mnt/target</TT>. In what follows, I'll
+assume that this is where it is. You could save yourself a bit of time
+by putting an entry in <TT>/etc/fstab</TT> so that it mounts there
+automatically when the source system comes up.
+-->
+Nosso novo sistema estará em um sistema de arquivos. Portanto,
+primeiro precisamos criar um sistema de arquivos usando
+<TT>mke2fs</TT>. Em seguida montá-lo em algum lugar. Sugiro
+<TT>/mnt/target</TT>. No que segue, assumo que este é ele onde
+está. Você pode poupar um bocado do seu tempo colocando uma entrada em
+<TT>/etc/fstab</TT> de forma que quando ligar o sistema será montado
+automaticamente.
+
+<P>
+<!--
+When we boot up the target system, the stuff that's now in
+<TT>/mnt/target</TT> will be in <TT>/</TT>.
+-->
+Quando inicializarmos o sistema alvo, o que agora está em
+<TT>/mnt/target</TT> estará em <TT>/</TT>.
+
+<P>
+<!--
+We need a directory structure on target. Have a look at the File
+Heirarchy Standard (see section <REF ID="FHS" NAME="Filesystem">) to
+work out what this should be, or just <TT>cd</TT> to where the target
+is mounted and blindly do
+-->
+Precisamos uma estrutura de diretórios no alvo. Dê uma olhada no FHS
+(File Heirarchy Standard - Padrão de Hierarquia de Arquivos, veja <REF
+ID="FHS" NAME="Links">) para verificar o que isso deveria ser, ou
+apenas vá para onde o alvo está montado (<TT>cd</TT>) e cegamente
+faça:
+
+<VERB> 
+        mkdir bin boot dev etc home lib mnt root sbin tmp usr var
+        cd var; mkdir lock log run spool  
+        cd ../usr; mkdir bin include lib local sbin share src
+        cd share/; mkdir man; cd man 
+        mkdir man1 man2 man3 ... man9
+</VERB>
+
+<!--
+Since the FHS and most packages disagree about where man pages should
+go, we need a symlink
+-->
+Visto que o FHS e a maior parte dos pacotes discordam sobre onde as
+páginas de manual deveriam ir, precisamos de um vinculo simbólico:
+
+<VERB> 
+	cd ../..; ln -s share/man man
+</VERB>
+
+
+<SECT>MAKEDEV
+<P>
+<!--
+We will put the source code in the target <TT>/usr/src</TT>
+directory. So for example, if your target file system is mounted on
+<TT>/mnt/target</TT> and your tarballs are in <TT>/root</TT>, you
+would do
+-->
+Colocaremos o código fonte no diretório <TT>/usr/src</TT> do alvo. Por
+exemplo, se o sistema de arquivos do alvo está montado em
+<TT>/mnt/target</TT> e seus tarballs estão em <TT>/root</TT>, você
+faria:
+
+<VERB> 
+        cd /mnt/target/usr/src
+        tar -xzvf /root/MAKEDEV-2.5.tar.gz
+</VERB>
+
+<P>
+<!--
+Don't be completely lame and copy the tarball to the place where you
+are going to extract it ;->
+-->
+Não seja um completo idiota copiando o tarball para o lugar onde você
+o vai extrair ;->
+
+<P>
+<!--
+Normally when you install software, you are installing it onto the
+system that is running. We don't want to do that though, we want to
+install it as though <TT>/mnt/target</TT> is the root
+filesystem. Different packages have different ways of letting you do
+this. For MAKEDEV you do
+-->
+Normalmente quando você instala software, você instala ele no sistema
+que está rodando. Contudo nós não queremos fazer isto, queremos
+instalar como se <TT>/mnt/target</TT> fosse o sistema de arquivos
+raiz. Diferentes pacotes tem diferentes meios de permitir isso. Para o
+MAKEDEV você faz:
+
+<VERB>
+        ROOT=/mnt/target make install
+</VERB>
+
+<P>
+<!--
+You need to look out for these options in the README and INSTALL files
+or by doing a <TT>./configure 2-help</TT>. 
+-->
+
+Você deve procurar por essas opções nos arquivos README e INSTALL ou
+fazendo um <TT>./configure --help</TT>.
+
+<P>
+<!--
+Have a look in MAKEDEV's <TT>Makefile</TT> to see what it does with
+the <TT>ROOT</TT> varible that we set in that command. Then have a
+look in the man page by doing <TT>man ./MAKEDEV.man</TT> to see how it
+works. You'll find that the way to make our device files is to <TT>cd
+/mnt/target/dev</TT> and do <TT>./MAKEDEV generic</TT>. Do an
+<TT>ls</TT> to see all the wonderful device files it has made for you.
+-->
+Dê uma olhada no <TT>Makefile</TT> para ver o que ele faz com a
+variável <TT>ROOT</TT> que definimos neste comando. Em seguida dê uma
+olhada na página de manual fazendo <TT>man ./MAKEDEV.man</TT> para ver
+como isto funciona. Você verá que o jeito de criar nossos arquivos de
+dispositivos é <TT>cd /mnt/target/dev</TT> e fazer <TT>./MAKEDEV
+generic</TT>. Faça um <TT>ls</TT> para ver todos os maravilhosos
+arquivos de dispositivos ele fez para você.
+
+
+<SECT>Kernel
+<P>
+<!--
+Next we make a kernel. I presume you've done this before, so I'll be
+brief. It is easier to install lilo if the kernel it is meant to boot
+is already there. Go back to the target <TT>usr/src</TT> directory,
+and unpack the linux kernel source there. Enter the linux source tree
+(<TT>cd linux</TT>) and configure the kernel using your favourite
+method, for example <TT>make menuconfig</TT>. You can make life
+slightly easier for yourself by configuring a kernel without
+modules. If you configure any modules, then you will have to edit the
+<TT>Makefile</TT>, find <TT>INSTALL_MOD_PATH</TT> and set it to
+<TT>/mnt/target</TT>.
+-->
+Em seguida construiremos um kernel. Presumo que você já vez isso
+antes, portanto vou ser breve. É mais fácil instalar o lilo se o
+kernel que ele deverá inicializar já estiver ali. Volte ao diretório
+<TT>usr/src</TT> do alvo e descompacte o kernel linux ali. Entre na
+árvore de diretórios do linux (<TT>cd linux</TT>) e configure o kernel
+usando seu método favorito, por exemplo <TT>make menuconfig</TT>. Você
+pode tornar a vida levemente mais fácil para você configurando um
+kernel sem módulos. Se você configurar algum módulo, então terá de
+editar o <TT>Makefile</TT>, encontrar <TT>INSTALL_MOD_PATH</TT> e
+definir ele para <TT>/mnt/target</TT>.
+
+<P>
+<!--
+Now you can <TT>make dep</TT>, <TT>make bzImage</TT>, and if you
+configured modules: <TT>make modules</TT>, <TT>make
+modules_install</TT>. Copy the kernel <TT>arch/i386/boot/bzImage</TT>
+and the system map <TT>System.map</TT> to the target boot directory
+<TT>/mnt/target/boot</TT>, and we are ready to install lilo.
+-->
+Agora você pode <TT>make dep</TT>, <TT>make bzImage</TT>, e se você
+configurou módulos: <TT>make modules</TT>, <TT>make
+modules_install</TT>. Copie o kernel <TT>arch/i386/boot/bzImage</TT>
+e o mapa do sistema <TT>System.map</TT> para o diretório
+<TT>/mnt/target/boot</TT> do alvo, e estamos prontos para instalar o
+lilo.
+
+
+<SECT>Lilo
+<P>
+<!--
+Lilo comes with a neat script called <TT>QuickInst</TT>. Unpack the
+lilo source into the target source directory, run this script with the
+command <TT>ROOT=/mnt/target ./QuickInst</TT>. It will ask you
+questions about how you want lilo installed.
+-->
+O lilo vem com um ótimo roteiro chamado <TT>QuickInst</TT>.
+Descompacte o código fonte do lilo no diretório de fontes do alvo,
+rode este roteiro com o comando <TT>ROOT=/mnt/target
+./QuickInst</TT>. Ele vai fazer perguntas à você sobre como quer que o
+lilo seja instalado.
+
+<P>
+<!--
+Remember, since we have set <TT>ROOT</TT>, to the target partition,
+you tell it file names relative to that. So when it asks what kernel
+you want to boot by default, answer <TT>/boot/bzImage</TT>
+<EM>not</EM> <TT>/mnt/target/boot/bzImage</TT>. I found a little bug
+in the script, so it said
+-->
+Lembre-se, já que definimos <TT>ROOT</TT> para a partição alvo, iremos
+informar os nomes relativos a esta. Portanto, quando ele perguntar
+qual o kernel inicializar por padrão, responda <TT>/boot/bzImage</TT>
+<EM>não</EM> <TT>/mnt/target/boot/bzImage</TT>. Encontrei um pequeno
+erro (bug) no roteiro, ele diz:
+
+<VERB>
+        ./QuickInst: /boot/bzImage: no such file 
+</VERB>
+
+<!--
+But if you just ignore it, it's ok.
+-->
+mas você pode simplismente ignorá-lo.
+
+<P>
+<!--
+Where should we get <TT>QuickInst</TT> to put the boot sector? When we
+reboot we want to have the choice of booting into the source system or
+the target system, or any other systems that are on this box. And we
+want the instance of lilo that we are building now to load the kernel
+of our new system. How are we going achieve both of these things?
+Let's digress a little and look at how lilo boots DOS on a dual boot
+Linux system. The <TT>lilo.conf</TT> file on such a system probably
+looks something like this:
+-->
+Onde devemons instruir ao <TT>QuickInst</TT> colocar o setor de boot?
+Quando reiniciarmos queremos ter a escolha de inicializar no sistema
+fonte ou no sistema alvo, ou qualquer outro sistema que tivermos. E
+queremos que o lilo que estamos construindo agora carregue o kernel de
+nosso novo sistema. Como conseguiremos alcançar ambos os resultados?
+Vamos divagar um pouco para ver como o lilo inicializa o DOS em um
+sistema Linux de dupla inicialização (dual boot). O arquivo
+<TT>lilo.conf</TT> num sistema destes provavelmente é parecido com
+esse:
+
+<P>
+<VERB>
+prompt
+timeout = 50
+default = linux
+
+image = /boot/bzImage
+        label  = linux
+        root   = /dev/hda1
+        read-only
+
+other = /dev/hda2
+        label = dos
+</VERB>
+
+
+<P>
+<!--
+If the machine is set up this way, then the master boot record gets
+read and loaded by the bios, and it loads the lilo bootloader, which
+gives a prompt. If you type in <TT>dos</TT> at the prompt, lilo loads
+the boot sector from hda2, and it loads DOS.
+-->
+Se a máquina for configurada deste modo, então o MBR (Master Boot
+Record - Registro Mestre de Inicialização) é lido e carregado pela
+bios, ela carrega o inicializador lilo que fornece uma linha de
+comandos (prompt). Se você digitar <TT>dos</TT> nele, o lilo carrega o
+setor de boot de hda2, carregando o DOS.
+
+<P>
+<!--
+What we are going to do is just the same, except that the boot sector
+in hda2 is going to be another lilo boot sector - the one that
+<TT>QuickInst</TT> is going to install. So the lilo from the Linux
+distribution will load the lilo that we have built, and that will load
+the kernel that we have built. You will see two lilo prompts when you
+reboot.
+-->
+O que faremos é exatamente a mesma coisa, exceto que o setor de boot
+em hda2 terá um outro lilo nele - é ele que <TT>QuickInst</TT> vai
+instalar. Assim o lilo da distribuição Linux vai carregar o lilo que
+construimos, e ele vai carregar o kernel que construimos. Você verá
+dois lilos quando reiniciar.
+
+<P>
+<!--
+To cut a long story short, when <TT>QuickInst</TT> asks you where to
+put the boot sector, tell it the device where your target filesystem
+is, eg. <TT>/dev/hda2</TT>.
+-->
+Para encurtar a história, quando o <TT>QuickInst</TT> perguntar onde
+colocar o setor de boot, diga a ele o dispositivo onde seu sistema de
+arquivos alvo está, por exemplo <TT>/dev/hda2</TT>.
+
+<P>
+<!--
+Now modify the <TT>lilo.conf</TT> on your source system, so it has a
+line like
+-->
+Agora modifique o <TT>lilo.conf</TT> em seu sistema fonte, de forma
+que tenha uma linha como esta:
+
+<VERB> 
+other = /dev/hda2
+        label = target
+</VERB>
+
+<!--
+run lilo, and we should be able to do our first boot into the target
+system.
+-->
+rode o lilo e estaremos apto para inicializar o sistema alvo pela
+primeira vez.
+
+<SECT>Glibc
+<P>
+<!--
+Next we want to install <TT>init</TT>, but like almost every program
+that runs under Linux, <TT>init</TT> uses library functions provided
+by the GNU C library, glibc. So we will install that first.
+-->
+Em seguida queremos instalar o <TT>init</TT>, mas como praticamente
+todos programas que rodam em Linux, o <TT>init</TT> usa funções de
+bibliotecas fornecidas pela biblioteca GNU C, glibc. Portanto teremos
+que instalar esta primeiro.
+
+<P>
+<!--
+Glibc is a very large and complicated package. It took 90 hours to
+build on my old 386sx/16 with 8M RAM. But it only took 33 minutes on
+my Celeron 433 with 64M. I think memory is the main issue here. If you
+only have 8M of RAM (or, shudder, less!) be prepared for a long
+build.
+-->
+Glibc é um pacote muito grande e complicado. Ela levou 90 horas para
+compilar em meu velho 386sx/16 com 8M de RAM. Mas levou apenas 33
+minutos em meu Celeron 433 com 64M. Penso que a memória é a principal
+questão aqui. Se você tem apenas 8M de RAM (ou pior, menos!)
+prepare-se para uma longa compilação.
+
+<P>
+<!--
+The glibc install documentation recommends building in a separate
+directory. This enables you to start again easily, by just blowing
+that directory away. You might also want to do that to save yourself
+about 265M of disk space!
+-->
+A documentação de instalação da glibc recomenda compilar em um
+diretório separado. Isso permite que você recomesse facilmente, apenas
+removendo este diretório. Você também pode querer fazer isto para
+poupar cerca de 265M do seu espaço em disco.
+
+<P>
+<!--
+Unpack the <TT>glibc-2.1.3.tar.gz</TT> (or whatever version) tarball
+into <TT>/mnt/target/usr/src</TT> as usual. Now, we need to unpack the
+``add-ons'' into glibc's directory. So <TT>cd glibc-2.1.3</TT>, and
+then unpack the <TT>glibc-crypt-2.1.3.tar.gz</TT> and
+<TT>glibc-linuxthreads-2.1.3.tar.gz</TT> tarballs there.
+-->
+Descompacte o tarball <TT>glibc-2.1.3.tar.gz</TT> (ou qualquer que
+seja a versão) em <TT>/mnt/target/usr/src</TT> como de costume. Agora,
+precisamos descompactar os adicionais (add-ons) no diretório da
+glibc. Então <TT>cd glib-2.1.3</TT>, e descompacte os tarballs
+<TT>glibc-crypt-2-1-3.tar.gz</TT> e
+<TT>glibc-linuxthreads-2.1.3.tar.gz</TT> aqui.
+
+<P>
+<!--
+Now we can create the build directory, configure, make and install
+glibc. These are the commands I used, but read the documentation
+yourself and make sure you do what is best for your
+circumstances. Before you do though, you might want to do a
+<TT>df</TT> command to see how much free space you have. You can do
+another after you've built and installed glibc, to see what a
+space-hog it is.
+-->
+Agora podemos criar o diretório para compilação, configurar, construir
+e instalar a glibc. Estes são os comandos que usei, mas leia a
+documentação você mesmo para ter certeza que você está fazendo o
+melhor para sua circunstância. Contudo antes que você o faça, você
+pode querer dar o comando <TT>df</TT> para ver quanto espaço livre
+você tem. Você pode dar o comando novamente depois que você construir
+e instalar a glibc, para ver como ele consome espaço.
+
+<P>
+<VERB>
+        cd ..
+        mkdir glibc-build
+        ../glibc-2.1.3/configure --enable-add-ons --prefix=/usr
+        make
+        make install_root=/mnt/target install
+</VERB>
+
+<P>
+<!--
+Notice that we have yet another way of telling a package where to
+install.
+-->
+Repare que temos outras formas de dizer ao pacote onde instalar.
+
+<SECT>SysVinit 
+<P>
+<!--
+Making and installing the SysVinit binaries is pretty straight
+forward. There is one minor hack to be done to the <TT>Makefile</TT>
+in the <TT>src/</TT> subdirectory. In the last four lines, you need to
+put <TT>$(ROOT)</TT> just before <TT>/dev/initctl</TT>, so that, for
+example
+-->
+Compilar e instalar binários do SysVinit é simples e direto. Há uma
+pequena modificação a ser feita no <TT>Makefile</TT> do subdiretório
+<TT>src/</TT>. Nas últimas quatro linhas, você precisa por
+<TT>$(ROOT)</TT> exatamente antes de <TT>/dev/initctl</TT>, desta
+maneira:
+
+<P>
+<VERB>
+        @ if [ ! -p /dev/initctl ]; then \
+</VERB>
+
+se torna:
+
+<P>
+<VERB>
+        @ if [ ! -p $(ROOT)/dev/initctl ]; then \
+</VERB>
+
+<P>
+<!--
+This <TT>initctl</TT> device file is a way of communicating with
+init. For example, the <TT>init</TT> man page says that this device
+file should be used instead of the SIGPWR to get init to shut down
+when the mains power is failing, and we are running on UPS power. The
+hack we just did ensures that it will go into the target system, not
+the source one.
+-->
+Esse arquivo de dispositivo <TT>initctl</TT> é um meio de comunição
+com o init. Por exemplo, a página de manual do <TT>init</TT> diz que
+este arquivo de dispositivo deveria ser usado no lugar de SIGPWR para
+fazer o init desligar quando a energia estiver falhando, se estivermos
+usando um no-break. A modificação que acabamos de fazer garante que
+isso será feito no sistema alvo, não no fonte.
+
+<P>
+<!--
+Once that's done, from the <TT>src</TT> subdirectory, just do:
+-->
+Logo que isto for feito, no subdiretório <TT>src</TT> simplesmente
+faça:
+
+<P>
+<VERB>
+        make
+        ROOT=/mnt/target make install
+</VERB>
+
+<P>
+<!--
+There are also a lot of scripts associated with <TT>init</TT>. There
+are example scripts with the SysVinit package, which work fine. But
+you have to install them manually. They are set up in a heirarchy
+under <TT>debian/etc</TT> in the SysVinit source code tree. You can
+just copy them straight across into the target <TT>etc</TT> directory,
+with something like <TT>cd ../debian/etc; cp -r *
+/mnt/target/etc</TT>. Obviously you will want to have a look before
+you copy them across!
+-->
+Também existe um porção de roteiros associados com o
+<TT>init</TT>. Mas você terá que instalá-los manualmente. Eles são
+definidos em uma hierarquia sob <TT>debian/etc</TT> na árvore do
+código fonte do SysVinit. Você pode simplesmente copiá-los direto para
+o diretório <TT>etc</TT> no sistema alvo, com alguma coisa como:
+<TT>cd ../debian/etc; cp -r * /mnt/target/etc</TT>. Obiviamente você
+vai querer olhá-los antes de copiá-los!
+
+<P>
+<!--
+Everything is in place now for the target kernel to load up
+<TT>init</TT> when we reboot. The problem this time should be that the
+scripts won't run, becasue <TT>bash</TT> isn't there to interpret
+them. Also, <TT>init</TT> will try to run <TT>getty</TT>'s, but there
+is no <TT>getty</TT> for it to run. Reboot now and make sure there is
+nothing else wrong.
+-->
+Tudo está pronto para o kernel alvo carregar o <TT>init</TT> quando
+reiniciarmos. O problema agora é que os roteiros não irão rodar,
+porque o <TT>bash</TT> não está lá para interpretá-los. O
+<TT>init</TT> também tentará rodar os <TT>getty</TT>, mas não há
+<TT>getty</TT> para ele rodar. Reinicie agora e certifique-se de que
+não há mais nada errado.
+
+<SECT>Ncurses
+<P>
+<!--
+The next thing we need is Bash, but bash needs ncurses, so we'll
+install it first. Ncurses replaces termcap as the way of handling text
+screens, but it can also provide backwards compatibility by supporting
+the termcap calls. In the interests of having a clean simple modern
+system, I think its best to disable the old termcap method. You might
+strike trouble later on if you are compiling an older application that
+uses termcap. But at least you will know what is using what. If you
+need to you can recompile ncurses with termcap support.
+-->
+A próxima coisa que precisamos é do Bash, mas o bash precisa do
+ncurses, portanto instalaremos ele primeiro. Ncurses substitui o
+termcap como forma de manipular telas de texto, mas ele também fornece
+compatibilidade regressiva suportando as chamadas do termcap. No
+interesse de ter um sistema limpo, simples e moderno, penso que é
+melhor desativar o velho método termcap. Você pode enfrentar problemas
+depois se compilar um aplicativo antigo que usa o termcap. Mas pelo
+menos você saberá o que está usando o que. Se precisar você pode
+recompilar o ncurses com suporte ao termcap.
+
+<P>
+<!-- The commands I used are -->
+Os comandos que usei são:
+
+<P>
+<VERB>
+        ./configure --prefix=/usr --with-install-prefix=/mnt/target --with-shared --disable-termcap 
+        make 
+        make install
+</VERB>
+
+<SECT>Bash
+<P>
+<!--
+It me took quite a lot of reading and thinking and trial and error to
+get Bash to install itself where I thought it should go. The
+configuration options I used are
+-->
+Fazer o Bash se instalar no lugar devido me custou bastante leitura,
+reflexão, tentativa e erro. As opções de configuração que usei são:
+
+<P>
+<VERB>
+        ./configure --prefix=/mnt/target/usr/local --exec-prefix=/mnt/target --with-curses 
+</VERB>
+
+<P>
+<!--
+Once you have made and installed Bash, you need to make a symlink like
+this <TT>cd /mnt/target/bin; ln -s bash sh</TT>. This is because
+scripts usually have a first line like this
+-->
+Uma vez compilado e instalado o Bash, você precisa criar um vínculo
+simbólico (symlink) como este: <TT>cd /mnt/target/bin; ln -s bash
+sh</TT>. Isso é porque os roteiros normalmente tem a primeira linha
+como essa:
+
+<P>
+<VERB>
+        #!/bin/sh
+</VERB>
+ 
+<P>
+<!--
+If you don't have the symlink, your scripts won't be able to run,
+because they will be looking for <TT>/bin/sh</TT> not
+<TT>/bin/bash</TT>.
+-->
+Se você não fizer o vínculo simbólico, seus roteiros não serão capazes
+de rodar, porque estarão procurando por <TT>/bin/sh</TT> não
+<TT>/bin/bash</TT>.
+
+<P>
+<!--
+You could reboot again at this point if you like. You should notice
+that the scripts actually run this time, though you still can't login,
+because there are no <TT>getty</TT> or <TT>login</TT> programs.
+-->
+Você poderia reiniciar novamente nesse ponto se quiser. Você deve
+notar que agora os roteiros realmente rodam, embora você ainda não
+pode efetuar login, porque não existem os programas <TT>getty</TT> nem
+<TT>login</TT>.
+
+<SECT>Util-linux (getty e login)
+<P>
+<!--
+The util-linux package contains <TT>agetty</TT> and <TT>login</TT>. We
+need both of these to be able to log in and get a bash prompt. After
+it is instlalled, make a symlink from <TT>agetty</TT> to
+<TT>getty</TT> in the target <TT>/sbin</TT> directory. <TT>getty</TT>
+is one of the programs that is supposed to be there on all Unix-like
+systems, so the link is a better idea than hacking <TT>inittab</TT> to
+run <TT>agetty</TT>.
+-->
+O pacote util-linux contém <TT>agetty</TT> e <TT>login</TT>.
+Precisamos de ambos para podermos efetuar login e obter o prompt do
+bash. Depois de instalado, crie um vínculo simbólico de
+<TT>agetty</TT> para <TT>getty</TT> no diretório <TT>/sbin</TT> no
+alvo. O <TT>getty</TT> é um dos programas que presupostos a existir em
+todos os sistemas Unix, por isso o vínculo é uma idéia melhor que
+modificar o <TT>inittab</TT> para rodar <TT>agetty</TT>.
+
+<P>
+<!--
+I have one remaining problem with the compilation of util-linux. The
+package also contains the program <TT>more</TT>, and I have not been
+able to persuade the <TT>make</TT> process to have <TT>more</TT> link
+against the ncurses 5 library on the target system rather than the
+ncurses 4 on the source system. I'll be having a closer look at that.
+-->
+Ainda tenho um problema não resolvido com a compilação do
+util-linux. O pacote também contém o programa <TT>more</TT>, e não fui
+capaz de persuadir o processo do <TT>make</TT> vincular o
+<TT>more</TT> contra a biblioteca ncurses 5 no sistema alvo em vez da
+ncurses 4 no sistema fonte. Vou dar uma olhada mais de perto nisso.
+
+<P>
+<!--
+You will also need a <TT>/etc/passwd</TT> file on the target
+system. This is where the <TT>login</TT> program will check to find
+out if you are allowed in. Since this is only a toy system at this
+stage, we can do outrageous things like setting up only the root user,
+and not requiring any password!! Just put this in the target
+<TT>/etc/passwd</TT>
+-->
+Você também vai precisar de um arquivo <TT>/etc/passwd</TT> no sistema
+alvo. Esse é onde o programa <TT>login</TT> vai verificar para saber
+se você está autorizado. Já que esse é apenas um sistema experimental
+nesse estágio, você pode fazer coisas como definir apenas o usuário
+root, e não solicitar senha!! Apenas coloque isso no
+<TT>/etc/passwd</TT> do alvo:
+
+<P>
+<VERB>
+        root::0:0:root:/root:/bin/bash
+</VERB>
+ 
+<P>
+<!--
+The fields are separated by colons, and from left to right they are
+user id, password (encrypted), user number, group number, user's name,
+home directory and default shell.
+-->
+Os campos são separados por dois pontos, e da esquerda para direita
+eles são o id do usuário, senha (codificada), número do usuário,
+número do grupo, nome do usuário, diretório pessoal (home) e o shell
+padrão.
+
+<SECT>Sh-utils
+<P>
+<!--
+The last package we need is GNU sh-utils. The only program we need
+from here at this stage is <TT>stty</TT>, which is used in
+<TT>/etc/init.d/rc</TT> which is used to change runlevels, and to
+enter the initial runlevel. I actually have, and used a package that
+contains only <TT>stty</TT>, but I can't remember where it came
+from. Its a better idea to use the GNU package, because there is other
+stuff in there that you will need if you add to the system to make it
+useable.
+-->
+O último pacote que precisamos é o GNU sh-utils. O único programa que
+precisamos dele nesse estágio é o <TT>stty</TT>, que é usado no
+<TT>/etc/init.d/rc</TT> que é usado para mudar os níveis de execução
+(runlevels), e para entrar no nível de execução inicial. Na verdade eu
+tenho e uso um pacote que contém apenas o <TT>stty</TT>, mas não me
+lembro de onde ele veio. É melhor idéia usar o pacote GNU, porque
+existem outras coisas nele que você vai precisar se aumentar o sistema
+para fazê-lo usável.
+
+<P>
+<!--
+Well that's it. You should now have a system that will boot up and
+prompt you for a login. Type in ``root'', and you should get a
+shell. You won't be able to do much with it. There isn't even an
+<TT>ls</TT> command here for you to see your handiwork. Press tab
+twice so you can see the available commands. This was about the most
+satisfying thing I found to do with it.
+-->
+Bom isto é tudo. Agora você deve ter um sistema que vai inicializar e
+pedir um login. Digite ``root'' e você deverá ter um shell. Você não
+será capaz de fazer muita coisa com ele. Não há nem mesmo um comando
+<TT>ls</TT> aqui para você ver seu trabalho manual. Pressione tab duas
+vezes para ver os comandos disponíveis. Essa foi a coisa mais
+satisfatória que eu consegui fazer.
+
+<SECT>Customizando <!-- Towards Useability -->
+<P>
+<!--
+It might look like we have made a pretty useless system here. But
+really, there isn't that far to go before it can do some work. One of
+the first things you would have to do is have the root filesystem
+mount read-write. There is a script from the SysVinit package, in
+<TT>/etc/init.d/mountall.sh</TT> which does this, and issues a
+<TT>mount -a</TT> so that everything gets mounted the way you specify
+in <TT>/etc/fstab</TT>. Put a symlink called something like
+<TT>S05mountall</TT> to it in the target's <TT>etc/rc2.d</TT>.
+-->
+Pode parecer que fizemos um sistema inútil aqui. Mas na verdade não
+falta muito para que ele seja útil. Uma das primeiras coisas que você
+teria que fazer é montar o sistema de arquivos raiz para leitura e
+gravação. Há um roteiro do pacote SysVinit em
+<TT>/etc/init.d/mountall.sh</TT> que faz isso, e um <TT>mount -a</TT>
+de forma que tudo é montado da forma que você especificar em
+<TT>/etc/fstab</TT>. Coloque um vínculo simbólico para ele com um nome
+parecido com <TT>S05mountall</TT> no diretório <TT>etc/rc2.d</TT> do
+alvo.
+
+<P>
+<!--
+You may find that this script will use commands that you haven't
+installed yet. If so, find the package that contains the commands and
+install it. See section <REF ID="finding" NAME="Random Tips"> for
+clues on how to find packages.
+-->
+Você pode descobrir que esse roteiro usará comandos que você ainda não
+instalou. Nesse caso, encontre o pacote que contém os comandos e
+instale-o. Veja a seção <REF ID="finding" NAME="Dicas Aleatórias">
+para ajudar em como encontrar pacotes.
+
+<P>
+<!--
+Look at the other scripts in <TT>/etc/init.d</TT>. Most of them will
+need to be included in any serious system. Add them in one at a time,
+make sure everthing is running smoothly before adding more.
+-->
+Dê uma olhada nos outros roteiros em <TT>/etc/init.d</TT>. A maioria
+deles será necessário em qualquer sistema sério. Vá colocando um por
+um, certifique-se de que tudo está funcionando bem antes de colocar
+mais.
+
+<P>
+<!--
+Check the File Heirarchy Standard (see section <REF ID="FHS"
+NAME="Filesystem">). It has lists of the commands that should be in
+<TT>/bin</TT> and <TT>/sbin</TT>. Make sure that you have all these
+commands installed. Even better, find the Posix documentation that
+specifies this stuff.
+-->
+Confira o FHS (veja a seção <REF ID="FHS" NAME="Links">). Ele tem
+listas dos comandos que deveriam estar em <TT>/bin</TT> e
+<TT>/sbin</TT>. Tenha certeza de ter todos esses comandos
+instalados. Ou melhor ainda, encontre a documentação Posix que
+especifica isso.
+
+<P>
+<!--
+From there, it's really just a matter of throwing in more and more
+packages until everything you want it there. The sooner you can put
+the build tools such as <TT>gcc</TT> and <TT>make</TT> in the
+better. Once that is done, you can use the target system to build
+itself, which is much less complicated.
+-->
+Daí em diante, é realmente apenas uma questão de lançar-se em mais e
+mais pacotes até tudo que você quer estiver lá. Quanto antes você por
+as ferramentas de construção como <TT>gcc</TT> e <TT>make</TT>
+melhor. Uma vez feito isto, você pode usar o próprio sistema alvo para
+construir, o que é muito menos complicado.
+
+<SECT>Mais Informações
+<SECT1>Dicas Aleatórias <!-- Random Tips -->
+<LABEL ID="finding">
+<P>
+<!--
+If you have a command called <TT>thingy</TT> on a Linux system with
+RPM, and want a clue about where to get the source from, you can use
+the command:
+-->
+Se você tiver um comando chamado <TT>coisa</TT> num sistema Linux com
+RPM, e quer uma ajuda para saber de onde obter os fontes, você pode
+usar o comando:
+
+<VERB>
+        rpm -qif `which coisa`
+</VERB>
+
+<!--
+And if you have a Red Hat source CD, you can install the source code
+using
+-->
+E se você tem o CD de fontes do Red Hat, você pode instalar o código
+fonte usando:
+
+<!--
+<VERB>
+        rpm -i /mnt/cdrom/SRPMS/what.it.just.said-1.2.srpm
+</VERB>
+-->
+<VERB>
+        rpm -i /mnt/cdrom/SRPMS/o.que.ele.acabou.de.dizer-1.2.srpm
+</VERB>
+
+<P>
+<!--
+This will put the tarball, and any Red Hat patches into
+<TT>/usr/src/redhat/SOURCES</TT>.
+-->
+Isso vai colocar o tarball e qualquer patch da Red Hat em
+<TT>/usr/src/redhat/SOURCES</TT>.
+
+<SECT1>Links
+<P>
+<ITEMIZE>
+<ITEM>
+<!--
+There is a mini-howto on building software from source, the <URL
+URL="http://www.linuxdoc.org/HOWTO/Software-Building.html"
+NAME="Software Building mini-HOWTO">.
+-->
+Há um mini-comofazer sobre compilar software, o <URL
+URL="http://www.linuxdoc.org/HOWTO/Software-Building.html"
+NAME="Software Building mini-HOWTO">.
+
+<ITEM>
+<!--
+There is also a HOWTO on building a Linux system from scratch. It
+focuses much more on getting the system built so it can be used,
+rather than just doing it as a learning exercise. <URL
+URL="http://www.linuxfromscratch.org" NAME="The Linux From Scratch
+HOWTO">
+-->
+Também há um COMO FAZER sobre construir um sistema Linux do zero. Ele
+focaliza muito mais em construir um sistema usável em lugar de apenas
+fazer isto como um exercício de aprendizagem. <URL
+URL="http://www.linuxfromscratch.org" NAME="The Linux From Scratch
+HOWTO">
+
+<ITEM>
+<!--
+<LABEL ID="FHS"> <URL
+URL="ftp://tsx-11.mit.edu/pub/linux/docs/linux-standards/fsstnd/"
+NAME="Unix File System Standard"> Another <URL
+URL="http://www.pathname.com/fhs/" NAME="link"> to the Unix File
+System Standard. This describes what should go where in a Unix file
+system, and why. It also has minimum requirements for the contents of
+<TT>/bin</TT>, <TT>/sbin</TT> and so on. This is a good reference if
+your goal is to make a minimal yet complete system.
+-->
+<LABEL ID="FHS"> <URL
+URL="ftp://tsx-11.mit.edu/pub/linux/docs/linux-standards/fsstnd/"
+NAME="Unix File System Standard"> outro <URL
+URL="http://www.pathname.com/fhs/" NAME="link"> para o Padrão de
+Sistema de Arquivos do Unix. Ele descreve o que deveria ir, onde e porque
+em um sistema de arquivos Unix. Ele também tem os requisitos mínimos
+para o conteúdo de <TT>/bin</TT>, <TT>/sbin</TT> e assim por
+diante. Essa é uma boa referência se seu objetivo é fazer um sistema
+mínimo mas completo.
+
+</ITEMIZE>
+
+
+<SECT>Administrivia
+
+
+<SECT1>Copyright
+<P>
+<!--
+This document is copyright (c) 1999, 2000 Greg O'Keefe. You are
+welcome to use, copy, distribute or modify it, without charge, under
+the terms of the <URL URL="http://www.gnu.org/copyleft/gpl.html"
+NAME="GNU General Public Licence">. Please acknowledge me if you use
+all or part of this in another document.
+-->
+Os direitos autorais deste documento pertencem à Greg O'Keefe -
+Copyright (c) 1999, 2000 Greg O'Keefe. Você pode usar, copiar,
+distribuir ou modificar isto, sem ônus, sob os termos da <URL
+URL="http://www.gnu.org/copyleft/gpl.html" NAME="GNU General Public
+Licence">. Por favor, me cite como autor se usar todo ou partes deste
+documento em outro documento.
+
+
+<SECT1>Página Web
+<P>
+<!--
+The lastest version of this document lives at <URL
+URL="http://learning.taslug.org.au/power2bash" NAME="From Powerup To
+Bash Prompt">
+-->
+A versão mais recente deste documento está em <URL
+URL="http://learning.taslug.org.au/power2bash" NAME="From Powerup To
+Bash Prompt">
+
+
+<SECT1>Retorno <!-- Feedback -->
+<P>
+<!--
+I would like to hear any comments, criticisms and suggestions for
+improvement that you have. Please send them to me <URL
+URL="mailto:gcokeefe@postoffice.utas.edu.au" NAME="Greg O'Keefe">
+-->
+Gostaria de ouvir quaisquer comentários, críticas ou sugestões de
+melhoras que você tenha. Por favor, envie-as para <URL
+URL="mailto:gcokeefe@postoffice.utas.edu.au" NAME="Greg O'Keefe">
+
+
+<SECT1>Agradecimentos
+<LABEL ID="acknowledge">
+<P>
+<!--
+Product names are trademarks of the respective holders, and are hereby
+considered properly acknowledged.
+-->
+Os nome de produtos são marcas registradas de seus respectivos
+proprietários, e por meio disto considerado adequadamente
+reconhecidos.
+
+<P>
+<!--
+There are some people I want to say thanks to, for helping to make
+this happen.
+-->
+Existem algumas pessoas que quero agradecer, por ajudar que isto
+acontecesse.
+
+<P>
+<DESCRIP>
+
+<TAG>Michael Emery</TAG>
+<!-- For reminding me about Unios. -->
+Por me lembrar sobre o Unios
+
+<TAG>Tim Little</TAG>
+<!-- For some good clues about <TT>/etc/passwd</TT> -->
+Por várias boas dicas sobre <TT>/etc/passwd</TT>
+
+<TAG>sPaKr on #linux in efnet</TAG>
+<!--
+Who sussed out that syslogd needs <TT>/etc/services</TT>, 
+and introduced me to the phrase ``rolling your own'' to 
+describe building a system from source code.
+-->
+Quem me avisou que o syslogd precisa de <TT>/etc/services</TT>, e me
+apresentou a frase ``rolling your own'' para descrever a construção de
+um sistema a partir do código fonte.
+
+<TAG>Alex Aitkin</TAG>
+<!--
+For bringing Vico and his ``verum ipsum factum'' 
+(understanding arises through making) to my attention.
+-->
+Por me chamar a atenção sobre Vico e seu ``verum ipsum factum'' (o
+conhecimento vem pela prática).
+
+<TAG>Dennis Scott</TAG>
+<!-- For correcting my hexidecimal arithmetic. -->
+Por corrigir minha aritimética hexadecimal.
+
+<TAG>jdd</TAG>
+<!-- For pointing out some typos. -->
+Por me mostrar alguns erros tipográficos.
+
+</DESCRIP>
+
+<SECT1>Histórico de modificações
+
+<SECT2>0.8 -> 0.9
+<P>
+<ITEMIZE>
+<ITEM>
+<!--
+Added hack to sysvinit makefile. This info is due to Gerard Beekmans
+of ``Linux From Scratch'' fame.
+-->
+Adicionada uma modificação ao makefile do sysvinit. Essa informação é
+devido a grande fama do ``Linux From Scratch'' do Gerard Beekmans.
+</ITEMIZE>
+
+<SECT2>0.8
+<P>
+<ITEMIZE>
+<ITEM>
+<!--
+Initial version. Separated from "From PowerUp to Bash Prompt".
+-->
+Versão inicial. Separado do ``From PowerUp to Bash Prompt''.
+</ITEMIZE>
+
+<SECT1>TODO (Tarefas a fazer)
+<P>
+<ITEMIZE>
+<ITEM>
+<!-- Convert to docbook. -->
+Converter para docbook.
+</ITEMIZE>
+
+</ARTICLE>
+
+<!--
+How Linux Boots article.
+http://www.linuxplanet.com/linuxplanet/reports/213/1/
+-->
