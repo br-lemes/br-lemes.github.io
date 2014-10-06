@@ -1,0 +1,104 @@
+---
+layout: post
+title: "[Script TW] Renomear aldeias conforme distancia"
+topic: 117790
+---
+
+{% include autorizado.html %}
+
+<!-- numerar aldeias conforme distância -->
+
+<p>Se você é jogador de <a href="http://www.tribalwars.com.br/">Tribal Wars</a>
+e possui conta premium, vai gostar disso. Se não conhece o jogo, então
+<a href="http://www.tribalwars.com.br/2037934-br17.html">experimente</a>.
+Para os apressadinhos, ou aqueles que já sabem do que se trata, então vamos
+direto ao ponto. Copie o código abaixo e coloque em sua barra de acesso rápido:
+
+{% highlight js %}
+javascript:$.getScript('http://dl.dropbox.com/u/72485850/tribalwarsbrasil/renomear_aldeias_distancia.js');void(0);
+{% endhighlight %}
+
+<p><em>"Tribal Wars é um jogo online de navegador (browser) ambientado na idade
+média. Cada jogador é senhor de uma pequena aldeia, a qual deve ajudar a ganhar
+poder e glória."</em>
+
+<p>O problema é que conforme vamos conquistando aldeias vai ficando difícil
+de administrar todas elas. Esta é apenas mais uma ferramenta que vai te ajudar
+nesta tarefa. Frequentemente precisamos enviar tropas de uma aldeia para outra
+rapidamente. Tanto para ataques, quanto para apoios defensivos. E nem sempre
+é fácil saber qual entre aquelas centenas de aldeias está mais próxima para
+que as tropas cheguem a tempo.
+
+<p>Com a conta premium temos na praça de reunião o link <strong>aldeias
+vizinhas</strong>, que ajuda muito na hora que precisamos de apoio ou recursos,
+mostrando a lista de suas aldeias mais próximas em ordem de distancia. Porém
+isso só serve para suas próprias aldeias, não existe algo assim quando
+precisamos enviar apoio a um amigo, ou enviar apoio a uma aldeia que estamos
+conquistando mas ainda não é nossa, ou mesmo enviar um ataque.
+
+<p>O que este script faz é renomear suas aldeias com um nome seguido de um
+número inteiro de quatro dígitos. Este número é a distancia em campos de uma
+determinada aldeia que você informar. Desta forma, ao visualizar a lista de
+suas aldeias elas aparecerão numa ordem crescente de distância.
+
+<p>Para usar proceda da seguinte maneira:
+
+<p>Vá em Configurações, Editar barra de acesso rápido, Adicionar Link
+
+<p>
+<strong>Nome</strong>: escolha o nome que desejar<br />
+<strong>URL-Imagem</strong>: não é obrigatório mas pode adicionar uma imagem aqui se desejar<br />
+<strong>URL-Alvo</strong>: copie e cole o script aqui
+
+<p>Vá em Visualizações e clique no script que você acabou de adicionar a sua
+barra de acesso rápido. O script vai pedir uma coordenada e em seguida vai
+pedir um nome. Pronto, basta esperar um pouco e as aldeias estarão todas com
+o novo nome. Demora um pouco, então sempre que for usar coloque um nome
+diferente porque assim poderá saber com certeza quando o processo estiver
+concluído.
+
+<p>Abaixo segue o código completo do script:
+
+{% highlight js %}
+function fnExecuteScript(){
+	var vilname=0;
+	var vildistx=-1;
+	var vildisty=-1;
+
+	function sq(x){
+		return Math.pow(x,2);
+	}
+
+	function distance(x,y){
+		var n=Math.round(Math.sqrt(sq(vildistx-x)+sq(vildisty-y))).toString();
+		while(n.length<4){n="0"+n;}
+		return vilname + ' ' + n;
+	}
+
+	var eleDoc=(window.frames.length>0)?window.main.document:document;
+	var inputs=eleDoc.getElementsByTagName('input');
+	var ii,id,index,str,mid,x,y;
+	if((vildistx==-1)||(vildisty==-1)) {
+		coords=prompt("Distancia da Aldeia","500|500");
+		if(coords==null)return;
+		vildistx=coords.split('|')[0];
+		vildisty=coords.split('|')[1];
+	}
+	if(vilname==0)vilname=prompt("Digite o nome desejado","Aldeia");
+	if(vilname==null)return;
+	for(ii=0;ii<inputs.length;ii++){
+		id=inputs[ii].id;index=id.indexOf('edit_input');
+		if(index>=0){
+			id=id.substring(index+11);
+			str=$('#label_text_'+id).html();
+			mid=str.lastIndexOf('|');
+			x=str.substring(str.lastIndexOf('(')+1,mid);
+			y=str.substring(mid+1,str.lastIndexOf(')'));
+			inputs[ii].value=distance(x,y);
+			inputs[ii+1].click();
+		}
+	}
+	void(0);
+}
+fnExecuteScript();
+{% endhighlight %}
