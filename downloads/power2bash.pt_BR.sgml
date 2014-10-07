@@ -4,7 +4,7 @@
 <ARTICLE>
 
 
-<TITLE>De Quando È Ligado atÈ o Bash
+<TITLE>De Quando √© Ligado at√© o Bash
 <AUTHOR>Greg O'Keefe, <tt>gcokeefe@postoffice.utas.edu.au</tt>
 <DATE>v0.9a, Novembro 2000
 
@@ -15,9 +15,9 @@ the time that you turn on the power, to the time that you log in and
 get a bash prompt. Understanding this will be helpful when you need to
 solve problems or configure your system.
 -->
-Esta È uma breve descriÁ„o do que acontece num sistema Linux, de
-quando È ligado atÈ o momento em que vocÍ se identifica e obtÈm uma
-linha de comandos do bash. Entender isso lhe ser· ˙til quando precisar
+Esta √© uma breve descri√ß√£o do que acontece num sistema Linux, de
+quando √© ligado at√© o momento em que voc√™ se identifica e obt√©m uma
+linha de comandos do bash. Entender isso lhe ser√° √∫til quando precisar
 resolver problemas ou configurar seu sistema.
 </ABSTRACT>
 
@@ -27,7 +27,7 @@ resolver problemas ou configurar seu sistema.
 
 
 
-<SECT>IntroduÁ„o
+<SECT>Introdu√ß√£o
 <P>
 <!--
 I find it frustrating that many things happen inside my Linux machine
@@ -36,10 +36,10 @@ your system rather than just knowing how to use it, this document
 should be a good place to start. This kind of background knowledge is
 also needed if you want to be a top notch Linux problem solver.
 -->
-Acho frustrante que muitas coisas acontecem em minha m·quina Linux que
-n„o entendo. Se vocÍ, como eu, tambÈm quer realmente entender seu
-sistema e n„o apenas saber como us·-lo, este documento È um bom
-comeÁo. Esse tipo de conhecimento tambÈm È necess·rio se vocÍ quer se
+Acho frustrante que muitas coisas acontecem em minha m√°quina Linux que
+n√£o entendo. Se voc√™, como eu, tamb√©m quer realmente entender seu
+sistema e n√£o apenas saber como us√°-lo, este documento √© um bom
+come√ßo. Esse tipo de conhecimento tamb√©m √© necess√°rio se voc√™ quer se
 tornar um solucionador de problemas em Linux de primeira.
 
 <P>
@@ -52,13 +52,13 @@ URL="http://www.linuxdoc.org/HOWTO/Unix-and-Internet-Fundamentals-HOWTO.html"
 NAME ="The Unix and Internet Fundamentals HOWTO" >
 It is short, very readable and covers all the basics.
 -->
-Presumo que vocÍ tenha uma m·quina Linux funcionando, e entende algumas
-coisas b·sicas sobre Unix e hardware de PC. Se n„o, um excelente ponto
-de partida È o 
+Presumo que voc√™ tenha uma m√°quina Linux funcionando, e entende algumas
+coisas b√°sicas sobre Unix e hardware de PC. Se n√£o, um excelente ponto
+de partida √© o 
 <URL
 URL="http://www.linuxdoc.org/HOWTO/Unix-and-Internet-Fundamentals-HOWTO.html"
 NAME ="The Unix and Internet Fundamentals HOWTO" > de Eric
-S. Raymond. … curto, f·cil de ler e trata de todos os temas b·sicos.
+S. Raymond. √â curto, f√°cil de ler e trata de todos os temas b√°sicos.
 
 <P>
 <!--
@@ -67,9 +67,9 @@ also tries to be a more comprehensive learning resource. I have
 included exercises in each section. If you actually do some of these,
 you will learn much more than you could by just reading.
 -->
-O principal tema deste documento È como o Linux se inicializa. Mas
-este tambÈm tenta ser um recurso de aprendizado mais abrangente. Eu
-inclui exercÌcios em cada seÁ„o. Se vocÍ fizer alguns destes, ir·
+O principal tema deste documento √© como o Linux se inicializa. Mas
+este tamb√©m tenta ser um recurso de aprendizado mais abrangente. Eu
+inclui exerc√≠cios em cada se√ß√£o. Se voc√™ fizer alguns destes, ir√°
 aprender muito mais que simplesmente lendo.
 
 <P>
@@ -81,12 +81,12 @@ code. Giambattista Vico, an Italian philosopher (1668-1744) said
 making''. Thanks to Alex (see <REF ID="acknowledge"
 NAME="Acknowledgements">) for this quote.
 -->
-Espero que alguns leitores faÁam o melhor exercÌcio para aprender
-Linux que conheÁo, que È construir um sistema a partir do cÛdigo
-fonte. Giambattista Vico, um filÛsofo Italiano (1668-1744) disse
+Espero que alguns leitores fa√ßam o melhor exerc√≠cio para aprender
+Linux que conhe√ßo, que √© construir um sistema a partir do c√≥digo
+fonte. Giambattista Vico, um fil√≥sofo Italiano (1668-1744) disse
 ``verum ipsum factum'', que significa ``o conhecimento vem pela
-pr·tica''. Obrigado ao Alex (ver <REF ID="acknowledge"
-NAME="Agradecimentos">) por esta citaÁ„o.
+pr√°tica''. Obrigado ao Alex (ver <REF ID="acknowledge"
+NAME="Agradecimentos">) por esta cita√ß√£o.
 
 <P>
 <!--
@@ -102,17 +102,17 @@ Code'', and can be found at
 PowerUp to Bash Prompt home page">. They explain how to build a
 ``toy'' system, purely as a learning exercise.
 -->
-Se vocÍ quer por a m„o na massa, veja tambÈm o <URL
+Se voc√™ quer por a m√£o na massa, veja tamb√©m o <URL
 URL="http://www.linuxfromscratch.org" NAME="Linux From Scratch HOWTO">
-(LFS) de Gerard Beekman. O LFS tem instruÁıes detalhadas para
-construir um sistema us·vel completo a partir do cÛdigo fonte. No
-sÌtio do LFS vocÍ tambÈm vai encontrar uma lista de discussıes para
-pessoas que est„o construindo sistemas dessa forma. As instruÁıes que
-faziam parte deste documento agora est„o em um documento separado,
+(LFS) de Gerard Beekman. O LFS tem instru√ß√µes detalhadas para
+construir um sistema us√°vel completo a partir do c√≥digo fonte. No
+s√≠tio do LFS voc√™ tamb√©m vai encontrar uma lista de discuss√µes para
+pessoas que est√£o construindo sistemas dessa forma. As instru√ß√µes que
+faziam parte deste documento agora est√£o em um documento separado,
 ``Building a Minimal Linux System from Source Code'', e pode ser
 encontrado em <URL URL="http://www.netspace.net.au/~gok/power2bash/"
 NAME="From PowerUp to Bash Prompt home page">. Elas indicam como
-construir um sistema experimental, como um mero exercÌcio de
+construir um sistema experimental, como um mero exerc√≠cio de
 aprendizagem.
 
 <P>
@@ -123,11 +123,11 @@ order you can reboot after each installation, and see the system get a
 little closer to giving you a bash prompt each time. There is a
 reassuring sense of progress in this.
 -->
-Os pacotes s„o apresentados na ordem em que eles aparecem no processo
-de inicializaÁ„o do sistema. Isso significa que se vocÍ instalar os
-pacotes nesta ordem poder· reiniciar apÛs cada instalaÁ„o e ver o
-sistema ir tomando forma, atÈ te fornecer a linha de comandos do
-bash. H· uma forte sensaÁ„o de progresso.
+Os pacotes s√£o apresentados na ordem em que eles aparecem no processo
+de inicializa√ß√£o do sistema. Isso significa que se voc√™ instalar os
+pacotes nesta ordem poder√° reiniciar ap√≥s cada instala√ß√£o e ver o
+sistema ir tomando forma, at√© te fornecer a linha de comandos do
+bash. H√° uma forte sensa√ß√£o de progresso.
 
 <P>
 <!--
@@ -137,11 +137,11 @@ understanding you want to develop, and how much effort you are
 prepared to put in. Then start at the beginning again, doing the
 exercises and additional reading as you go.
 -->
-Recomendo primeiro ler o texto principal de cada seÁ„o, pulando os
-exercÌcios e referÍncias. Decida ent„o atÈ onde deseja se aprofundar
-e quanto de esforÁo vocÍ est· disposto a investir. Em seguida volte ao
-inÌcio, fazendo os exercÌcios e as leituras adicionais conforme for
-avanÁando.
+Recomendo primeiro ler o texto principal de cada se√ß√£o, pulando os
+exerc√≠cios e refer√™ncias. Decida ent√£o at√© onde deseja se aprofundar
+e quanto de esfor√ßo voc√™ est√° disposto a investir. Em seguida volte ao
+in√≠cio, fazendo os exerc√≠cios e as leituras adicionais conforme for
+avan√ßando.
 
 
 
@@ -158,16 +158,16 @@ sectors are marked with a magic number 0xAA55 = 43603 at byte 0x1FE =
 510. That's the last two bytes of the sector. This is how the hardware
 can tell whether the sector is a boot sector or not.
 -->
-Quando vocÍ liga o computador, ele faz um teste em si mesmo para
-certificar-se de que tudo est· funcionando corretamente. Esse teste È
+Quando voc√™ liga o computador, ele faz um teste em si mesmo para
+certificar-se de que tudo est√° funcionando corretamente. Esse teste √©
 chamado de ``Power on self test''. Em seguida um programa chamado
 bootstrap loader, que se encontra na ROM BIOS, procura por um setor de
-inicializaÁ„o. Um setor de inicializaÁ„o È o primeiro setor em um
+inicializa√ß√£o. Um setor de inicializa√ß√£o √© o primeiro setor em um
 disco e tem um pequeno programa capaz de carregar um sistema
-operacional. Os setores de inicializaÁ„o s„o marcados com um n˙mero
-m·gico 0xAA55 = 43603 no byte 0x1FE = 510. Estes s„o os dois ˙ltimos
-bytes do setor. … desta forma que o hardware pode saber se um setor È
-um setor de inicializaÁ„o ou n„o.
+operacional. Os setores de inicializa√ß√£o s√£o marcados com um n√∫mero
+m√°gico 0xAA55 = 43603 no byte 0x1FE = 510. Estes s√£o os dois √∫ltimos
+bytes do setor. √â desta forma que o hardware pode saber se um setor √©
+um setor de inicializa√ß√£o ou n√£o.
 
 <P>
 <!--
@@ -182,15 +182,15 @@ boot though. See the <EM>LILO User's Guide</EM> for details. See
 section <REF ID="lilo-links" NAME="LILO"> for a URL. 
 -->
 O bootstrap loader tem uma lista de lugares onde procurar por um setor
-de inicializaÁ„o. Minha m·quina velha procura no drive prim·rio de
-disquete, em seguida no disco rÌgido prim·rio. M·quinas mais modernas
-tambÈm podem procurar por um setor de inicializaÁ„o num CD-ROM. Se
-encontrar um setor de inicializaÁ„o, ir· carreg·-lo na memÛria e
+de inicializa√ß√£o. Minha m√°quina velha procura no drive prim√°rio de
+disquete, em seguida no disco r√≠gido prim√°rio. M√°quinas mais modernas
+tamb√©m podem procurar por um setor de inicializa√ß√£o num CD-ROM. Se
+encontrar um setor de inicializa√ß√£o, ir√° carreg√°-lo na mem√≥ria e
 passar o controle ao programa que carrega o sistema operacional. Num
-sistema Linux tÌpico este programa ser· o primeiro est·gio do
+sistema Linux t√≠pico este programa ser√° o primeiro est√°gio do
 carregador LILO. Existem muitas maneiras diferentes de configurar a
-inicializaÁ„o do seu sistema. Veja o <EM>LILO User's Guide</EM> para
-mais detalhes. Na seÁ„o <REF ID="lilo-links" NAME="LILO"> h· uma URL.
+inicializa√ß√£o do seu sistema. Veja o <EM>LILO User's Guide</EM> para
+mais detalhes. Na se√ß√£o <REF ID="lilo-links" NAME="LILO"> h√° uma URL.
 
 <P>
 <!--
@@ -198,12 +198,12 @@ Obviously there is a lot more to say about what PC hardware does. But
 this is not the place to say it. See one of the many good books about
 PC hardware.
 -->
-Obviamente h· muito mais pra dizer sobre o que o hardware dum PC
-faz, mas este n„o È o lugar para isto. Veja um dos muitos bons livros
+Obviamente h√° muito mais pra dizer sobre o que o hardware dum PC
+faz, mas este n√£o √© o lugar para isto. Veja um dos muitos bons livros
 sobre hardware de PC.
 
 
-<SECT1>ConfiguraÁ„o
+<SECT1>Configura√ß√£o
 <P>
 <!--
 The machine stores some information about itself in its CMOS. This
@@ -213,15 +213,15 @@ messages on your screen as the machine is turned on to see how to
 access it. On my machine, you press the delete key before it begins
 loading its operating system.
 -->
-A m·quina armazena alguma informaÁ„o sobre si mesma em sua CMOS. Isto
-inclui quais discos e RAM existem no sistema. A BIOS da m·quina contÈm
-um programa que permite a vocÍ modificar estas configuraÁıes. Veja a
-mensagem na tela de sua m·quina quando È ligada para verificar como
-acess·-la. Em minha m·quina se pressiona a tecla delete antes que ela
+A m√°quina armazena alguma informa√ß√£o sobre si mesma em sua CMOS. Isto
+inclui quais discos e RAM existem no sistema. A BIOS da m√°quina cont√©m
+um programa que permite a voc√™ modificar estas configura√ß√µes. Veja a
+mensagem na tela de sua m√°quina quando √© ligada para verificar como
+acess√°-la. Em minha m√°quina se pressiona a tecla delete antes que ela
 comece a carregar o sistema operacional.
 
 
-<SECT1>ExercÌcios
+<SECT1>Exerc√≠cios
 <LABEL ID="hardware-ex">
 <P>
 <!--
@@ -230,10 +230,10 @@ second hand parts. Get at least a 386 so you can easily run Linux on
 it. It won't cost much. Ask around, someone might give you some of the
 parts you need.
 -->
-Um bom jeito de aprender sobre o hardware do PC È montar uma m·quina
-com componentes de segunda m„o. Use pelo menos um 386, assim vocÍ
-poder· colocar o Linux para rodar facilmente. N„o ser· muito
-caro. Pergunte por aÌ, alguÈm poderia te dar algumas peÁas que vais
+Um bom jeito de aprender sobre o hardware do PC √© montar uma m√°quina
+com componentes de segunda m√£o. Use pelo menos um 386, assim voc√™
+poder√° colocar o Linux para rodar facilmente. N√£o ser√° muito
+caro. Pergunte por a√≠, algu√©m poderia te dar algumas pe√ßas que vais
 precisar.
 
 <P>
@@ -246,11 +246,11 @@ consisting of just over 100 lines of assembler code. It would be good
 to see it converted to a format that the GNU assembler <TT>as</TT> can
 understand.
 -->
-Baixe, compile e faÁa um disco de inicializaÁ„o para o <URL
+Baixe, compile e fa√ßa um disco de inicializa√ß√£o para o <URL
 URL="http://www.netspace.net.au/~gok/resources" NAME=Unios>. (Eles
-tinham uma p·gina em <URL URL="http://www.unios.org"> mas
-desapareceu). … um simples programa ``Ol· mundo!'', que consiste em
-pouco mais de 100 linhas de cÛdigo assembly. Seria bom vÍ-lo
+tinham uma p√°gina em <URL URL="http://www.unios.org"> mas
+desapareceu). √â um simples programa ``Ol√° mundo!'', que consiste em
+pouco mais de 100 linhas de c√≥digo assembly. Seria bom v√™-lo
 convertido a um formato que possa ser entendido pelo montador GNU
 <TT>as</TT>.
 
@@ -260,9 +260,9 @@ There are instructions for ``rolling your own'' operating system at
 <URL URL="http://www.acm.uiuc.edu/sigops/roll_your_own/" NAME="Roll
 Your Own"> if you are after a <EM>real</EM> challenge.
 -->
-Existem instruÁıes para criar seu prÛprio sistema operacional em <URL
+Existem instru√ß√µes para criar seu pr√≥prio sistema operacional em <URL
 URL="http://www.acm.uiuc.edu/sigops/roll_your_own/" NAME="Roll Your
-Own"> se vocÍ quiser um desafio <EM>de verdade</EM>.
+Own"> se voc√™ quiser um desafio <EM>de verdade</EM>.
 
 <P>
 <!--
@@ -275,9 +275,9 @@ get <TT>if</TT> (input file) and <TT>of</TT> (output file) the right
 way round!
 -->
 Abra a imagem de disco do unios com um editor hexadecimal. Esta imagem
-tem 512 bytes, exatamente um setor. Encontre o n˙mero m·gico
-0xAA55. FaÁa o mesmo para o setor de inicializaÁ„o dum disquete em seu
-prÛprio computador. VocÍ pode usar o comando <TT>dd</TT> para copiar
+tem 512 bytes, exatamente um setor. Encontre o n√∫mero m√°gico
+0xAA55. Fa√ßa o mesmo para o setor de inicializa√ß√£o dum disquete em seu
+pr√≥prio computador. Voc√™ pode usar o comando <TT>dd</TT> para copiar
 ele para um arquivo: <TT>dd if=/dev/fd0 of=boot.sector</TT>. Seja
 <EM>muito</EM> cuidadoso escrevendo <TT>if</TT> (input file) e
 <TT>of</tt> (output file) corretamente!
@@ -286,10 +286,10 @@ ele para um arquivo: <TT>dd if=/dev/fd0 of=boot.sector</TT>. Seja
 <!--
 Check out the source code for LILO's boot loader.
 -->
-Veja o cÛdigo fonte do carregador de sistemas LILO.
+Veja o c√≥digo fonte do carregador de sistemas LILO.
 
 
-<SECT1>Mais InformaÁıes
+<SECT1>Mais Informa√ß√µes
 <P>
 <ITEMIZE>
 <ITEM>
@@ -303,7 +303,7 @@ computer?</EM>
 <URL
 URL="http://www.linuxdoc.org/HOWTO/Unix-and-Internet-Fundamentals-HOWTO.html"
 NAME="The Unix and Internet Fundamentals HOWTO"> por Eric S. Raymond,
-especialmente a seÁ„o 3, <EM>What happens when you switch on a
+especialmente a se√ß√£o 3, <EM>What happens when you switch on a
 computer?</EM>
 
 <ITEM>
@@ -312,9 +312,9 @@ The first chapter of <EM>The LILO User's Guide</EM> gives an excellent
 explanation of PC disk partitions and booting. See section <REF
 ID="lilo-links" NAME="LILO"> for a URL.
 -->
-O primeiro capÌtulo do <EM>The LILO User's Guide</EM> tem uma
-excelente explicaÁ„o sobre as partiÁıes do disco e a inicializaÁ„o do
-PC. Na seÁ„o <REF ID="lilo-links" NAME="LILO"> h· uma URL.
+O primeiro cap√≠tulo do <EM>The LILO User's Guide</EM> tem uma
+excelente explica√ß√£o sobre as parti√ß√µes do disco e a inicializa√ß√£o do
+PC. Na se√ß√£o <REF ID="lilo-links" NAME="LILO"> h√° uma URL.
 
 <ITEM>
 <!--
@@ -323,14 +323,14 @@ by Peter Norton and Richard Wilton, Microsoft Press 1988 There is a
 newer Norton book, which looks good, but I can't afford it right now!
 -->
 <EM>The NEW Peter Norton Programmer's Guide to the IBM PC & PS/2</EM>, 
-por Peter Norton e Richard Wilton, Microsoft Press 1988. H· um livro
-novo do Norton, parece bom, mas agora eu n„o posso pagar.
+por Peter Norton e Richard Wilton, Microsoft Press 1988. H√° um livro
+novo do Norton, parece bom, mas agora eu n√£o posso pagar.
 
 <ITEM>
 <!--
 One of the many books available on upgrading PC's
 -->
-Um dos muitos livros disponÌveis sobre atualizaÁ„o de PCs.
+Um dos muitos livros dispon√≠veis sobre atualiza√ß√£o de PCs.
 </ITEMIZE>
 
 
@@ -343,19 +343,19 @@ it loads is actually a part of lilo, called the ``first stage boot
 loader''. This is a tiny program who's only job in life is to load and
 run the ``second stage boot loader''.
 -->
-Quando o computador carrega um setor de inicializaÁ„o em um sistema
-Linux normal, o que ele realmente carrega È uma parte do lilo chamado
-``first stage boot loader'' (primeiro est·gio do carregador). … um
-pequeno programa que a ˙nica coisa que faz na vida È carregar e rodar
-o segundo est·gio.
+Quando o computador carrega um setor de inicializa√ß√£o em um sistema
+Linux normal, o que ele realmente carrega √© uma parte do lilo chamado
+``first stage boot loader'' (primeiro est√°gio do carregador). √â um
+pequeno programa que a √∫nica coisa que faz na vida √© carregar e rodar
+o segundo est√°gio.
 
 <P>
 <!--
 The second stage loader gives you a prompt (if it was installed that
 way) and loads the operating system you choose.
 -->
-O segundo est·gio apresenta uma linha de comandos (se foi instalado
-assim) e carrega o sistema operacional que vocÍ escolher.
+O segundo est√°gio apresenta uma linha de comandos (se foi instalado
+assim) e carrega o sistema operacional que voc√™ escolher.
 
 <P>
 <!--
@@ -365,11 +365,11 @@ configuration file <TT>/etc/lilo.conf</TT> and writes the boot
 loaders, and information about the operating systems it can load, to
 the hard disk.
 -->
-Quando seu sistema est· em funcionamento e vocÍ roda <TT>lilo</TT>, o
-que vocÍ est· realmente rodando È um ``instalador do mapa''. Ele lÍ o
-arquivo de configuraÁ„o <TT>/etc/lilo.conf</TT> e escreve os
-carregadores, assim como informaÁıes sobre os sistemas operacionais
-que ele pode carregar, no disco rÌgido.
+Quando seu sistema est√° em funcionamento e voc√™ roda <TT>lilo</TT>, o
+que voc√™ est√° realmente rodando √© um ``instalador do mapa''. Ele l√™ o
+arquivo de configura√ß√£o <TT>/etc/lilo.conf</TT> e escreve os
+carregadores, assim como informa√ß√µes sobre os sistemas operacionais
+que ele pode carregar, no disco r√≠gido.
 
 <P>
 <!--
@@ -379,14 +379,14 @@ for a system who's main operating system is Linux. The Lilo Users'
 Guide explains several examples of ``boot concepts''. It is worth
 reading these, and trying some of them out.
 -->
-Existem diversas formas de configurar a inicializaÁ„o de seu
-sistema. O que acabo de explicar È a forma mais Ûbvia e ``normal'',
-pelo menos em um sistema onde o principal sistema operacional È o
-Linux. O Guia do Usu·rio do LILO explica v·rios exemplos de conceitos
-de inicializaÁ„o. Vale a pena ler e tentar alguns deles.
+Existem diversas formas de configurar a inicializa√ß√£o de seu
+sistema. O que acabo de explicar √© a forma mais √≥bvia e ``normal'',
+pelo menos em um sistema onde o principal sistema operacional √© o
+Linux. O Guia do Usu√°rio do LILO explica v√°rios exemplos de conceitos
+de inicializa√ß√£o. Vale a pena ler e tentar alguns deles.
 
 
-<SECT1>ConfiguraÁ„o
+<SECT1>Configura√ß√£o
 <P>
 <!--
 The configuration file for lilo is <TT>/etc/lilo.conf</TT>. There is a
@@ -397,16 +397,16 @@ the kernel is, and what disk partition to mount as the root
 filesystem. For other operating systems, the main piece of information
 is which partition to boot from.
 -->
-O arquivo de configuraÁ„o para o lilo È <TT>/etc/lilo.conf</TT>. H·
-uma p·gina de manual para ele: digite <TT>man lilo.conf</TT> num
-shell para vÍ-la. O principal no <TT>lilo.conf</TT> È uma entrada para
+O arquivo de configura√ß√£o para o lilo √© <TT>/etc/lilo.conf</TT>. H√°
+uma p√°gina de manual para ele: digite <TT>man lilo.conf</TT> num
+shell para v√™-la. O principal no <TT>lilo.conf</TT> √© uma entrada para
 cada sistema operacional que o lilo pode inicializar. Em uma entrada
-para Linux inclui onde est· o kernel e que partiÁ„o do disco montar
-como raÌz. Para outros sistemas operacionais, a informaÁ„o mais
-importante È a partir de qual partiÁ„o inicializar.
+para Linux inclui onde est√° o kernel e que parti√ß√£o do disco montar
+como ra√≠z. Para outros sistemas operacionais, a informa√ß√£o mais
+importante √© a partir de qual parti√ß√£o inicializar.
 
 
-<SECT1>ExercÌcios
+<SECT1>Exerc√≠cios
 <P>
 <!--
 <EM>DANGER:</EM> take care with these exercises. It is easy enough to
@@ -416,13 +416,13 @@ how to use it to fix things up again. See below for a link to
 tomsrtbt, the rescue disk I use and recommend. The best precaution is
 to use a machine that doesn't matter.
 -->
-<EM>PERIGO:</EM> tome cuidado com estes exercÌcios. … bastante f·cil
+<EM>PERIGO:</EM> tome cuidado com estes exerc√≠cios. √â bastante f√°cil
 fazer algo errado e danificar seu MBR (master boot record - registro
-mestre de inicializaÁ„o) e tornar seu sistema inutiliz·vel.
-Certifique-se de ter um disco de recuperaÁ„o funcionando e saber como
-us·-lo para concertar a bagunÁa. Abaixo h· um link para o tomsrtbt, o
-disco de recuperaÁ„o que eu uso e recomendo. A melhor precauÁ„o È usar
-uma m·quina sem import‚ncia.
+mestre de inicializa√ß√£o) e tornar seu sistema inutiliz√°vel.
+Certifique-se de ter um disco de recupera√ß√£o funcionando e saber como
+us√°-lo para concertar a bagun√ßa. Abaixo h√° um link para o tomsrtbt, o
+disco de recupera√ß√£o que eu uso e recomendo. A melhor precau√ß√£o √© usar
+uma m√°quina sem import√¢ncia.
 
 <P>
 <!--
@@ -431,10 +431,10 @@ other than a kernel on the floppy - you will get a ``kernel panic''
 when the kernel is ready to load init, but at least you will know that
 lilo is working.
 -->
-Prepare um disquete com o lilo. N„o importa que n„o h· nada alÈm do
-kernel no disquete - vocÍ ver· um ``kernel panic'' quando o kernel
-estiver pronto para carregar o init, mas pelo menos vocÍ saber· que o
-lilo est· funcionando.
+Prepare um disquete com o lilo. N√£o importa que n√£o h√° nada al√©m do
+kernel no disquete - voc√™ ver√° um ``kernel panic'' quando o kernel
+estiver pronto para carregar o init, mas pelo menos voc√™ saber√° que o
+lilo est√° funcionando.
 
 <P>
 <!--
@@ -443,10 +443,10 @@ going on the floppy. This is probably the second best Linux learning
 activity around. See the Bootdisk HOWTO (url below), and tomsrtbt (url
 below) for clues.
 -->
-Se quiser, vocÍ pode espremer para ver quanto do sistema vocÍ consegue
-colocar num disquete. Esta È provavelmente a segunda melhor atividade
+Se quiser, voc√™ pode espremer para ver quanto do sistema voc√™ consegue
+colocar num disquete. Esta √© provavelmente a segunda melhor atividade
 para aprender Linux. Veja o Bootdisk HOWTO (url abaixo) e tomsrtbt
-(url abaixo) para ter uma idÈia.
+(url abaixo) para ter uma id√©ia.
 
 <P>
 <!--
@@ -454,8 +454,8 @@ Get lilo to boot unios (see section <REF ID="hardware-ex"
 NAME="hardware exercises"> for a URL). As an extra challenge, see if
 you can do this on a floppy disk.
 -->
-FaÁa o lilo inicializar o unios (h· uma URL na seÁ„o <REF
-ID="hardware-ex" NAME="exercÌcios de hardware">). Como um desafio
+Fa√ßa o lilo inicializar o unios (h√° uma URL na se√ß√£o <REF
+ID="hardware-ex" NAME="exerc√≠cios de hardware">). Como um desafio
 extra tente fazer isto num disquete.
 
 <P>
@@ -465,13 +465,13 @@ one of the primary partition boot sectors, and have that boot lilo in
 the master boot record... Or perhaps use the master boot record and
 all four primary partitions to make a five point loop. Fun!
 -->
-FaÁa um laÁo de inicializaÁıes. Configure o lilo no MBR para
-inicializar o lilo no setor de inicializaÁ„o de uma partiÁ„o prim·ria,
+Fa√ßa um la√ßo de inicializa√ß√µes. Configure o lilo no MBR para
+inicializar o lilo no setor de inicializa√ß√£o de uma parti√ß√£o prim√°ria,
 e este para inicializar o lilo no MBR... Ou talvez usar o MBR e todas
-as quatro partiÁıes prim·rias, fazendo um laÁo de cinco
+as quatro parti√ß√µes prim√°rias, fazendo um la√ßo de cinco
 pontos. Divirta-se!
 
-<SECT1>Mais InformaÁıes
+<SECT1>Mais Informa√ß√µes
 <P>
 <LABEL ID="lilo-links">
 <ITEMIZE>
@@ -479,7 +479,7 @@ pontos. Divirta-se!
 <!--
 The lilo man page.
 -->
-A p·gina de manual do lilo.
+A p√°gina de manual do lilo.
 
 <ITEM>
 <!--
@@ -492,10 +492,10 @@ better than the plain text, since it contains diagrams and tables.
 -->
 O pacote Lilo (<URL
 URL="ftp://lrcftp.epfl.ch/pub/linux/local/lilo/" NAME="lilo">),
-contÈm o ``LILO User's Guide''<TT>lilo-u-21.ps.gz</TT> (ou outra
-vers„o mais recente). … prov·vel que vocÍ j· tenha este
-documento. Tente em <TT>/usr/doc/lilo</TT> ou algo parecido. A vers„o
-postscript È melhor que a de texto simples, j· que contÈm diagramas e
+cont√©m o ``LILO User's Guide''<TT>lilo-u-21.ps.gz</TT> (ou outra
+vers√£o mais recente). √â prov√°vel que voc√™ j√° tenha este
+documento. Tente em <TT>/usr/doc/lilo</TT> ou algo parecido. A vers√£o
+postscript √© melhor que a de texto simples, j√° que cont√©m diagramas e
 tabelas.
 
 <ITEM>
@@ -504,7 +504,7 @@ tabelas.
 floppy linux. Makes a great rescue disk.
 -->
 <URL URL="http://www.toms.net/rb" NAME="tomsrtbt"> o melhor linux em
-um sÛ disquete. Excelente como disco de recuperaÁ„o.
+um s√≥ disquete. Excelente como disco de recupera√ß√£o.
 
 <ITEM>
 <URL URL="http://www.linuxdoc.org/HOWTO/Bootdisk-HOWTO/" NAME="The
@@ -522,7 +522,7 @@ up is that it makes the hardware do what the programs want, fairly and
 efficiently.
 -->
 Na verdade o kernel faz muitas coisas. Creio que uma boa forma de
-resumir È que ele faz o hardware fazer o que os programas querem, de
+resumir √© que ele faz o hardware fazer o que os programas querem, de
 forma clara e eficiente.
 
 <P>
@@ -535,12 +535,12 @@ ready to go, and which ones are waiting for something like a record
 from a hard disk file, or some keyboard input. This kernel task is
 called scheduling.
 -->
-O processador pode executar apenas uma instruÁ„o de cada vez, mas os
-sistemas Linux parecem fazer v·rias coisas simultaneamente. O kernel
-consegue isto alternando de uma tarefa ‡ outra rapidamente. Ele faz
-um melhor uso do processador rastreando quais processos est„o prontos
-e quais est„o esperando por algo como um registro num arquivo do disco
-rÌgido ou uma entrada do teclado. Esta tarefa do kernel È chamada de
+O processador pode executar apenas uma instru√ß√£o de cada vez, mas os
+sistemas Linux parecem fazer v√°rias coisas simultaneamente. O kernel
+consegue isto alternando de uma tarefa √† outra rapidamente. Ele faz
+um melhor uso do processador rastreando quais processos est√£o prontos
+e quais est√£o esperando por algo como um registro num arquivo do disco
+r√≠gido ou uma entrada do teclado. Esta tarefa do kernel √© chamada de
 scheduling (agendamento). 
 
 <P>
@@ -554,14 +554,14 @@ moved out to the swap partition. When they are needed again, another
 unused page can be paged out to make way for it. This is virtual
 memory management.
 -->
-Se um programa n„o est· fazendo nada, n„o precisa estar na RAM. Mesmo
-um programa que est· fazendo algo pode ter partes que n„o est„o
-fazendo nada. O espaÁo de endereÁamento de cada processo est· dividido
-em p·ginas. O kernel verifica quais p·ginas est„o sendo usadas mais
-freq¸entemente. As p·ginas que n„o est„o sendo muito usadas podem ser
-retiradas para a partiÁ„o de troca (swap). Quando elas forem
-necess·rias novamente, pode se retirar outra p·gina pouco usada para
-desocupar-lhe espaÁo. Este È o gerenciamento de memÛria virtual.
+Se um programa n√£o est√° fazendo nada, n√£o precisa estar na RAM. Mesmo
+um programa que est√° fazendo algo pode ter partes que n√£o est√£o
+fazendo nada. O espa√ßo de endere√ßamento de cada processo est√° dividido
+em p√°ginas. O kernel verifica quais p√°ginas est√£o sendo usadas mais
+freq√ºentemente. As p√°ginas que n√£o est√£o sendo muito usadas podem ser
+retiradas para a parti√ß√£o de troca (swap). Quando elas forem
+necess√°rias novamente, pode se retirar outra p√°gina pouco usada para
+desocupar-lhe espa√ßo. Este √© o gerenciamento de mem√≥ria virtual.
 
 <P>
 <!--
@@ -570,10 +570,10 @@ there are many many options for specific devices. The kernel contains
 a lot of specific code to talk to diverse kinds of hardware, and
 present it all in a nice uniform way to the application programs.
 -->
-Se alguma vez vocÍ j· compilou seu prÛprio Kernel, vocÍ deve ter
-notado que existem muitas opÁıes para dispositivos especÌficos. O
-kernel contÈm muito cÛdigo especÌfico para comunicar com os diversos
-tipos de hardware, e apresent·-los de uma maneira uniforme aos
+Se alguma vez voc√™ j√° compilou seu pr√≥prio Kernel, voc√™ deve ter
+notado que existem muitas op√ß√µes para dispositivos espec√≠ficos. O
+kernel cont√©m muito c√≥digo espec√≠fico para comunicar com os diversos
+tipos de hardware, e apresent√°-los de uma maneira uniforme aos
 aplicativos.
 
 <P>
@@ -581,18 +581,18 @@ aplicativos.
 The Kernel also manages the filesystem, interprocess communication,
 and a lot of networking stuff.
 -->
-O Kernel tambÈm gerencia o sistema de arquivos, a comunicaÁ„o entre os
-processos, e um monte de coisas relacionadas ‡ redes.
+O Kernel tamb√©m gerencia o sistema de arquivos, a comunica√ß√£o entre os
+processos, e um monte de coisas relacionadas √† redes.
 
 <P>
 <!--
 Once the kernel is loaded, the first thing it does is look for an
 <TT>init</TT> program to run.
 -->
-Uma vez que o kernel for carregado, a primeira coisa que ele faz È
+Uma vez que o kernel for carregado, a primeira coisa que ele faz √©
 procurar por um programa <TT>init</TT> para executar.
 
-<SECT1>ConfiguraÁ„o
+<SECT1>Configura√ß√£o
 <P>
 <!--
 Most of the configuration of the kernel is done when you build it,
@@ -605,16 +605,16 @@ parameters to pass to the kernel either in lilo.conf, or at the lilo
 prompt. For example if you wanted to use hda3 as your root file system
 instead of hda2, you might type
 -->
-A maior parte da configuraÁ„o do kernel È feita quando o estiver
+A maior parte da configura√ß√£o do kernel √© feita quando o estiver
 construindo, usando <TT>make menuconfig</TT>, ou <TT>make xconfig</TT>
-em <TT>/usr/src/linux/</TT> (ou onde quer que esteja o cÛdigo fonte do
-kernel do seu Linux). VocÍ pode redefinir o modo de vÌdeo padr„o, o
-sistema de arquivos raÌz, o dispositivo de troca (swap) e o tamanho do
-disco em RAM usando <TT>rdev</TT>. Estes e outros par‚metros podem ser
-passados ao kernel pelo lilo. VocÍ pode dar ao lilo os par‚metros para
+em <TT>/usr/src/linux/</TT> (ou onde quer que esteja o c√≥digo fonte do
+kernel do seu Linux). Voc√™ pode redefinir o modo de v√≠deo padr√£o, o
+sistema de arquivos ra√≠z, o dispositivo de troca (swap) e o tamanho do
+disco em RAM usando <TT>rdev</TT>. Estes e outros par√¢metros podem ser
+passados ao kernel pelo lilo. Voc√™ pode dar ao lilo os par√¢metros para
 passar ao kernel tanto no lilo.conf quanto na linha de comandos do
 lilo. Por exemplo, se quiser usar hda3 como seu sistema de arquivos
-raÌz em vez de hda2, poderia digitar:
+ra√≠z em vez de hda2, poderia digitar:
 
 <VERB>
 	LILO: linux root=/dev/hda3
@@ -627,9 +627,9 @@ simpler by creating a ``monolithic'' kernel. That is one with no
 modules. Then you don't have to copy kernel modules to the target
 system.
 -->
-Se estiver construindo um sistema a partir do cÛdigo fonte, ser· bem
-mais f·cil criar um kernel ``monolÌtico'', ou seja, sem mÛdulos. Assim
-n„o ir· precisar copiar os mÛdulos para o sistema de destino.
+Se estiver construindo um sistema a partir do c√≥digo fonte, ser√° bem
+mais f√°cil criar um kernel ``monol√≠tico'', ou seja, sem m√≥dulos. Assim
+n√£o ir√° precisar copiar os m√≥dulos para o sistema de destino.
 
 <P>
 <!--
@@ -639,11 +639,11 @@ determine the module names generating messages. The program
 the target system, copy <TT>System.map</TT> too.
 -->
 NOTA: O agente de log do kernel usa o arquivo <TT>System.map</TT> para
-determinar os nomes dos mÛdulos gerando mensagens. O programa
-<TT>top</TT> tambÈm usa esta informaÁ„o. Quando copiar o kernel para o
-sistema de destino, copie tambÈm <TT>System.map</TT>.
+determinar os nomes dos m√≥dulos gerando mensagens. O programa
+<TT>top</TT> tamb√©m usa esta informa√ß√£o. Quando copiar o kernel para o
+sistema de destino, copie tamb√©m <TT>System.map</TT>.
 
-<SECT1>ExercÌcios
+<SECT1>Exerc√≠cios
 <P>
 <!--
 Think about this: <TT>/dev/hda3</TT> is a special type of file that
@@ -653,27 +653,27 @@ mount as the root filesystem - it doesn't have a file system yet. So
 how can it read <TT>/dev/hda3</TT> to find out which partition to
 mount?
 -->
-Pense nisto: <TT>/dev/hda3</TT> È um tipo especial de arquivo que
-descreve uma partiÁ„o do disco rÌgido. Mas ele est· num sistema de
+Pense nisto: <TT>/dev/hda3</TT> √© um tipo especial de arquivo que
+descreve uma parti√ß√£o do disco r√≠gido. Mas ele est√° num sistema de
 arquivos exatamente como todos os outros arquivos. O kernel quer saber
-qual partiÁ„o montar como sistema de arquivos raÌz - ele ainda n„o tem
-um sistema de arquivos. Ent„o como ele pode ler <TT>/dev/hda3</TT>
-para saber qual partiÁ„o montar?
+qual parti√ß√£o montar como sistema de arquivos ra√≠z - ele ainda n√£o tem
+um sistema de arquivos. Ent√£o como ele pode ler <TT>/dev/hda3</TT>
+para saber qual parti√ß√£o montar?
 
 <P>
 <!--
 If you haven't already: build your own kernel. Read all the help
 information for each option.
 -->
-Se ainda n„o o fez: construa seu prÛprio kernel. Leia toda a
-informaÁ„o de ajuda para cada opÁ„o.
+Se ainda n√£o o fez: construa seu pr√≥prio kernel. Leia toda a
+informa√ß√£o de ajuda para cada op√ß√£o.
 
 <P>
 <!--
 See how small a kernel you can make that still works. You can learn a
 lot by leaving the wrong things out!
 -->
-Tente fazer o menor kernel funcional possÌvel. VocÍ pode aprender
+Tente fazer o menor kernel funcional poss√≠vel. Voc√™ pode aprender
 bastante quando as coisas derem errado!
 
 <P>
@@ -685,10 +685,10 @@ to follow if you download this old version and read the source there.
 Its amazing to find bits of C code called ``process'' and ``page''.
 -->
 Leia ``The Linux Kernel'' (URL abaixo) e veja se pode encontrar as
-partes do cÛdigo fonte a qual ele se refere. O livro (no momento em
-que escrevo) usa a vers„o 2.0.33 do kernel, que est· obsoleta. Ser·
-mais f·cil se baixar esta vers„o antiga e ler estes fontes. …
-surpreendente encontrar coisas no cÛdigo C chamados ``process'' e
+partes do c√≥digo fonte a qual ele se refere. O livro (no momento em
+que escrevo) usa a vers√£o 2.0.33 do kernel, que est√° obsoleta. Ser√°
+mais f√°cil se baixar esta vers√£o antiga e ler estes fontes. √â
+surpreendente encontrar coisas no c√≥digo C chamados ``process'' e
 ``page''.
 
 <P>
@@ -699,7 +699,7 @@ something.
 Fuce! Veja se consegue fazer ele mostrar umas mensagens extras ou
 qualquer outra coisa.
 
-<SECT1>Mais InformaÁıes
+<SECT1>Mais Informa√ß√µes
 <LABEL ID="Kernel">
 <P>
 <ITEMIZE>
@@ -709,7 +709,7 @@ qualquer outra coisa.
 <TT>/usr/src/linux/Documentation/</TT> (These may be in some other
 place on your system)
 -->
-<TT>/usr/src/linux/README</TT> e o conte˙do de
+<TT>/usr/src/linux/README</TT> e o conte√∫do de
 <TT>/usr/src/linux/Documentation/</TT> (eles podem estar em algum
 outro lugar em seu sistema)
 
@@ -723,7 +723,7 @@ NAME="The Kernel HOWTO">
 The help available when you configure a kernel using <TT>make
 menuconfig</TT> or <TT>make xconfig</TT>
 -->
-A ajuda disponÌvel ao configurar um kernel usando <TT>make
+A ajuda dispon√≠vel ao configurar um kernel usando <TT>make
 menuconfig</TT> ou <TT>make xconfig</TT>
 
 <ITEM>
@@ -739,7 +739,7 @@ Kernel (e outros guias LDP)">
 source code, see <URL URL="http://www.netspace.net.au/~gok/power2bash"
 NAME="Building a Minimal Linux System from Source Code"> for urls
 -->
-cÛdigo fonte, veja <URL
+c√≥digo fonte, veja <URL
 URL="http://www.netspace.net.au/~gok/power2bash" NAME="Building a
 Minimal Linux System from Source Code"> para encontrar urls
 
@@ -754,15 +754,15 @@ The next thing that happens as your computer starts up is that init is
 loaded and run. However, init, like almost all programs, uses
 functions from libraries.
 -->
-A prÛxima coisa que acontece quando seu computador È inicializado È
-carregar e rodar o init. PorÈm, o init, como quase todos programas,
-usa funÁıes de bibliotecas.
+A pr√≥xima coisa que acontece quando seu computador √© inicializado √©
+carregar e rodar o init. Por√©m, o init, como quase todos programas,
+usa fun√ß√µes de bibliotecas.
 
 <P>
 <!--
 You may have seen an example C program like this:
 -->
-VocÍ j· deve ter visto um programa de exemplo em C como este:
+Voc√™ j√° deve ter visto um programa de exemplo em C como este:
 
 <P>
 <VERB>
@@ -781,13 +781,13 @@ memory allocation and so on. Everything in Unix (including Linux) is
 either written in C or has to try hard to pretend it is, so everything
 uses these functions.
 -->
-O programa n„o contÈm a definiÁ„o de <TT>printf</TT>, ent„o de onde
-ela vem? Ela vem das bibliotecas C padr„o, num sistema GNU/Linux,
-glibc. Se for compilado com o Visual C++, ent„o ser· a implementaÁ„o
-da Microsoft das mesmas funÁıes padr„o. Existem zilhıes destas funÁıes
-padr„o, para matem·tica, string, data e hora, alocaÁ„o de memÛria, e
-assim por diante. Tudo no Unix (incluindo Linux) È escrito em C ou se
-esforÁa em fingir que o È, portanto tudo usa estas funÁıes.
+O programa n√£o cont√©m a defini√ß√£o de <TT>printf</TT>, ent√£o de onde
+ela vem? Ela vem das bibliotecas C padr√£o, num sistema GNU/Linux,
+glibc. Se for compilado com o Visual C++, ent√£o ser√° a implementa√ß√£o
+da Microsoft das mesmas fun√ß√µes padr√£o. Existem zilh√µes destas fun√ß√µes
+padr√£o, para matem√°tica, string, data e hora, aloca√ß√£o de mem√≥ria, e
+assim por diante. Tudo no Unix (incluindo Linux) √© escrito em C ou se
+esfor√ßa em fingir que o √©, portanto tudo usa estas fun√ß√µes.
 
 <P>
 <!--
@@ -796,10 +796,10 @@ files called <TT>libsomething.so</TT> or <TT>libsomething.a</TT>
 etc. They are libraries of these functions. Glibc is just the GNU
 implementation of these functions.
 -->
-Se vocÍ olhar em <TT>/lib</TT> em seu sistema linux, ver· arquivos
+Se voc√™ olhar em <TT>/lib</TT> em seu sistema linux, ver√° arquivos
 chamados <TT>libqualquercoisa.so</TT> ou <TT>libqualquercoisa.a</TT>
-aos montes. S„o as bibliotecas destas funÁıes. Glibc È apenas a
-implementaÁ„o GNU destas funÁıes.
+aos montes. S√£o as bibliotecas destas fun√ß√µes. Glibc √© apenas a
+implementa√ß√£o GNU destas fun√ß√µes.
 
 <P>
 <!--
@@ -811,12 +811,12 @@ link a program (and this is the default), then when the program is
 running and needs the library code, it is called from the
 <TT>libsomething.so</TT> file.
 -->
-Existem duas formas pelas quais os programas podem usar estas funÁıes
-de bibliotecas. Se vincular <EM>estaticamente</EM>, estas funÁıes de
-bibliotecas ser„o copiadas no execut·vel que ser· criado. Para isso
+Existem duas formas pelas quais os programas podem usar estas fun√ß√µes
+de bibliotecas. Se vincular <EM>estaticamente</EM>, estas fun√ß√µes de
+bibliotecas ser√£o copiadas no execut√°vel que ser√° criado. Para isso
 que servem as bibliotecas <TT>libqualquercoisa.a</TT>. Se vincular
-<EM>dinamicamente</EM> (e este È o padr„o), ent„o quando estiver
-rodando e precisar do cÛdigo da biblioteca, ele ser· chamado a partir
+<EM>dinamicamente</EM> (e este √© o padr√£o), ent√£o quando estiver
+rodando e precisar do c√≥digo da biblioteca, ele ser√° chamado a partir
 do arquivo <TT>libqualquercoisa.so</TT>.
 
 <P>
@@ -825,9 +825,9 @@ The command <TT>ldd</TT> is your friend when you want to work out
 which libraries are needed by a particular program. For example, here
 are the libraries that <TT>bash</TT> uses:
 -->
-O comando <TT>ldd</TT> È seu amigo quando quiser saber quais
-bibliotecas s„o necess·rias ‡ um programa em particular. Por exemplo,
-aqui est„o as bibliotecas que o <TT>bash</TT> usa:
+O comando <TT>ldd</TT> √© seu amigo quando quiser saber quais
+bibliotecas s√£o necess√°rias √† um programa em particular. Por exemplo,
+aqui est√£o as bibliotecas que o <TT>bash</TT> usa:
 
 <P>
 <VERB>
@@ -837,7 +837,7 @@ aqui est„o as bibliotecas que o <TT>bash</TT> usa:
         	/lib/ld-linux.so.2 => /lib/ld-linux.so.2 (0x40000000)
 </VERB>
 
-<SECT1>ConfiguraÁ„o
+<SECT1>Configura√ß√£o
 <P>
 <!--
 Some of the functions in the libraries depend on where you are. For
@@ -846,14 +846,14 @@ mm/dd/yy. There is a program that comes with the <TT>glibc</TT>
 distribution called <TT>localedef</TT> which enables you to set this
 up.
 -->
-Algumas das funÁıes das bibliotecas dependem de onde vocÍ est·. Por
-exemplo, na Austr·lia nÛs escrevemos as datas como dd/mm/aa, mas os
+Algumas das fun√ß√µes das bibliotecas dependem de onde voc√™ est√°. Por
+exemplo, na Austr√°lia n√≥s escrevemos as datas como dd/mm/aa, mas os
 Americanos escrevem mm/dd/aa. Existe um programa que acompanha a
-distribuiÁ„o da <TT>glibc</TT> chamado <TT>localedef</TT> que te
+distribui√ß√£o da <TT>glibc</TT> chamado <TT>localedef</TT> que te
 permite definir isso.
 
 
-<SECT1>ExercÌcios
+<SECT1>Exerc√≠cios
 <P>
 <!--
 Use <TT>ldd</TT> to find out what libraries your favourite
@@ -876,14 +876,14 @@ Make a toy library, with just one or two functions in it. The program
 be a good place to start investigating how this is done. Write,
 compile and link a program that uses this library.
 -->
-FaÁa uma biblioteca de testes, apenas com uma ou duas funÁıes. O
-programa <TT>ar</TT> È usado para cri·-las, a p·gina de manual para o
-<TT>ar</TT> pode ser um bom lugar para comeÁar a investigar como isto
-È feito. Escreva, compile e vincule um programa que use esta
+Fa√ßa uma biblioteca de testes, apenas com uma ou duas fun√ß√µes. O
+programa <TT>ar</TT> √© usado para cri√°-las, a p√°gina de manual para o
+<TT>ar</TT> pode ser um bom lugar para come√ßar a investigar como isto
+√© feito. Escreva, compile e vincule um programa que use esta
 biblioteca.
 
 
-<SECT1>Mais InformaÁıes
+<SECT1>Mais Informa√ß√µes
 <P>
 <ITEMIZE>
 <ITEM>
@@ -891,7 +891,7 @@ biblioteca.
 source code, see <URL URL="http://www.netspace.net.au/~gok/power2bash"
 NAME="Building a Minimal Linux System from Source Code"> for urls
 -->
-cÛdigo fonte, veja <URL
+c√≥digo fonte, veja <URL
 URL="http://www.netspace.net.au/~gok/power2bash" NAME="Building a
 Minimal Linux System from Source Code"> para encontrar urls
 </ITEMIZE>
@@ -906,10 +906,10 @@ systems mostly use. There are alternatives. In fact, you can put any
 program you like in <TT>/sbin/init</TT>, and the kernel will run it
 when it has finished loading.
 -->
-Vou falar apenas sobre o init estilo ``System V'' que È majorit·rio
-nos sistemas Linux. Existem alternativas. De fato, vocÍ pode pÙr
+Vou falar apenas sobre o init estilo ``System V'' que √© majorit√°rio
+nos sistemas Linux. Existem alternativas. De fato, voc√™ pode p√¥r
 qualquer programa que queira em <TT>/sbin/init</TT>, e o kernel vai
-rod·-lo assim que terminar de carregar.
+rod√°-lo assim que terminar de carregar.
 
 <P>
 <!--
@@ -919,11 +919,11 @@ up ``daemons'' to log system messages, do networking, serve web pages,
 listen to your mouse and so on. It also starts the getty processes
 that put the login prompts on your virtual terminals.
 -->
-… tarefa do <TT>init</TT> pÙr tudo para funcionar de forma
-apropriada. Ele verifica se os sistemas de arquivos est„o corretos e
+√â tarefa do <TT>init</TT> p√¥r tudo para funcionar de forma
+apropriada. Ele verifica se os sistemas de arquivos est√£o corretos e
 os montam. Inicializa os ``daemons'' para registrar as mensagens do
-sistema, redes, servir p·ginas web, escutar o mouse e tudo
-mais. TambÈm inicializa os processos ``getty'' que colocam as linhas
+sistema, redes, servir p√°ginas web, escutar o mouse e tudo
+mais. Tamb√©m inicializa os processos ``getty'' que colocam as linhas
 de comandos (prompt) de login em seus terminais virtuais.
 
 <P>
@@ -931,9 +931,9 @@ de comandos (prompt) de login em seus terminais virtuais.
 There is a whole complicated story about switching ``run-levels'', but
 I'm going to mostly skip that, and just talk about system start up.
 -->
-H· um contexto muito complicado que aborda a altern‚ncia entre nÌveis
-de execuÁ„o (run-levels), mas vou pular a maior parte disso e vou falar
-apenas sobre a inicializaÁ„o do sistema.
+H√° um contexto muito complicado que aborda a altern√¢ncia entre n√≠veis
+de execu√ß√£o (run-levels), mas vou pular a maior parte disso e vou falar
+apenas sobre a inicializa√ß√£o do sistema.
 
 <P>
 <!--
@@ -947,15 +947,15 @@ prompt. In Debian systems, the initialisation script is
 checked and mounted, the clock set, swap space enabled, hostname gets
 set etc.
 -->
-O init lÍ o arquivo <TT>/etc/inittab</TT>, que lhe diz o que
-fazer. Tipicamente, a primeira coisa que lhe È instruÌda a fazer È
-rodar o roteiro (script) de inicializaÁ„o. O programa que executa (ou
-interpreta) este roteiro È o <TT>bash</TT>, o mesmo programa que te
+O init l√™ o arquivo <TT>/etc/inittab</TT>, que lhe diz o que
+fazer. Tipicamente, a primeira coisa que lhe √© instru√≠da a fazer √©
+rodar o roteiro (script) de inicializa√ß√£o. O programa que executa (ou
+interpreta) este roteiro √© o <TT>bash</TT>, o mesmo programa que te
 fornece a linha de comandos. Em sistemas Debian, o roteiro de
-inicializaÁ„o È <TT>/etc/init.d/rcS</TT>, no Red Hat È
-<TT>/etc/rc.d/rc.sysinit</TT>. Este È o local onde os sistemas de
-arquivos s„o checados e montados, o relÛgio È ajustado, os espaÁos de
-troca (swap) habilitados, o nome da m·quina È definido, etc.
+inicializa√ß√£o √© <TT>/etc/init.d/rcS</TT>, no Red Hat √©
+<TT>/etc/rc.d/rc.sysinit</TT>. Este √© o local onde os sistemas de
+arquivos s√£o checados e montados, o rel√≥gio √© ajustado, os espa√ßos de
+troca (swap) habilitados, o nome da m√°quina √© definido, etc.
 
 <P>
 <!--
@@ -970,15 +970,15 @@ Debian system, then the script runs all the scripts in
 really just links to scripts in another directory usually called
 <TT>init.d</TT>.
 -->
-Depois chama outro roteiro que nos d· o nÌvel de execuÁ„o padr„o, que È
+Depois chama outro roteiro que nos d√° o n√≠vel de execu√ß√£o padr√£o, que √©
 apenas inicializar um conjunto de subsistemas. Existe um conjunto de
-diretÛrios <TT>/etc/rc.d/rc0.d</TT>, <TT>/etc/rc.d/rc1.d</TT>, ...,
+diret√≥rios <TT>/etc/rc.d/rc0.d</TT>, <TT>/etc/rc.d/rc1.d</TT>, ...,
 <TT>/etc/rc.d/rc6.d</TT> no Red Hat, ou <TT>/etc/rc0.d</TT>,
 <TT>/etc/rc1.d</TT>, ..., <TT>/etc/rc6.d</TT> no Debian, que
-correspondem aos nÌveis de execuÁ„o. Se formos para o nÌvel de
-execuÁ„o 3 num sistema Debian, ent„o o roteiro roda todos os roteiros
-em <TT>/etc/rc3.d</TT> que comeÁam com `S' (de start). Estes scripts
-s„o apenas vÌnculos para os roteiros em outro diretÛrio, normalmente
+correspondem aos n√≠veis de execu√ß√£o. Se formos para o n√≠vel de
+execu√ß√£o 3 num sistema Debian, ent√£o o roteiro roda todos os roteiros
+em <TT>/etc/rc3.d</TT> que come√ßam com `S' (de start). Estes scripts
+s√£o apenas v√≠nculos para os roteiros em outro diret√≥rio, normalmente
 chamado <TT>init.d</TT>.
 
 <P>
@@ -995,18 +995,18 @@ link starts with an `S', the run-level script knows to execute the
 corresponding links starting with `K' (for kill), which specify what
 to shut down and in what order when leaving the run-level.
 -->
-Portanto nosso roteiro de nÌvel de execuÁ„o È chamado <TT>init</TT>, e
-est· procurando num diretÛrio por roteiros comeÁando com `S'. Talvez
-encontre primeiro <TT>S10syslog</TT>. Os n˙meros dizem ao roteiro de
-nÌvel de execuÁ„o qual a ordem em que devem ser executados. Neste caso
-<TT>S10syslog</TT> È o primeiro, porque n„o existem roteiros comeÁando
-com S00 .. S09. PorÈm <TT>S10syslog</TT> È na verdade um vÌnculo para
-<TT>/etc/init.d/syslog</TT>, que È o roteiro para iniciar e parar o
-agente de log do sistema. O roteiro de nÌvel de execuÁ„o sabe que deve
-executar o roteiro <TT>syslog</TT> com o par‚metro ``start'' porque o
-vÌnculo comeÁa com `S'. Existem os vÌnculos correspondentes comeÁando
+Portanto nosso roteiro de n√≠vel de execu√ß√£o √© chamado <TT>init</TT>, e
+est√° procurando num diret√≥rio por roteiros come√ßando com `S'. Talvez
+encontre primeiro <TT>S10syslog</TT>. Os n√∫meros dizem ao roteiro de
+n√≠vel de execu√ß√£o qual a ordem em que devem ser executados. Neste caso
+<TT>S10syslog</TT> √© o primeiro, porque n√£o existem roteiros come√ßando
+com S00 .. S09. Por√©m <TT>S10syslog</TT> √© na verdade um v√≠nculo para
+<TT>/etc/init.d/syslog</TT>, que √© o roteiro para iniciar e parar o
+agente de log do sistema. O roteiro de n√≠vel de execu√ß√£o sabe que deve
+executar o roteiro <TT>syslog</TT> com o par√¢metro ``start'' porque o
+v√≠nculo come√ßa com `S'. Existem os v√≠nculos correspondentes come√ßando
 com `K' (de kill), que especificam o que terminar e em que ordem
-quando estivermos saindo do nÌvel de execuÁ„o.
+quando estivermos saindo do n√≠vel de execu√ß√£o.
 
 <P>
 <!--
@@ -1014,9 +1014,9 @@ To change what subsystems start up by default, you must set up these
 links in the <TT>rcN.d</TT> directory, where N is the default runlevel
 set in your <TT>inittab</TT>.
 -->
-Para modificar quais subsistemas iniciar por padr„o, defina os
-vÌnculos no diretÛrio <TT>rcN.d</TT>, onde N È o nÌvel de execuÁ„o
-padr„o em seu <TT>inittab</TT>.
+Para modificar quais subsistemas iniciar por padr√£o, defina os
+v√≠nculos no diret√≥rio <TT>rcN.d</TT>, onde N √© o n√≠vel de execu√ß√£o
+padr√£o em seu <TT>inittab</TT>.
 
 <P>
 <!--
@@ -1029,21 +1029,21 @@ flick to them as you need them. You may also want to run a
 <TT>getty</TT> for a text terminal or a dial in modem. In this case
 you will need to edit the <TT>inittab</TT> file.
 -->
-A ˙ltima coisa importante que o init faz È iniciar alguns
-<TT>getty</TT>. Se algum deles parar, È ``recriado'' pelo
-<TT>init</TT>. A maioria das distribuiÁıes vem com seis terminais
-virtuais. VocÍ pode querer menos para economizar memÛria, ou mais para
-ter muitas coisas rodando ao mesmo tempo e visualiz·-las quando for
-necess·rio rapidamente. VocÍ pode querer tambÈm executar um
+A √∫ltima coisa importante que o init faz √© iniciar alguns
+<TT>getty</TT>. Se algum deles parar, √© ``recriado'' pelo
+<TT>init</TT>. A maioria das distribui√ß√µes vem com seis terminais
+virtuais. Voc√™ pode querer menos para economizar mem√≥ria, ou mais para
+ter muitas coisas rodando ao mesmo tempo e visualiz√°-las quando for
+necess√°rio rapidamente. Voc√™ pode querer tamb√©m executar um
 <TT>getty</TT> para um terminal modo texto ou uma discagem em
-modem. Nesse caso vocÍ devera editar o arquivo <TT>inittab</TT>.
+modem. Nesse caso voc√™ devera editar o arquivo <TT>inittab</TT>.
 
-<SECT1>ConfiguraÁ„o
+<SECT1>Configura√ß√£o
 <P>
 <!--
 <TT>/etc/inittab</TT> is the top level configuration file for init.
 -->
-<TT>/etc/inittab</TT> È o arquivo de configuraÁ„o de mais alto nÌvel
+<TT>/etc/inittab</TT> √© o arquivo de configura√ß√£o de mais alto n√≠vel
 para o init.
 
 <P>
@@ -1051,8 +1051,8 @@ para o init.
 The <TT>rcN.d</TT> directories, where N = 0, 1, ..., 6 determine what
 subsystems are started.
 -->
-Os diretÛrios <TT>rcN.d</TT>, onde N = 0, 1, ..., 6 determinam quais
-subsistemas ser„o inicializados.
+Os diret√≥rios <TT>rcN.d</TT>, onde N = 0, 1, ..., 6 determinam quais
+subsistemas ser√£o inicializados.
 
 <P>
 <!--
@@ -1063,42 +1063,42 @@ supposed to be mounted. If you want to change what gets mounted where
 when your system starts up, this is the file you will need to
 edit. There is a man page for <TT>fstab</TT>.
 -->
-Em algum lugar num dos roteiros invocados pelo init, aparecer· o comando
+Em algum lugar num dos roteiros invocados pelo init, aparecer√° o comando
 <TT>mount -a</TT>. Isto significa montar todos os sistemas arquivos
 que devem ser montados. O arquivo <TT>/etc/fstab</TT> define o que
-deve ser montado. Se quiser mudar o que ser· montado quando seu
-sistema inicializar, È este arquivo que vocÍ deve editar. H· uma
-p·gina de manual para o <TT>fstab</TT>.
+deve ser montado. Se quiser mudar o que ser√° montado quando seu
+sistema inicializar, √© este arquivo que voc√™ deve editar. H√° uma
+p√°gina de manual para o <TT>fstab</TT>.
 
-<SECT1>ExercÌcios
+<SECT1>Exerc√≠cios
 <P>
 <!--
 Find the <TT>rcN.d</TT> directory for the default run-level of your
 system and do a <TT>ls -l</TT> to see what the files are links to.
 -->
-Encontre o diretÛrio <TT>rcN.d</TT> para o nÌvel de execuÁ„o padr„o de
+Encontre o diret√≥rio <TT>rcN.d</TT> para o n√≠vel de execu√ß√£o padr√£o de
 seu sistema e digite <TT>ls -l</TT> para ver para quais arquivos os
-vÌnculos apontam.
+v√≠nculos apontam.
 
 <P>
 <!--
 Change the number of gettys that run on your system.
 -->
-Modifique o n˙mero de gettys que o seu sistema roda.
+Modifique o n√∫mero de gettys que o seu sistema roda.
 
 <P>
 <!--
 Remove any subsystems that you don't need from your default
 run-level.
 -->
-Remova qualquer subsistema desnecess·rio do seu nÌvel de execuÁ„o
-padr„o.
+Remova qualquer subsistema desnecess√°rio do seu n√≠vel de execu√ß√£o
+padr√£o.
 
 <P>
 <!--
 See how little you can get away with starting.
 -->
-Veja o quanto vocÍ pode reduzir a inicializaÁ„o.
+Veja o quanto voc√™ pode reduzir a inicializa√ß√£o.
 
 <P>
 <!--
@@ -1106,9 +1106,9 @@ Set up a floppy disk with lilo, a kernel and a statically linked
 "hello world" program called <TT>/sbin/init</TT> and watch it boot up
 and say hello.
 -->
-Prepare um disquete com o lilo, um kernel e um programa ``ol· mundo''
+Prepare um disquete com o lilo, um kernel e um programa ``ol√° mundo''
 vinculado estaticamente chamado <TT>/sbin/init</TT> e veja ele
-inicializar e dizer ol·.
+inicializar e dizer ol√°.
 
 <P>
 <!--
@@ -1118,12 +1118,12 @@ tells you is happening. Or print a section of your system log
 <TT>inittab</TT>, walk through all the scripts and see what code does
 what. You can also put extra start up messages in, such as
 -->
-Observe atenciosamente a inicializaÁ„o de seu sistema e tome notas
-sobre o que ele diz estar acontecendo. Ou imprima uma seÁ„o do
+Observe atenciosamente a inicializa√ß√£o de seu sistema e tome notas
+sobre o que ele diz estar acontecendo. Ou imprima uma se√ß√£o do
 log do seu sistema <TT>/var/log/messages</TT> desde o momento da
-inicializaÁ„o. Ent„o comeÁando pelo <TT>inittab</TT>, siga todos os
-roteiros e veja o que faz cada cÛdigo. VocÍ tambÈm pode colocar
-mensagens de inicializaÁ„o extras nele, como por exemplo:
+inicializa√ß√£o. Ent√£o come√ßando pelo <TT>inittab</TT>, siga todos os
+roteiros e veja o que faz cada c√≥digo. Voc√™ tamb√©m pode colocar
+mensagens de inicializa√ß√£o extras nele, como por exemplo:
 
 <!--
 <VERB>
@@ -1131,19 +1131,19 @@ mensagens de inicializaÁ„o extras nele, como por exemplo:
 </VERB>
 -->
 <VERB>
-	echo "Ol·, sou o rc.sysinit"
+	echo "Ol√°, sou o rc.sysinit"
 </VERB>
 
 <!--
 This is a good exercise in learning Bash shell scripting too, some of
 the scripts are quite complicated. Have a good Bash reference handy.
 -->
-Este tambÈm È um bom exercÌcio para aprender escrever roteiros de Bash,
-alguns dos roteiros s„o bastante complicados. Tenha um bom guia de
-referÍncia do Bash a m„o.
+Este tamb√©m √© um bom exerc√≠cio para aprender escrever roteiros de Bash,
+alguns dos roteiros s√£o bastante complicados. Tenha um bom guia de
+refer√™ncia do Bash a m√£o.
 
 
-<SECT1>Mais InformaÁıes
+<SECT1>Mais Informa√ß√µes
 <P>
 <ITEMIZE>
 <ITEM>
@@ -1151,9 +1151,9 @@ referÍncia do Bash a m„o.
 There are man pages for the <TT>inittab</TT> and <TT>fstab</TT>
 files. Type (eg) <TT>man inittab</TT> into a shell to see it.
 -->
-Existem p·ginas de manual para os arquivos <TT>inittab</TT> e
+Existem p√°ginas de manual para os arquivos <TT>inittab</TT> e
 <TT>fstab</TT>. Digite (por exemplo) <TT>man inittab</TT> num shell
-para vÍ-las.
+para v√™-las.
 
 <ITEM>
 <!--
@@ -1162,7 +1162,7 @@ URL="http://mirror.aarnet.edu.au/linux/LDP/LDP/" NAME="section"> on
 init.
 -->
 The Linux System Administrators Guide tem uma boa <URL
-URL="http://mirror.aarnet.edu.au/linux/LDP/LDP/" NAME="seÁ„o"> sobre o
+URL="http://mirror.aarnet.edu.au/linux/LDP/LDP/" NAME="se√ß√£o"> sobre o
 init.
 
 <ITEM>
@@ -1171,7 +1171,7 @@ source code, see <URL
 URL="http://www.netspace.net.au/~gok/power2bash" NAME="Building a
 Minimal Linux System from Source Code"> for urls
 -->
-cÛdigo fonte, veja
+c√≥digo fonte, veja
 <URL
 URL="http://www.netspace.net.au/~gok/power2bash" NAME="Building a
 Minimal Linux System from Source Code"> para encontrar urls
@@ -1189,10 +1189,10 @@ devices, and there is the filesystem as it is presented to you by a
 running Linux system. In Linux, you ``mount'' a disk filesystem onto
 the system's filesystem.
 -->
-Nesta seÁ„o, estarei usando a express„o ``sistema de arquivos'' de
-duas formas diferentes. Existem sistemas de arquivos em partiÁıes do
+Nesta se√ß√£o, estarei usando a express√£o ``sistema de arquivos'' de
+duas formas diferentes. Existem sistemas de arquivos em parti√ß√µes do
 disco ou outros dispositivos, e existe o sistema de arquivos como lhe
-È apresentado pelo sistema Linux em funcionamento. No Linux, vocÍ
+√© apresentado pelo sistema Linux em funcionamento. No Linux, voc√™
 ``monta'' um sistema de arquivos em disco no sistema de arquivos do
 sistema.
 
@@ -1202,8 +1202,8 @@ In the previous section I mentioned that init scripts check and mount
 the filesystems. The commands that do this are <TT>fsck</TT> and
 <TT>mount</TT> respectively.
 -->
-Na seÁ„o anterior mencionei que os roteiros do init verificam e montam
-sistemas de arquivos. Os comandos que fazem isso s„o <TT>fsck</TT> e
+Na se√ß√£o anterior mencionei que os roteiros do init verificam e montam
+sistemas de arquivos. Os comandos que fazem isso s√£o <TT>fsck</TT> e
 <TT>mount</TT> respectivamente.
 
 <P>
@@ -1222,19 +1222,19 @@ finds the inode for the directory <TT>greg</TT> in the contents of
 <TT>/home</TT>, then the inode for <TT>bigboobs.jpeg</TT> which will
 tell it which disk blocks to read.
 -->
-Um disco rÌgido È apenas um grande espaÁo onde vocÍ pode escrever
-zeros e uns. Um sistema de arquivos impıe certa estrutura nisto,
-fazendo parecer que existem arquivos em seus diretÛrios e estes em
-seus diretÛrios... Cada arquivo È representado por um inode, que diz a
+Um disco r√≠gido √© apenas um grande espa√ßo onde voc√™ pode escrever
+zeros e uns. Um sistema de arquivos imp√µe certa estrutura nisto,
+fazendo parecer que existem arquivos em seus diret√≥rios e estes em
+seus diret√≥rios... Cada arquivo √© representado por um inode, que diz a
 quem pertence o arquivo, quando foi criado e onde encontrar seu
-conte˙do. DiretÛrios tambÈm s„o representados por inodes, mas estes
-dizem onde encontrar os inodes dos arquivos que est„o no diretÛrio. Se
+conte√∫do. Diret√≥rios tamb√©m s√£o representados por inodes, mas estes
+dizem onde encontrar os inodes dos arquivos que est√£o no diret√≥rio. Se
 o sistema quer ler <TT>/home/greg/bigboobs.jpeg</TT>, primeiro ele
-encontra o inode para o diretÛrio raÌz <TT>/</TT> no ``superbloco'',
-em seguida encontra o inode para o diretÛrio <TT>home</TT> no conte˙do
-de <TT>/</TT>, depois encontra o inode para o diretÛrio <TT>greg</TT>
-no conte˙do de <TT>/home</TT>, finalmente o inode para
-<TT>bigboobs.jpeg</TT> que ir· dizer quais blocos do disco ler.
+encontra o inode para o diret√≥rio ra√≠z <TT>/</TT> no ``superbloco'',
+em seguida encontra o inode para o diret√≥rio <TT>home</TT> no conte√∫do
+de <TT>/</TT>, depois encontra o inode para o diret√≥rio <TT>greg</TT>
+no conte√∫do de <TT>/home</TT>, finalmente o inode para
+<TT>bigboobs.jpeg</TT> que ir√° dizer quais blocos do disco ler.
 
 <P>
 <!--
@@ -1247,7 +1247,7 @@ point, the filesystem will be broken. It is this kind of thing that
 Se acrescentarmos algum dado ao fim do arquivo, pode acontecer dos
 dados serem escritos antes do inode ser atualizado para dizer quais os
 novos blocos pertencem ao arquivo, ou vice versa. Se houver um corte
-de energia neste ponto, o sistema de arquivos estar· corrompido. …
+de energia neste ponto, o sistema de arquivos estar√° corrompido. √â
 este tipo de coisa que o <TT>fsck</TT> tenta detectar e reparar.
 
 <P>
@@ -1258,10 +1258,10 @@ mounts its root file system read-only. The mount command is used to
 remount it read-write after <TT>fsck</TT> has checked that it is ok.
 -->
 O comando mount pega um sistema de arquivos num dispositivo, e
-o acrescenta ‡ hierarquia que vocÍ vÍ quando usa seu
-sistema. Normalmente, o kernel monta o sistema de arquivos raÌz
-somente para leitura. O comando mount È usado para remont·-lo para
-leitura e escrita depois que o <TT>fsck</TT> verificou que est· tudo
+o acrescenta √† hierarquia que voc√™ v√™ quando usa seu
+sistema. Normalmente, o kernel monta o sistema de arquivos ra√≠z
+somente para leitura. O comando mount √© usado para remont√°-lo para
+leitura e escrita depois que o <TT>fsck</TT> verificou que est√° tudo
 bem.
 
 <P>
@@ -1272,11 +1272,11 @@ away by the virtual file system (VFS). I won't go into any detail on
 this though. There is a discussion of it in ``The Linux Kernel'' (see
 section <REF ID="Kernel" NAME="The Linux Kernel"> for a url)
 -->
-O Linux tambÈm suporta outros tipos de sistema de arquivos: msdos,
-vfat, minix e outros mais. Os detalhes de um tipo especÌfico de
-sistema de arquivos s„o abstraÌdos pelo sistema de arquivos virtual
-(VFS). N„o vou entrar em detalhes sobre isto. Existe uma discuss„o
-sobre isso no ``The Linux Kernel'' (h· uma URL na seÁ„o <REF
+O Linux tamb√©m suporta outros tipos de sistema de arquivos: msdos,
+vfat, minix e outros mais. Os detalhes de um tipo espec√≠fico de
+sistema de arquivos s√£o abstra√≠dos pelo sistema de arquivos virtual
+(VFS). N√£o vou entrar em detalhes sobre isto. Existe uma discuss√£o
+sobre isso no ``The Linux Kernel'' (h√° uma URL na se√ß√£o <REF
 ID="Kernel" NAME="O Kernel do Linux">).
 
 <P>
@@ -1289,24 +1289,24 @@ files such as <TT>interrupts</TT>, and <TT>meminfo</TT> which tell you
 about how the hardware is being used. You can learn a lot by exploring
 <TT>/proc</TT>.
 -->
-Um tipo de sistema de arquivos completamente diferente È montado em
-<TT>/proc</TT>. … na verdade uma representaÁ„o das coisas no
-kernel. H· um diretÛrio ali para cada processo rodando no sistema,
-onde o n˙mero do processo È o nome do diretÛrio. TambÈm existem
+Um tipo de sistema de arquivos completamente diferente √© montado em
+<TT>/proc</TT>. √â na verdade uma representa√ß√£o das coisas no
+kernel. H√° um diret√≥rio ali para cada processo rodando no sistema,
+onde o n√∫mero do processo √© o nome do diret√≥rio. Tamb√©m existem
 arquivos como <TT>interrupts</TT> e <TT>meminfo</TT> que dizem sobre
-como o hardware est· sendo usado. VocÍ pode aprender bastante ao
+como o hardware est√° sendo usado. Voc√™ pode aprender bastante ao
 explorar <TT>/proc</TT>.
 
-<SECT1>ConfiguraÁ„o
+<SECT1>Configura√ß√£o
 <P>
 <!--
 There are parameters to the command <TT>mke2fs</TT> which creates ext2
 filesystems. These control the size of blocks, the number of inodes
 and so on. Check the <TT>mke2fs</TT> man page for details.
 -->
-Existem par‚metros para o comando <TT>mke2fs</TT> que cria sistemas de
-arquivos ext2. Estes controlam o tamanho dos blocos, o n˙mero de
-inodes, e assim por diante. Veja a p·gina de manual do <TT>mke2fs</TT>
+Existem par√¢metros para o comando <TT>mke2fs</TT> que cria sistemas de
+arquivos ext2. Estes controlam o tamanho dos blocos, o n√∫mero de
+inodes, e assim por diante. Veja a p√°gina de manual do <TT>mke2fs</TT>
 para mais detalhes.
 
 <P>
@@ -1314,35 +1314,35 @@ para mais detalhes.
 What gets mounted where on your filesystem is controlled by the
 <TT>/etc/fstab</TT> file. It also has a man page. 
 -->
-O que È montado em seu sistema de arquivos È controlado pelo arquivo
-<TT>/etc/fstab</TT>. TambÈm h· uma p·gina de manual para ele.
+O que √© montado em seu sistema de arquivos √© controlado pelo arquivo
+<TT>/etc/fstab</TT>. Tamb√©m h√° uma p√°gina de manual para ele.
 
-<SECT1>ExercÌcios
+<SECT1>Exerc√≠cios
 <P>
 <!--
 Make a very small filesystem, and view it with a hex viewer. Identify
 inodes, superblocks and file contents.
 -->
-FaÁa um sistema de arquivos bem pequeno, e visualize-o com um
+Fa√ßa um sistema de arquivos bem pequeno, e visualize-o com um
 visualizador hexadecimal. Identifique o superbloco, os inodes e o
-conte˙do dos arquivos.
+conte√∫do dos arquivos.
 
 <P>
 <!--
 I believe there are tools that give you a graphical view of a
 filesystem. Find one, try it out, and email me the url and a review!
 -->
-Acredito que existam ferramentas que te d„o uma vis„o gr·fica do
+Acredito que existam ferramentas que te d√£o uma vis√£o gr√°fica do
 sistema de arquivos. Encontre uma, teste, e me mande um e-mail com a
-url e coment·rios.
+url e coment√°rios.
 
 <P>
 <!--
 Check out the ext2 filesystem code in the Kernel.
 -->
-Veja o cÛdigo do kernel para o sistema de arquivos ext2.
+Veja o c√≥digo do kernel para o sistema de arquivos ext2.
 
-<SECT1>Mais InformaÁıes
+<SECT1>Mais Informa√ß√µes
 <P>
 <ITEMIZE>
 <ITEM>
@@ -1351,8 +1351,8 @@ Chapter 9 of the LDP book ``The Linux Kernel'' is an excellent
 description of filesystems. You can find it at the Australian LDP <URL
 URL="http://mirror.aarnet.edu.au/linux/LDP/LDP/" NAME="mirror">
 -->
-O capÌtulo 9 do livro LDP ``The Linux Kernel'' tem uma excelente
-descriÁ„o dos sistemas de arquivos. VocÍ pode encontr·-lo no <URL
+O cap√≠tulo 9 do livro LDP ``The Linux Kernel'' tem uma excelente
+descri√ß√£o dos sistemas de arquivos. Voc√™ pode encontr√°-lo no <URL
 URL="http://mirror.aarnet.edu.au/linux/LDP/LDP/" NAME="espelho">
 Australiano do LDP.
 
@@ -1362,7 +1362,7 @@ The <TT>mount</TT> command is part of the util-linux package, there is
 a link to it in <URL URL="http://www.netspace.net.au/~gok/power2bash"
 NAME="Building a Minimal Linux System from Source Code">
 -->
-O comando <TT>mount</TT> È parte do pacote util-linux; h· uma URL em
+O comando <TT>mount</TT> √© parte do pacote util-linux; h√° uma URL em
 <URL URL="http://www.netspace.net.au/~gok/power2bash" NAME="Building a
 Minimal Linux System from Source Code">
 
@@ -1371,7 +1371,7 @@ Minimal Linux System from Source Code">
 man pages for <TT>mount</TT>, <TT>fstab</TT>, <TT>fsck</TT>,
 <TT>mke2fs</TT> and <TT>proc</TT>
 -->
-P·ginas de manual para o <TT>mount</TT>, <TT>fstab</TT>,
+P√°ginas de manual para o <TT>mount</TT>, <TT>fstab</TT>,
 <TT>fsck</TT>, <TT>mke2fs</TT> e <TT>proc</TT>.
 
 <ITEM>
@@ -1379,7 +1379,7 @@ P·ginas de manual para o <TT>mount</TT>, <TT>fstab</TT>,
 The file <TT>Documentation/proc.txt</TT> in the Linux source code
 explains the <TT>/proc</TT> filesystem.
 -->
-O arquivo <TT>Documentation/proc.txt</TT> no cÛdigo fonte do Linux
+O arquivo <TT>Documentation/proc.txt</TT> no c√≥digo fonte do Linux
 explica o sistema de arquivos <TT>/proc</TT>.
 
 <ITEM>
@@ -1392,12 +1392,12 @@ NAME="ext2fsprogs"> Australian mirror. There is also a Ext2fs-overview
 document here, although it is out of date, and not as readable as
 chapter 9 of ``The Linux Kernel''
 -->
-A p·gina do EXT2 File System Utilities <URL
+A p√°gina do EXT2 File System Utilities <URL
 URL="http://web.mit.edu/tytso/www/linux/e2fsprogs.html"
 NAME="ext2fsprogs"> e o <URL
 URL="ftp://mirror.aarnet.edu.au/pub/linux/metalab/system/filesystems/ext2/"
-NAME="espelho"> Australiano. H· ali um documento Ext2fs-overview,
-porÈm est· obsoleto e n„o È t„o legÌvel quanto o capÌtulo nove do
+NAME="espelho"> Australiano. H√° ali um documento Ext2fs-overview,
+por√©m est√° obsoleto e n√£o √© t√£o leg√≠vel quanto o cap√≠tulo nove do
 ``The Linux Kernel''.
 
 <ITEM>
@@ -1415,9 +1415,9 @@ your goal is to make a minimal yet complete system.
 <URL URL="ftp://tsx-11.mit.edu/pub/linux/docs/linux-standards/fsstnd/"
 NAME="Unix File System Standard"> (outro <URL
 URL="http://www.pathname.com/fhs/" NAME="link">). Este descreve o que
-deve ter em um sistema de arquivos Unix e por que. TambÈm os
-requisitos mÌnimos para <TT>/bin</TT>, <TT>/sbin</TT> e outros. Esta È
-uma boa referÍncia se seu objetivo È criar um sistema mÌnimo porÈm
+deve ter em um sistema de arquivos Unix e por que. Tamb√©m os
+requisitos m√≠nimos para <TT>/bin</TT>, <TT>/sbin</TT> e outros. Esta √©
+uma boa refer√™ncia se seu objetivo √© criar um sistema m√≠nimo por√©m
 completo.
 
 </ITEMIZE>
@@ -1430,7 +1430,7 @@ completo.
 If you issue the <TT>ps aux</TT> command, you will see something like
 the following:
 -->
-Ao executar o comando <TT>ps aux</TT>, ver· algo semelhante a isto:
+Ao executar o comando <TT>ps aux</TT>, ver√° algo semelhante a isto:
 
 <P>
 <VERB>
@@ -1458,14 +1458,14 @@ kswapd. There is something strange here though: notice that in both
 the virtual storage size (SIZE) and the Real Storage Size (RSS)
 columns, these processes have zeroes. How can a process use no memory?
 -->
-Esta È a lista de processos rodando no sistema. A informaÁ„o È dada
-pelo sistema de arquivos <TT>/proc</TT>, que mencionei na seÁ„o
-anterior. Note que o <TT>init</TT> È o processo n˙mero um. Os
-processos dois, trÍs, quatro e cinco s„o kflushd, kupdate, kpiod e
-kswapd. Contudo h· algo estranho aqui: note que tanto na coluna do
+Esta √© a lista de processos rodando no sistema. A informa√ß√£o √© dada
+pelo sistema de arquivos <TT>/proc</TT>, que mencionei na se√ß√£o
+anterior. Note que o <TT>init</TT> √© o processo n√∫mero um. Os
+processos dois, tr√™s, quatro e cinco s√£o kflushd, kupdate, kpiod e
+kswapd. Contudo h√° algo estranho aqui: note que tanto na coluna do
 tamanho do armazenamento virtual (SIZE) quanto o tamanho do
 armazenamento real (Real Storage Size, RSS) estes processos tem
-zeros. Como pode um processo n„o usar memÛria?
+zeros. Como pode um processo n√£o usar mem√≥ria?
 
 <P>
 <!--
@@ -1476,12 +1476,12 @@ your system. The kernel daemons are started after init, so they get
 process numbers like normal processes do. But their code and data
 lives in the kernel's part of the memory.
 -->
-Estes processos s„o daemons do kernel. A maior parte do kernel n„o È
-mostrada na lista de processos, e vocÍ apenas poder· calcular quanta
-memÛria ele est· usando subtraindo a memÛria disponÌvel da que h· em
-seu sistema. Os daemons do kernel s„o iniciados apÛs o init, portanto
-recebem PID's (n˙meros de processo) assim como processos
-normais. PorÈm, seu cÛdigo e dados residem na parte de memÛria do
+Estes processos s√£o daemons do kernel. A maior parte do kernel n√£o √©
+mostrada na lista de processos, e voc√™ apenas poder√° calcular quanta
+mem√≥ria ele est√° usando subtraindo a mem√≥ria dispon√≠vel da que h√° em
+seu sistema. Os daemons do kernel s√£o iniciados ap√≥s o init, portanto
+recebem PID's (n√∫meros de processo) assim como processos
+normais. Por√©m, seu c√≥digo e dados residem na parte de mem√≥ria do
 kernel.
 
 <P>
@@ -1490,8 +1490,8 @@ There are brackets around the entries in the command column because
 the <TT>/proc</TT> filesystem does not contain command line
 information for these processes.
 -->
-A coluna de comando est· entre parÍnteses porque o sistema de arquivos
-<TT>/proc</TT> n„o tem a informaÁ„o da linha de comandos para estes
+A coluna de comando est√° entre par√™nteses porque o sistema de arquivos
+<TT>/proc</TT> n√£o tem a informa√ß√£o da linha de comandos para estes
 processos.
 
 <P>
@@ -1502,11 +1502,11 @@ daemons. The following partial story has been patched together from
 various replies to that plea, for which I am most grateful. Further
 clues, references and corrections are most welcome!
 -->
-Ent„o para que servem estes daemons do kernel? Versıes anteriores
-deste documento tinha um pedido de ajuda, j· que eu n„o sei muito
-sobre os daemons do kernel. A histÛria parcial que segue foi feita com
-pedaÁos das v·rias respostas deste pedido, pelas quais eu sou muito
-grato. Mais dicas, referÍncias e correÁıes s„o bem-vindas!
+Ent√£o para que servem estes daemons do kernel? Vers√µes anteriores
+deste documento tinha um pedido de ajuda, j√° que eu n√£o sei muito
+sobre os daemons do kernel. A hist√≥ria parcial que segue foi feita com
+peda√ßos das v√°rias respostas deste pedido, pelas quais eu sou muito
+grato. Mais dicas, refer√™ncias e corre√ß√µes s√£o bem-vindas!
 
 <P>
 <!--
@@ -1518,10 +1518,10 @@ daemons <TT>kflushd</TT> and <TT>kupdate</TT> handle this work:
 are any dirty buffers. If there are, it gets <TT>kflushd</TT> to flush
 them to disk.
 -->
-A entrada e a saÌda È feita atravÈs de <EM>buffers</EM> na
-memÛria. Isto permite as coisas rodarem mais r·pido. O que os
-programas escrevem pode ser mantido na memÛria, num buffer, depois
-escrito para o disco em pedaÁos maiores e mais eficientes. Os daemons
+A entrada e a sa√≠da √© feita atrav√©s de <EM>buffers</EM> na
+mem√≥ria. Isto permite as coisas rodarem mais r√°pido. O que os
+programas escrevem pode ser mantido na mem√≥ria, num buffer, depois
+escrito para o disco em peda√ßos maiores e mais eficientes. Os daemons
 <TT>kflushd</TT> e <TT>kupdate</TT> controlam esta tarefa:
 <TT>kupdate</TT> roda periodicamente (5 segundos?) para verificar
 se existe algum buffer cheio. Se existir, faz com que <TT>kflushd</TT>
@@ -1539,33 +1539,33 @@ out the memory situation, and if something out on the disk is needed
 in memory, or there is not enough free memory, <TT>kpiod</TT> is
 called in.
 -->
-Muitas vezes os processos n„o tem nada para fazer, e os que est„o
-rodando ‡s vezes n„o precisam ter todo o seu cÛdigo na memÛria. Isto
-significa que podemos fazer melhor uso da memÛria retirando as partes
-n„o usadas dos programas em execuÁ„o para a(s) partiÁ„o(s) de troca
-(swap) do disco rÌgido. Mover estes dados para dentro e para fora da
-memÛria quando necess·rio È feito pelo <TT>kpiod</TT> e
+Muitas vezes os processos n√£o tem nada para fazer, e os que est√£o
+rodando √†s vezes n√£o precisam ter todo o seu c√≥digo na mem√≥ria. Isto
+significa que podemos fazer melhor uso da mem√≥ria retirando as partes
+n√£o usadas dos programas em execu√ß√£o para a(s) parti√ß√£o(s) de troca
+(swap) do disco r√≠gido. Mover estes dados para dentro e para fora da
+mem√≥ria quando necess√°rio √© feito pelo <TT>kpiod</TT> e
 <TT>kswapd</TT>. Mais ou menos a cada segundo, <TT>kswapd</TT> acorda
-para verificar a situaÁ„o da memÛria, e se alguma coisa no disco È
-necess·ria na memÛria ou n„o h· memÛria livre suficiente,
-<TT>kpiod</TT> È chamado.
+para verificar a situa√ß√£o da mem√≥ria, e se alguma coisa no disco √©
+necess√°ria na mem√≥ria ou n√£o h√° mem√≥ria livre suficiente,
+<TT>kpiod</TT> √© chamado.
 
 <P>
 <!--
 There might also be a <TT>kapmd</TT> daemon running on your system if
 you have configured automatic power management into your kernel.
 -->
-TambÈm pode haver o daemon <TT>kapmd</TT> rodando em seu sistema se
-vocÍ configurou o gerenciamento autom·tico de energia em seu kernel.
+Tamb√©m pode haver o daemon <TT>kapmd</TT> rodando em seu sistema se
+voc√™ configurou o gerenciamento autom√°tico de energia em seu kernel.
 
-<SECT1>ConfiguraÁ„o
+<SECT1>Configura√ß√£o
 <P>
 <!--
 The program <TT>update</TT> allows you to configure <TT>kflushd</TT>
 and <TT>kswapd</TT>. Try <TT>update -h</TT> for some information.
 -->
 O programa <TT>update</TT> te permite configurar o <TT>kflushd</TT> e
-<TT>kswapd</TT>. Experimente <TT>update -h</TT> para mais informaÁıes.
+<TT>kswapd</TT>. Experimente <TT>update -h</TT> para mais informa√ß√µes.
 
 <P>
 <!--
@@ -1575,38 +1575,38 @@ Swap space is turned on by <TT>swapon</TT> and off by
 system is coming up. I'm told that <TT>swapoff</TT> is handy for
 saving power on laptops.
 -->
-O espaÁo de troca È ativado por <TT>swapon</TT> e desativado por
+O espa√ßo de troca √© ativado por <TT>swapon</TT> e desativado por
 <TT>swapoff</TT>. O roteiro do init (<TT>/etc/rc.sysinit</TT> ou
 <TT>/etc/rc.d/rc.sysinit</TT>) normalmente chama <TT>swapon</TT>
-quando o sistema inicializa. Me disseram que <TT>swapoff</TT> È ˙til
-para economizar energia nos port·teis.
+quando o sistema inicializa. Me disseram que <TT>swapoff</TT> √© √∫til
+para economizar energia nos port√°teis.
 
-<SECT1>ExercÌcios
+<SECT1>Exerc√≠cios
 <P>
 <!--
 Do an <TT>update -d</TT>, note the blatherings on the last line about
 ``threshold for buffer fratricide''. Now there's an intriguing
 concept, go investigate!
 -->
-Execute <TT>update -d</TT>, note a frase <!-- ?? --> na ˙ltima linha
-sobre ``threshold for buffer fratricide'' (limite para o fratricÌdio do
-buffer). Aqui est· um conceito intrigante, investigue!
+Execute <TT>update -d</TT>, note a frase <!-- ?? --> na √∫ltima linha
+sobre ``threshold for buffer fratricide'' (limite para o fratric√≠dio do
+buffer). Aqui est√° um conceito intrigante, investigue!
 
 <P>
 <!--
 Change directory to <TT>/proc/sys/vm</TT> and <TT>cat</TT> the files
 there. See what you can work out.
 -->
-V· ao diretÛrio <TT>/proc/sys/vm</TT> e visualize os arquivos ali com
+V√° ao diret√≥rio <TT>/proc/sys/vm</TT> e visualize os arquivos ali com
 o <TT>cat</TT>. Veja se consegue entender.
 
-<SECT1>Mais InformaÁıes
+<SECT1>Mais Informa√ß√µes
 <P>
 <!--
 The Linux Documentation Project's ``The Linux Kernel'' (see section
 <REF ID="Kernel" NAME="The Linux Kernel"> for a url)
 -->
-``The Linux Kernel'' de The Linux Documentation Project (veja a seÁ„o
+``The Linux Kernel'' de The Linux Documentation Project (veja a se√ß√£o
 <REF ID="Kernel" NAME="O Kernel do Linux"> para encontrar uma url)
 
 <P>
@@ -1616,9 +1616,9 @@ The Linux kernel source code, if you are brave enough! The
 <TT>kflushd</TT> and <TT>kupdate</TT> are in
 <TT>linux/fs/buffer.c</TT>.
 -->
-O cÛdigo fonte do kernel do Linux, se vocÍ for corajoso suficiente. O
-cÛdigo do <TT>kswapd</TT> est· em <TT>linux/mm/vmscan.c</TT>, e
-<TT>kflushd</TT> e <TT>kupdate</TT> est„o em
+O c√≥digo fonte do kernel do Linux, se voc√™ for corajoso suficiente. O
+c√≥digo do <TT>kswapd</TT> est√° em <TT>linux/mm/vmscan.c</TT>, e
+<TT>kflushd</TT> e <TT>kupdate</TT> est√£o em
 <TT>linux/fs/buffer.c</TT>.
 
 
@@ -1634,14 +1634,14 @@ place to look if something is going wrong with your system. Often
 there will be a valuable clue in there.
 -->
 O init inicializa os daemons <TT>syslogd</TT> e o <TT>klogd</TT>. Eles
-escrevem as mensagens para logs. As mensagens do kernel s„o
+escrevem as mensagens para logs. As mensagens do kernel s√£o
 manipuladas pelo <TT>klogd</TT>, enquanto o <TT>syslogd</TT> manipula
-as mensagens de outros processos. O registro de log principal È
-<TT>/var/log/messages</TT>. Quando alguma coisa est· errada, este È um
-bom lugar para procurar o que È. Muitas vezes existem dicas valiosas
+as mensagens de outros processos. O registro de log principal √©
+<TT>/var/log/messages</TT>. Quando alguma coisa est√° errada, este √© um
+bom lugar para procurar o que √©. Muitas vezes existem dicas valiosas
 ali.
 
-<SECT1>ConfiguraÁ„o
+<SECT1>Configura√ß√£o
 <P>
 <!--
 The file <TT>/etc/syslog.conf</TT> tells the loggers what messages to
@@ -1651,11 +1651,11 @@ lines that say messages from service x with priority y go to z, where
 z is a file, tty, printer, remote host or whatever.
 -->
 O arquivo <TT>/etc/syslog.conf</TT> diz aos agentes de log quais
-mensagens registrar e onde. As mensagens s„o identificadas pelos
-serviÁos de onde se originam e qual nÌvel de prioridade elas tÍm. Este
-arquivo de configuraÁ„o consiste de linhas que dizem que as mensagens
-do serviÁo x com prioridade y v„o para z, onde z È um arquivo, tty,
-impressora, uma m·quina remota, ou qualquer outra coisa.
+mensagens registrar e onde. As mensagens s√£o identificadas pelos
+servi√ßos de onde se originam e qual n√≠vel de prioridade elas t√™m. Este
+arquivo de configura√ß√£o consiste de linhas que dizem que as mensagens
+do servi√ßo x com prioridade y v√£o para z, onde z √© um arquivo, tty,
+impressora, uma m√°quina remota, ou qualquer outra coisa.
 
 <P>
 <!--
@@ -1667,21 +1667,21 @@ uses <TT>/etc/services</TT> to convert the service names you type
 <TT>/etc/syslog.conf</TT> into port numbers.
 -->
 NOTA: O syslog exige que o arquivo <TT>/etc/services</TT> esteja
-presente. O arquivo services aloca portas. N„o estou certo se o syslog
+presente. O arquivo services aloca portas. N√£o estou certo se o syslog
 precisa de uma porta para poder fazer o registro remotamente, ou se
-mesmo o registro local È feito atravÈs uma porta, ou se ele usa o
+mesmo o registro local √© feito atrav√©s uma porta, ou se ele usa o
 arquivo <TT>/etc/services</TT> apenas para converter os nomes dos
-serviÁos que vocÍ digita no arquivo <TT>/etc/syslog.conf</TT> em
-n˙meros de portas.
+servi√ßos que voc√™ digita no arquivo <TT>/etc/syslog.conf</TT> em
+n√∫meros de portas.
 
-<SECT1>ExercÌcios
+<SECT1>Exerc√≠cios
 <P>
 <!--
 Have a look at your system log. Find a message you don't understand,
 and find out what it means.
 -->
-DÍ uma olhada no log do seu sistema. Encontre uma mensagem que vocÍ
-n„o compreende e descubra o que significa.
+D√™ uma olhada no log do seu sistema. Encontre uma mensagem que voc√™
+n√£o compreende e descubra o que significa.
 
 <P>
 <!--
@@ -1690,7 +1690,7 @@ Send all your log messages to a tty. (set it back to normal once done)
 Mande todas as mensagens do seu log para um tty. (depois coloque tudo
 de volta ao normal)
 
-<SECT1>Mais InformaÁıes
+<SECT1>Mais Informa√ß√µes
 <P>
 <!--
 Australian sysklogd <URL
@@ -1712,10 +1712,10 @@ displays the login prompt. Once you enter your username, getty hands
 this over to <TT>login</TT> which asks for a password, checks it out
 and gives you a shell.
 -->
-Getty È o programa que te permite efetuar login atravÈs de um
+Getty √© o programa que te permite efetuar login atrav√©s de um
 dispositivo serial como um terminal virtual, um terminal texto, ou um
-modem. Ele mostra a linha de comandos do login. Uma vez que vocÍ
-introduz seu nome de usu·rio, o getty o entrega para o <TT>login</TT>,
+modem. Ele mostra a linha de comandos do login. Uma vez que voc√™
+introduz seu nome de usu√°rio, o getty o entrega para o <TT>login</TT>,
 que te pede a senha, a verifica e te fornece um shell.
 
 <P>
@@ -1724,7 +1724,7 @@ There are many getty's available. Some distributions, including Red
 Hat use a very small one called <TT>mingetty</TT> that only works with
 virtual terminals.
 -->
-Existem muitos gettys disponÌveis. Algumas distribuiÁıes, incluindo a
+Existem muitos gettys dispon√≠veis. Algumas distribui√ß√µes, incluindo a
 Red Hat, usam um muito pequeno chamado <TT>mingetty</TT> que funciona
 apenas com terminais virtuais.
 
@@ -1737,15 +1737,15 @@ package also contains <TT>mkswap</TT>, <TT>fdisk</TT>,
 <TT>swapon</TT>, <TT>rdev</TT>, <TT>renice</TT>, <TT>more</TT> (the
 program) and more (ie more programs).
 -->
-O programa <TT>login</TT> È parte do pacote util-linux, que tambÈm
-contÈm um getty chamado <TT>agetty</TT>, que funciona muito bem. Este
-pacote tambÈm contÈm <TT>mkswap</TT>, <TT>fdisk</TT>, <TT>passwd</TT>,
+O programa <TT>login</TT> √© parte do pacote util-linux, que tamb√©m
+cont√©m um getty chamado <TT>agetty</TT>, que funciona muito bem. Este
+pacote tamb√©m cont√©m <TT>mkswap</TT>, <TT>fdisk</TT>, <TT>passwd</TT>,
 <TT>kill</TT>, <TT>setterm</TT>, <TT>mount</TT>, <TT>swapon</TT>,
 <TT>rdev</TT>, <TT>renice</TT>, <TT>more</TT> (o programa) e mais
-(quer dizer, mais programas). <!-- Na traduÁ„o para o espanhol h· uma
+(quer dizer, mais programas). <!-- Na tradu√ß√£o para o espanhol h√° uma
 nota do tradutor aqui sobre o trocadilho -->
 
-<SECT1>ConfiguraÁ„o
+<SECT1>Configura√ß√£o
 <P>
 <!--
 The message that comes on the top of your screen with your login
@@ -1755,12 +1755,12 @@ prompt comes from <TT>/etc/issue</TT>. Gettys are usually started in
 <TT>/etc/shadow</TT>.
 -->
 A mensagem que aparece no topo da sua tela com a linha de comandos do
-login vem de <TT>/etc/issue</TT>. Os gettys geralmente s„o iniciados
+login vem de <TT>/etc/issue</TT>. Os gettys geralmente s√£o iniciados
 por <TT>/etc/inittab</TT>. O login verifica os detalhes sobre o
-usu·rio em <TT>/etc/passwd</TT> e, se o sistema tem mascaramento de
+usu√°rio em <TT>/etc/passwd</TT> e, se o sistema tem mascaramento de
 senhas, <TT>/etc/shadow</TT>.
 
-<SECT1>ExercÌcios
+<SECT1>Exerc√≠cios
 <P>
 <!--
 Create a <TT>/etc/passwd</TT> by hand. Passwords can be set to null,
@@ -1769,10 +1769,10 @@ man page for this file Use <TT>man 5 passwd</TT> to get the man page
 for the file rather than the man page for the program.
 -->
 Crie um <TT>/etc/passwd</TT> manualmente. As senhas podem ser nulas, e
-mudadas com o programa <TT>passwd</TT> uma vez que vocÍ efetuar
-login. Veja a p·gina de manual para este arquivo, use <TT>man 5
-passwd</TT> para obter a p·gina de manual para o arquivo ao invÈs da
-p·gina de manual para o programa.
+mudadas com o programa <TT>passwd</TT> uma vez que voc√™ efetuar
+login. Veja a p√°gina de manual para este arquivo, use <TT>man 5
+passwd</TT> para obter a p√°gina de manual para o arquivo ao inv√©s da
+p√°gina de manual para o programa.
 
 
 
@@ -1786,12 +1786,12 @@ you. In most cases on a Linux system this will be <TT>bash</TT>. It is
 on. It is simultaneously a user interface, and a programming language
 interpreter.
 -->
-Se vocÍ der ao <TT>login</TT> uma combinaÁ„o v·lida do nome de usu·rio
-e senha, ele ir· verificar em <TT>/etc/passwd</TT> qual shell te
-fornecer. Na maioria dos casos num sistema Linux ser· o <TT>bash</TT>. …
+Se voc√™ der ao <TT>login</TT> uma combina√ß√£o v√°lida do nome de usu√°rio
+e senha, ele ir√° verificar em <TT>/etc/passwd</TT> qual shell te
+fornecer. Na maioria dos casos num sistema Linux ser√° o <TT>bash</TT>. √â
 tarefa do <TT>bash</TT> ler seus comandos e fazer com que sejam
-executados. Ele È simultaneamente uma interface de usu·rio e um
-interpretador de uma linguagem de programaÁ„o.
+executados. Ele √© simultaneamente uma interface de usu√°rio e um
+interpretador de uma linguagem de programa√ß√£o.
 
 <P>
 <!--
@@ -1801,11 +1801,11 @@ executes a program if they are ``external'' commands like <TT>cp</TT>
 or <TT>startx</TT>. It also does groovy stuff like keeping a command
 history, and completing filenames.
 -->
-Como interface de usu·rio ele lÍ seus comandos e os executa se forem
+Como interface de usu√°rio ele l√™ seus comandos e os executa se forem
 comandos ``internos'' como  <TT>cd</TT>, ou procura e executa um
 programa se ele for ``externo'' como <TT>cp</TT> ou
-<TT>startx</TT>. Ele tambÈm faz coisas excelentes como manter um
-histÛrico dos comandos e o completamento dos nomes de arquivos.
+<TT>startx</TT>. Ele tamb√©m faz coisas excelentes como manter um
+hist√≥rico dos comandos e o completamento dos nomes de arquivos.
 
 <P>
 <!--
@@ -1819,15 +1819,15 @@ powerful combination, if you know what you are doing. For example
 directory of source code the other day. I was able to do this with the
 following single command:
 -->
-NÛs j· vimos o <TT>bash</TT> em aÁ„o como interpretador de linguagem
-de programaÁ„o. Os roteiros que o <TT>init</TT> roda para inicializar o
-sistema normalmente s„o roteiros shell, e s„o executados pelo
-<TT>bash</TT>. Ter uma verdadeira linguagem de programaÁ„o junto
-com os utilit·rios habituais do sistema disponÌveis na linha de
-comandos È uma combinaÁ„o muito poderosa, se souber o que estiver
+N√≥s j√° vimos o <TT>bash</TT> em a√ß√£o como interpretador de linguagem
+de programa√ß√£o. Os roteiros que o <TT>init</TT> roda para inicializar o
+sistema normalmente s√£o roteiros shell, e s√£o executados pelo
+<TT>bash</TT>. Ter uma verdadeira linguagem de programa√ß√£o junto
+com os utilit√°rios habituais do sistema dispon√≠veis na linha de
+comandos √© uma combina√ß√£o muito poderosa, se souber o que estiver
 fazendo. Por exemplo (modo convencido ativado) outro dia precisei
-aplicar um monte de ``remendos'' a um diretÛrio de cÛdigo fonte. Fui
-capaz de fazÍ-lo usando apenas este comando:
+aplicar um monte de ``remendos'' a um diret√≥rio de c√≥digo fonte. Fui
+capaz de faz√™-lo usando apenas este comando:
 
 <VERB>
 for f in /home/greg/sh-utils-1.16*.patch; do patch -p0 < $f; done;
@@ -1842,14 +1842,14 @@ and executes the commands between <TT>do</TT> and <TT>done</TT>. In
 this case there were 11 patch files, but there could just as easily
 have been 3000.
 -->
-Este comando procura em todos os arquivos em meu diretÛrio pessoal cujos nomes
-comeÁam com <TT>sh-utils-1.16</TT> e terminam com
-<TT>.patch</TT>. Para cada arquivo encontrado ele aponta a vari·vel
+Este comando procura em todos os arquivos em meu diret√≥rio pessoal cujos nomes
+come√ßam com <TT>sh-utils-1.16</TT> e terminam com
+<TT>.patch</TT>. Para cada arquivo encontrado ele aponta a vari√°vel
 <TT>f</TT> para aquele arquivo e executa os comandos entre <TT>do</TT>
 e <TT>done</TT>. Neste caso havia 11 arquivos para ``remendar'', mas
-seria igualmente f·cil se houvesse trÍs mil.
+seria igualmente f√°cil se houvesse tr√™s mil.
 
-<SECT1>ConfiguraÁ„o
+<SECT1>Configura√ß√£o
 <P>
 <!--
 The file <TT>/etc/profile</TT> controls the system-wide behaviour of
@@ -1858,9 +1858,9 @@ system. It will do things like add directories to the <TT>PATH</TT>,
 set your <TT>MAIL</TT> directory variable.
 -->
 O arquivo <TT>/etc/profile</TT> controla o comportamento do bash para
-todo o sistema. O que vocÍ colocar aqui ir· afetar todo mundo que usa
-o bash em seu sistema. Ele far· coisas como adicionar diretÛrios ao
-<TT>PATH</TT>, definir sua vari·vel de diretÛrio <TT>MAIL</TT>, etc.
+todo o sistema. O que voc√™ colocar aqui ir√° afetar todo mundo que usa
+o bash em seu sistema. Ele far√° coisas como adicionar diret√≥rios ao
+<TT>PATH</TT>, definir sua vari√°vel de diret√≥rio <TT>MAIL</TT>, etc.
 
 <P>
 <!--
@@ -1875,17 +1875,17 @@ bash. For example in Red Hat 6, <TT>INPUTRC</TT> is set to
 <TT>/etc/inputrc</TT> in <TT>/etc/profile</TT>. This means that
 backspace, delete, home and end keys work nicely for everyone.
 -->
-O comportamento padr„o do teclado muitas vezes deixa muito a
-desejar. Na verdade È o readline que manipula isto. O readline È um
+O comportamento padr√£o do teclado muitas vezes deixa muito a
+desejar. Na verdade √© o readline que manipula isto. O readline √© um
 pacote separado que manipula interfaces de linha de comandos,
-oferecendo o histÛrico dos comando e o completamento de nomes de
-arquivos, assim como algumas caracterÌsticas avanÁadas de ediÁ„o de
-linhas. Est· compilado no bash. Por padr„o, o readline È configurado
-usando o arquivo <TT>.inputrc</TT> em seu diretÛrio pessoal. A
-vari·vel do bash INPUTRC pode ser usada para substituir isto para o
-bash. Por exemplo: no Red Hat 6, <TT>INPUTRC</TT> È definida em
+oferecendo o hist√≥rico dos comando e o completamento de nomes de
+arquivos, assim como algumas caracter√≠sticas avan√ßadas de edi√ß√£o de
+linhas. Est√° compilado no bash. Por padr√£o, o readline √© configurado
+usando o arquivo <TT>.inputrc</TT> em seu diret√≥rio pessoal. A
+vari√°vel do bash INPUTRC pode ser usada para substituir isto para o
+bash. Por exemplo: no Red Hat 6, <TT>INPUTRC</TT> √© definida em
 <TT>/etc/profile</TT> para <TT>/etc/inputrc</TT>. Isto significa que
-as teclas de retrocesso (backspace), apagar (delete), inÌcio (home) e
+as teclas de retrocesso (backspace), apagar (delete), in√≠cio (home) e
 fim (end) funcionam bem para todo mundo.
 
 <P>
@@ -1900,36 +1900,36 @@ control how they work. I have the variable <TT>EDITOR</TT> set to
 <TT>vi</TT> so that I can use vi in Midnight Commander (an excellent
 console based file manager) instead of its editor. 
 -->
-Uma vez que o bash leu o arquivo de configuraÁ„o para todo o sistema,
-ele procura pelo seu arquivo de configuraÁ„o pessoal. Ele procura em
-seu diretÛrio pessoal por <TT>.bash_profile</TT>, <TT>.bash_login</TT>
+Uma vez que o bash leu o arquivo de configura√ß√£o para todo o sistema,
+ele procura pelo seu arquivo de configura√ß√£o pessoal. Ele procura em
+seu diret√≥rio pessoal por <TT>.bash_profile</TT>, <TT>.bash_login</TT>
 e <TT>.profile</TT>. Ele roda o primeiro que encontrar. Se quiser
-mudar a forma que o bash se comporta para vocÍ, sem modificar o modo
-que se comporta para os outros, faÁa isto aqui. Por exemplo, muitos
-aplicativos usam vari·veis de ambiente para controlar seu
-funcionamento. Eu tenho a vari·vel <TT>EDITOR</TT> definida para
+mudar a forma que o bash se comporta para voc√™, sem modificar o modo
+que se comporta para os outros, fa√ßa isto aqui. Por exemplo, muitos
+aplicativos usam vari√°veis de ambiente para controlar seu
+funcionamento. Eu tenho a vari√°vel <TT>EDITOR</TT> definida para
 <TT>vi</TT> de forma que posso usar o vi no Midnight Commander (um
 excelente gerenciador de arquivos no modo console) em vez do seu
-prÛprio editor.
+pr√≥prio editor.
 
-<SECT1>ExercÌcios
+<SECT1>Exerc√≠cios
 <P>
 <!--
 The basics of bash are easy to learn. But don't stop there: there is
 an incredible depth to it. Get into the habit of looking for better
 ways to do things.
 -->
-O b·sico do bash È f·cil de aprender. Mas n„o pare por aÌ: h· uma
-incrÌvel profundidade nele. Habitue-se procurar meios melhores de se
+O b√°sico do bash √© f√°cil de aprender. Mas n√£o pare por a√≠: h√° uma
+incr√≠vel profundidade nele. Habitue-se procurar meios melhores de se
 fazer as coisas.
 
 <P>
 <!--
 Read shell scripts, look up stuff you don't understand.
 -->
-Leia os roteiros shell, procure saber o que n„o entende.
+Leia os roteiros shell, procure saber o que n√£o entende.
 
-<SECT1>Mais InformaÁıes
+<SECT1>Mais Informa√ß√µes
 <P>
 <ITEMIZE>
 <ITEM>
@@ -1937,14 +1937,14 @@ Leia os roteiros shell, procure saber o que n„o entende.
 There is a ``Bash Reference Manual'' with this, which is
 comprehensive, but heavy going.
 -->
-Existe um ``Bash Reference Manual'' que È abrangente, porÈm de difÌcil
+Existe um ``Bash Reference Manual'' que √© abrangente, por√©m de dif√≠cil
 leitura.
 
 <ITEM>
 <!--
 There is an O'Rielly book on Bash, not sure if it's good.
 -->
-Existe um livro da O'Rielly sobre o Bash, mas n„o estou certo se È
+Existe um livro da O'Rielly sobre o Bash, mas n√£o estou certo se √©
 bom.
 
 <ITEM>
@@ -1952,7 +1952,7 @@ bom.
 I don't know of any good free up to date bash tutorials. If you do,
 please email me a url.
 -->
-N„o conheÁo nenhum bom tutorial gratuito e atualizado sobre o bash. Se
+N√£o conhe√ßo nenhum bom tutorial gratuito e atualizado sobre o bash. Se
 souber, por favor me envie por e-mail uma url.
 
 <ITEM>
@@ -1960,7 +1960,7 @@ souber, por favor me envie por e-mail uma url.
 source code, see <URL URL="http://www.netspace.net.au/~gok/power2bash"
 NAME="Building a Minimal Linux System from Source Code"> for urls
 -->
-cÛdigo fonte, veja <URL URL="http://www.netspace.net.au/~gok/power2bash"
+c√≥digo fonte, veja <URL URL="http://www.netspace.net.au/~gok/power2bash"
 NAME="Building a Minimal Linux System from Source Code"> para
 encontrar urls.
 
@@ -1975,9 +1975,9 @@ You do most things in bash by issuing commands like <TT>cp</TT>. Most
 of these commands are small programs, though some, like <TT>cd</TT>
 are built into the shell.
 -->
-No bash a maioria das coisas È feita por meio de comandos como
-<TT>cp</TT>. Quase todos estes comandos s„o pequenos programas, como
-<TT>cd</TT> que est· embutido no shell.
+No bash a maioria das coisas √© feita por meio de comandos como
+<TT>cp</TT>. Quase todos estes comandos s√£o pequenos programas, como
+<TT>cd</TT> que est√° embutido no shell.
 
 <P>
 <!--
@@ -1991,12 +1991,12 @@ them.
 Estes comandos vem em pacotes, a maioria da Free Software Foundation
 (ou GNU). Em vez de listar estes pacotes aqui, vou te encaminhar para
 o <URL URL="http://www.linuxfromscratch.org" NAME="Linux From Scratch
-HOWTO">. Este tem uma lista completa e atualizada dos pacotes que v„o
-em um sistema Linux assim como as instruÁıes de como os construir.
+HOWTO">. Este tem uma lista completa e atualizada dos pacotes que v√£o
+em um sistema Linux assim como as instru√ß√µes de como os construir.
 
 
 
-<SECT>Conclus„o
+<SECT>Conclus√£o
 <P>
 <!--
 One of the best things about Linux, in my humble opinion, is that you
@@ -2004,9 +2004,9 @@ can get inside it and really find out how it all works. I hope that
 you enjoy this as much as I do. And I hope that this little note has
 helped you do it.
 -->
-Uma das melhores coisas sobre o Linux, em minha humilde opini„o, È que
-vocÍ pode entrar dentro dele e ver como ele realmente funciona. Espero
-que tenha gostado tanto quanto eu. E espero tambÈm que estas poucas
+Uma das melhores coisas sobre o Linux, em minha humilde opini√£o, √© que
+voc√™ pode entrar dentro dele e ver como ele realmente funciona. Espero
+que tenha gostado tanto quanto eu. E espero tamb√©m que estas poucas
 notas tenham te ajudado.
 
 
@@ -2023,15 +2023,15 @@ the terms of the <URL URL="http://www.gnu.org/copyleft/gpl.html"
 NAME="GNU General Public Licence">. Please acknowledge me if you use
 all or part of this in another document.
 -->
-Os direitos autorais deste documento pertencem ‡ Greg O'Keefe -
-Copyright (c) 1999, 2000 Greg O'Keefe. VocÍ pode usar, copiar,
-distribuir ou modificar isto, sem Ùnus, sob os termos da <URL
+Os direitos autorais deste documento pertencem √† Greg O'Keefe -
+Copyright (c) 1999, 2000 Greg O'Keefe. Voc√™ pode usar, copiar,
+distribuir ou modificar isto, sem √¥nus, sob os termos da <URL
 URL="http://www.gnu.org/copyleft/gpl.html" NAME="GNU General Public
 Licence">. Por favor, me cite como autor se usar todo ou partes deste
 documento em outro documento.
 
 
-<SECT1>P·gina Web
+<SECT1>P√°gina Web
 <P>
 <!--
 The lastest version of this document lives at <URL
@@ -2039,7 +2039,7 @@ URL="http://www.netspace.net.au/~gok/power2bash" NAME="From Powerup To
 Bash Prompt"> as does its companion ``Building a Minimal Linux System
 from Source Code''.
 -->
-A vers„o mais recente deste documento est· em <URL
+A vers√£o mais recente deste documento est√° em <URL
 URL="http://www.netspace.net.au/~gok/power2bash" NAME="From Powerup To
 Bash Prompt"> assim como seu companheiro ``Building a Minimal Linux
 System from Source Code''.
@@ -2053,10 +2053,10 @@ Broeck. A Japanese by Yuji Senda is coming soon, if it's not at <URL
 URL="http://www.linux.or.jp/JF" NAME="Japanese Documentation and FAQ
 Project"> already.
 -->
-H· uma traduÁ„o para o FrancÍs em <URL
+H√° uma tradu√ß√£o para o Franc√™s em <URL
 URL="http://www.freenix.fr/unix/linux/HOWTO/From-PowerUp-To-Bash-Prompt-HOWTO.html"
 NAME="From Powerup To Bash Prompt"> obrigado a Dominique van den
-Broeck. Logo haver· uma para o JaponÍs feita por Yuji Senda, se n„o j·
+Broeck. Logo haver√° uma para o Japon√™s feita por Yuji Senda, se n√£o j√°
 estiver pronta em <URL URL="http://www.linux.or.jp/JF" NAME="Japanese
 Documentation and FAQ Project">
 
@@ -2067,8 +2067,8 @@ I would like to hear any comments, criticisms and suggestions for
 improvement that you have. Please send them to me <URL
 URL="mailto:gcokeefe@postoffice.utas.edu.au" NAME="Greg O'Keefe">
 -->
-Gostaria de ouvir quaisquer coment·rios, crÌticas ou sugestıes de
-melhoras que vocÍ tenha. Por favor, envie-as para <URL
+Gostaria de ouvir quaisquer coment√°rios, cr√≠ticas ou sugest√µes de
+melhoras que voc√™ tenha. Por favor, envie-as para <URL
 URL="mailto:gcokeefe@postoffice.utas.edu.au" NAME="Greg O'Keefe">
 
 <SECT1>Agradecimentos
@@ -2078,8 +2078,8 @@ URL="mailto:gcokeefe@postoffice.utas.edu.au" NAME="Greg O'Keefe">
 Product names are trademarks of the respective holders, and are hereby
 considered properly acknowledged.
 -->
-Os nome de produtos s„o marcas registradas de seus respectivos
-propriet·rios, e por meio disto considerado adequadamente
+Os nome de produtos s√£o marcas registradas de seus respectivos
+propriet√°rios, e por meio disto considerado adequadamente
 reconhecidos. <!-- ?? -->
 
 <P>
@@ -2099,7 +2099,7 @@ Por me lembrar sobre o Unios
 
 <TAG>Tim Little</TAG>
 <!-- For some good clues about <TT>/etc/passwd</TT> -->
-Por v·rias boas dicas sobre <TT>/etc/passwd</TT>
+Por v√°rias boas dicas sobre <TT>/etc/passwd</TT>
 
 <TAG>sPaKr on #linux in efnet</TAG>
 <!--
@@ -2108,55 +2108,55 @@ and introduced me to the phrase ``rolling your own'' to
 describe building a system from source code.
 -->
 Quem me avisou que o syslogd precisa de <TT>/etc/services</TT>, e me
-apresentou a frase ``rolling your own'' para descrever a construÁ„o de
-um sistema a partir do cÛdigo fonte.
+apresentou a frase ``rolling your own'' para descrever a constru√ß√£o de
+um sistema a partir do c√≥digo fonte.
 
 <TAG>Alex Aitkin</TAG>
 <!--
 For bringing Vico and his ``verum ipsum factum'' 
 (understanding arises through making) to my attention.
 -->
-Por me chamar a atenÁ„o sobre Vico e seu ``verum ipsum factum'' (o
-conhecimento vem pela pr·tica).
+Por me chamar a aten√ß√£o sobre Vico e seu ``verum ipsum factum'' (o
+conhecimento vem pela pr√°tica).
 
 <TAG>Dennis Scott</TAG>
 <!-- For correcting my hexidecimal arithmetic. -->
-Por corrigir minha aritimÈtica hexadecimal.
+Por corrigir minha aritim√©tica hexadecimal.
 
 <TAG>jdd</TAG>
 <!-- For pointing out some typos. -->
-Por me mostrar alguns erros tipogr·ficos.
+Por me mostrar alguns erros tipogr√°ficos.
 
 <TAG>David Leadbeater</TAG>
 <!-- For contributing some ``ramblings'' about the kernel deamons. -->
-Por contribuir com v·rios assuntos ``tortuosos'' sobre os daemons do
+Por contribuir com v√°rios assuntos ``tortuosos'' sobre os daemons do
 kernel.
 
 <TAG>Dominique van den Broeck </TAG>
 <!-- For translating this doc into French. -->
-Por traduzir este documento para o FrancÍs.
+Por traduzir este documento para o Franc√™s.
 
 <TAG>Matthieu Peeters </TAG>
 <!-- For some good information about kernel deamons. -->
-Por v·rias boas informaÁıes sobre os daemons do kernel.
+Por v√°rias boas informa√ß√µes sobre os daemons do kernel.
 
 <TAG>John Fremlin</TAG>
 <!-- For some good information about kernel deamons. -->
-Por v·rias boas informaÁıes sobre os daemons do kernel.
+Por v√°rias boas informa√ß√µes sobre os daemons do kernel.
 
 <TAG>Yuji Senda</TAG>
 <!-- For the Japanese translation. -->
-Pela traduÁ„o para o JaponÍs.
+Pela tradu√ß√£o para o Japon√™s.
 
 <TAG>Antonius de Rozari</TAG>
 <!--
 For contributing a GNU assembler version of UNIOS
 (see resources section on the home page) 
 -->
-Por contribuir com uma vers„o do UNIOS para o montador GNU as (veja a
-seÁ„o de recursos na p·gina web)
+Por contribuir com uma vers√£o do UNIOS para o montador GNU as (veja a
+se√ß√£o de recursos na p√°gina web)
 
-<TAG>Botp PeÒa</TAG>
+<TAG>Botp Pe√±a</TAG>
 <!-- For the ``roll your own os'' link. -->
 Pelo link para o ``roll your own os''.
 
@@ -2167,10 +2167,10 @@ page, which has the subtitle ``boot - from power on to the login
 prompt''. I only discovered this little gem after I had written and
 submitted the present doc to the LDP.
 -->
-Autor das p·ginas de manual do Minix. Em particular, a p·gina de
-manual sobre o <TT>boot</TT> que tem o subtÌtulo ``boot - from power
-on to the login prompt'' (de quando È ligado atÈ o login). Apenas
-descobri esta pequena pÈrola depois que escrevi e submeti o documento
+Autor das p√°ginas de manual do Minix. Em particular, a p√°gina de
+manual sobre o <TT>boot</TT> que tem o subt√≠tulo ``boot - from power
+on to the login prompt'' (de quando √© ligado at√© o login). Apenas
+descobri esta pequena p√©rola depois que escrevi e submeti o documento
 atual para o LDP.
 
 <TAG>Scott Hankin</TAG>
@@ -2178,14 +2178,14 @@ For spotting a typo. ??
 </DESCRIP>
 
 
-<SECT1>HistÛrico de modificaÁıes
+<SECT1>Hist√≥rico de modifica√ß√µes
 
 <SECT2>0.9 -> 0.9a (Novembro 2000)
 <P>
 <ITEMIZE>
 <ITEM>
 <!-- Added the roll your own os link to the Hardware section. -->
-Adicionado o link ``roll your own os'' ‡ seÁ„o Hardware.
+Adicionado o link ``roll your own os'' √† se√ß√£o Hardware.
 
 </ITEMIZE>
 
@@ -2197,7 +2197,7 @@ Adicionado o link ``roll your own os'' ‡ seÁ„o Hardware.
 Incorporated some information from Matthieu Peeters and John Fremlin
 on kernel deamons and the <TT>/proc</TT> filesystem.
 -->
-Incorporada v·rias informaÁıes de Matthieu Peeters e John Fremlin em
+Incorporada v√°rias informa√ß√µes de Matthieu Peeters e John Fremlin em
 daemons do kernel e o sistema de arquivos <TT>/proc</TT>.
 
 </ITEMIZE>
@@ -2210,7 +2210,7 @@ daemons do kernel e o sistema de arquivos <TT>/proc</TT>.
 Removed instructions on how to build a system, placing them in a
 separate document. Adjusted a few links accordingly.
 -->
-Removidas as instruÁıes sobre como construir um sistema, colocando-as
+Removidas as instru√ß√µes sobre como construir um sistema, colocando-as
 em um documento separado. Ajustado alguns links adequadamente.
 
 <ITEM>
@@ -2220,10 +2220,10 @@ URL="http://learning.taslug.org.au/power2bash" NAME="learning@TasLUG">
 to <URL URL="http://www.netspace.net.au/~gok/power2bash" NAME="my own
 webspace">.
 -->
-Movida a p·gina web de <URL
+Movida a p√°gina web de <URL
 URL="http://learning.taslug.org.au/power2bash" NAME="learning@TasLUG">
 para <URL URL="http://www.netspace.net.au/~gok/power2bash" NAME="meu
-prÛprio espaÁo na web">.
+pr√≥prio espa√ßo na web">.
 
 <ITEM>
 <!--
@@ -2231,7 +2231,7 @@ Completely failed to incorporate a lot of good material contributed by
 various people. Maybe next time :(
 -->
 Falhei completamente em incorporar um monte de bom material
-contribuÌdo por v·rias pessoas. Talvez da prÛxima vez :(
+contribu√≠do por v√°rias pessoas. Talvez da pr√≥xima vez :(
 
 </ITEMIZE>
 
@@ -2245,16 +2245,16 @@ info gathered together in a separate section and the system built is
 trimmed down, direct readers to Gerard Beekmans' ``Linux From
 Scratch'' doc for serious building
 -->
-Mais Ínfase nas explicaÁıes, menos em como construir um sistema,
-informaÁıes de construÁ„o reunidas em uma seÁ„o separada e reduzida,
+Mais √™nfase nas explica√ß√µes, menos em como construir um sistema,
+informa√ß√µes de constru√ß√£o reunidas em uma se√ß√£o separada e reduzida,
 encaminhar os leitores para o ``Linux From Scratch'' de Gerard
-Beekmans para construÁıes sÈrias.
+Beekmans para constru√ß√µes s√©rias.
 
 <ITEM>
 <!--
 added some ramblings contributed by David Leadbeater
 -->
-Adicionada contribuiÁıes de David Leadbeater.
+Adicionada contribui√ß√µes de David Leadbeater.
 
 <ITEM>
 <!--
@@ -2278,11 +2278,11 @@ Reescrita geral, posto em ordem.
 <ITEMIZE>
 <ITEM>
 <!-- added change history -->
-Adicionado o histÛrico de modificaÁıes.
+Adicionado o hist√≥rico de modifica√ß√µes.
 
 <ITEM>
 <!-- added some todos -->
-Adicionada v·rias tarefas a fazer.
+Adicionada v√°rias tarefas a fazer.
 </ITEMIZE>
 
 
@@ -2294,12 +2294,12 @@ Adicionada v·rias tarefas a fazer.
 explain kernel modules, depmod, modprobe, insmod and all that (I'll
 have to find out first!)
 -->
-Explicar mÛdulos do kernel, depmod, modprobe, insmod e tudo mais (vou
+Explicar m√≥dulos do kernel, depmod, modprobe, insmod e tudo mais (vou
 precisar aprender primeiro!).
 
 <ITEM>
 <!-- mention the /proc filesystem, potential for exercises here -->
-Mencionar o sistema de arquivos /proc, potencial para exercÌcios.
+Mencionar o sistema de arquivos /proc, potencial para exerc√≠cios.
 
 <ITEM>
 <!-- convert to docbook sgml -->
@@ -2310,9 +2310,9 @@ Converter para docbook sgml
 add more exercises, perhaps a whole section on larger exercises, like
 creating a minimal system file by file from a distro install.
 -->
-Adicionar mais exercÌcios, talvez uma seÁ„o inteira de grandes
-exercÌcios, como criar um sistema de arquivos mÌnimo com arquivos da
-instalaÁ„o de uma distribuiÁ„o.
+Adicionar mais exerc√≠cios, talvez uma se√ß√£o inteira de grandes
+exerc√≠cios, como criar um sistema de arquivos m√≠nimo com arquivos da
+instala√ß√£o de uma distribui√ß√£o.
 
 <ITEM>
 add makefile hack to bash build instructions - see easter notes. ??
