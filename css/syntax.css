@@ -64,7 +64,8 @@
 }
 
 .highlight pre {
-    overflow-x: auto;       /* this sets the scrolling in x */
+    max-height: 350px;
+    overflow: auto;       /* this sets the scrolling */
 }
 
 .highlight pre code {
