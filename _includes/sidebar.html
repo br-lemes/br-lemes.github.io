@@ -1,16 +1,27 @@
-<div class="sidebar well">
-{{ site.description }}
+<div class="panel panel-primary">
+    <div class="panel-body">
+    {{ site.description }}
+    </div>
 </div>
 
-<div class="sidebar well">
-    <h1>Recent Posts</h1>
-    <ul>
-        {% for post in site.posts limit:5 %}
-          <li><a href="{{ site.baseurl}}{{ post.url }}">{{ post.title }}</a></li>
-        {% endfor %}
-    </ul>
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">Recent Posts</h3>
+    </div>
+    <div class="panel-body">
+        <ul>
+            {% for post in site.posts limit:5 %}
+            <li><a href="{{ site.baseurl}}{{ post.url }}">{{ post.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
 </div>
 
-<div class="sidebar well">
-{% include links-list.html %}
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">Links</h3>
+    </div>
+    <div class="panel-body">
+        {% include links-list.html %}
+    </div>
 </div>
