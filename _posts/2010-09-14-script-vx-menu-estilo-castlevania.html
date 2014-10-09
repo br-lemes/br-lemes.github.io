@@ -1,0 +1,419 @@
+---
+comments: true
+layout: post
+title: "[Script VX] Menu estilo Castlevania"
+tags: [RPG Maker]
+---
+
+{% include aviso.html %}
+
+<h3>Introdução</h3>
+
+<p>Este é um menu estilo Castlevania para um só herói, com troca de windowskin,
+bestiário e familiares.
+
+<h3>Screenshots</h3>
+
+
+<!-- pictures.png -->
+
+<h3>Como usar</h3>
+
+<p>Cole em scripts adicionais, acima de Main.<br />
+
+<p>As configurações estão destacadas e explicadas na primeira parte do script.
+
+<h3>Demo</h3>
+
+CTVMenu.rar
+
+<h3>Script</h3>
+
+{% highlight ruby %}
+=begin
+  Menu Estilo Castlevania
+  por br_lemes
+
+  É permitido, livre de quaisquer ônus, usar, copiar, modificar e/ou
+  distribuir cópias deste script, desde que seja mantido este aviso.
+  NÃO HÁ QUALQUER GARANTIA, USE POR SUA PRÓPRIA CONTA E RISCO.
+=end
+
+#  Este é um menu estilo Castlevania para um só herói, com troca de
+#  windowskin, bestiário e familiares.
+
+################################################################################
+#  CONFIGURAÇÕES: Modifique aqui
+################################################################################
+
+module CTV
+  # windowskin padrão
+  SKIN_DEFAULT = "Default"
+  # Lista de windowskin, incluindo a padrão. Deve haver um arquivo com mesmo
+  # nome na pasta Graphics / System
+  SKIN_LIST    = [CTV::SKIN_DEFAULT,"Classic","Darkish","Golden_Green",
+                  "Greenish","Grizzle","Heavy_Blue","Heavy_Brown",
+                  "Heavy_Green","Light_Blue","Light_Gold","Light_Green",
+                  "Orangeade","Purplish","Reddish","Wood"]
+
+  # Vocabulário extra
+  FAMILLIARS = "Ajudantes"
+  WINDOWSKIN = "Temas"
+  MONSTERS   = "Monstros"
+  KILLS      = "Mortos"
+  TIME       = "Tempo"
+  GOLD       = "Dinheiro"
+end
+
+################################################################################
+#  NÃO MODIFIQUE A PARTIR DAQUI. A menos que saiba bem o que está fazendo.
+################################################################################
+
+class Window_Base < Window
+  alias wor_changeskin_winbase_ini initialize
+  alias wor_changeskin_winbase_upd update
+  def initialize(x, y, width, height)
+    wor_changeskin_winbase_ini(x, y, width, height)
+    self.windowskin = Cache.system($game_system.skin)
+    @winskin = $game_system.skin
+  end
+  def update
+    wor_changeskin_winbase_upd
+    if @winskin != $game_system.skin
+      self.windowskin = Cache.system($game_system.skin)
+      @winskin = $game_system.skin
+    end
+  end
+end
+
+class Game_System
+  attr_accessor :skin
+  attr_accessor :monsters
+  attr_accessor :kills  
+  alias wor_changeskin_gamesys_ini initialize
+  def initialize
+    wor_changeskin_gamesys_ini
+    @skin = CTV::SKIN_DEFAULT
+    @monsters = []
+    @kills = 0    
+  end
+end
+
+class Scene_Equip < Scene_Base
+  def return_scene
+    $scene = Scene_Menu.new(0)
+  end
+end
+
+class Scene_Item < Scene_Base
+  def return_scene
+    $scene = Scene_Menu.new(2)
+  end
+end
+class Scene_End < Scene_Base
+  def return_scene
+    $scene = Scene_Menu.new(6)
+  end
+end
+
+class Window_CTVStatus < Window_Base
+  def initialize
+    super(0, 0, 544, 416)
+    refresh
+  end
+  def draw_actor_level(actor, x, y)
+    self.contents.font.color = system_color
+    self.contents.draw_text(x, y, 64, WLH, Vocab::level)
+    self.contents.font.color = normal_color
+    self.contents.draw_text(x + 64, y, 24, WLH, actor.level, 2)
+  end
+  def draw_actor_hp(actor, x, y, width = 120)
+    draw_actor_hp_gauge(actor, x + 30, y, width)
+    self.contents.font.color = system_color
+    self.contents.draw_text(x, y, 30, WLH, Vocab::hp)
+    self.contents.font.color = hp_color(actor)
+    xr = x + 30 + width
+    if width < 120
+      self.contents.draw_text(xr - 40, y, 40, WLH, actor.hp, 2)
+    else
+      self.contents.draw_text(xr - 90, y, 40, WLH, actor.hp, 2)
+      self.contents.font.color = normal_color
+      self.contents.draw_text(xr - 50, y, 10, WLH, "/", 2)
+      self.contents.draw_text(xr - 40, y, 40, WLH, actor.maxhp, 2)
+    end
+  end
+  def draw_actor_mp(actor, x, y, width = 120)
+    draw_actor_mp_gauge(actor, x + 30, y, width)
+    self.contents.font.color = system_color
+    self.contents.draw_text(x, y, 30, WLH, Vocab::mp)
+    self.contents.font.color = mp_color(actor)
+    xr = x + 30 + width
+    if width < 120
+      self.contents.draw_text(xr - 40, y, 40, WLH, actor.mp, 2)
+    else
+      self.contents.draw_text(xr - 90, y, 40, WLH, actor.mp, 2)
+      self.contents.font.color = normal_color
+      self.contents.draw_text(xr - 50, y, 10, WLH, "/", 2)
+      self.contents.draw_text(xr - 40, y, 40, WLH, actor.maxmp, 2)
+    end
+  end
+  def draw_exp_info(actor, x, y)
+    s1 = actor.exp_s
+    s2 = actor.next_rest_exp_s
+    s_next = sprintf(Vocab::ExpNext, Vocab::level)
+    self.contents.font.color = system_color
+    self.contents.draw_text(x, y + WLH * 0, 180, WLH, Vocab::ExpTotal)
+    self.contents.draw_text(x, y + WLH * 2, 180, WLH, s_next)
+    self.contents.font.color = normal_color
+    self.contents.draw_text(x, y + WLH * 1, 180, WLH, s1, 2)
+    self.contents.draw_text(x, y + WLH * 3, 180, WLH, s2, 2)
+  end
+  def refresh
+    actor = $game_party.members[0]
+    self.contents.clear
+    draw_actor_face(actor, 0, 0)
+    draw_actor_name(actor, 218, 0)
+    draw_actor_level(actor, 416, WLH * 2)
+    draw_actor_state(actor, 416, WLH * 3)
+    draw_actor_hp(actor, 158, WLH * 2)
+    draw_actor_mp(actor, 158, WLH * 3)
+    for i in 0..3
+      draw_actor_parameter(actor, 348, WLH * (6+i), i)
+    end
+    self.contents.font.color = system_color
+    self.contents.draw_text(348, 264, 80, WLH, CTV::MONSTERS)    
+    self.contents.draw_text(348, 288, 80, WLH, CTV::KILLS)
+    self.contents.font.color = normal_color
+    self.contents.draw_text(428, 264, 76, WLH, "#{$game_system.monsters.nitems}/#{$data_enemies.size}",2)
+    self.contents.draw_text(428, 288, 76, WLH, $game_system.kills,2)    
+    self.contents.font.color = system_color
+    self.contents.draw_text(348, 360, 120, WLH, CTV::TIME)
+    tmp = Graphics.frame_count / Graphics.frame_rate
+    hor = tmp / 60 / 60
+    min = tmp / 60 % 60
+    sec = tmp % 60
+    self.contents.font.color = normal_color
+    self.contents.draw_text(384, 360, 120, WLH,
+      sprintf("%02d:%02d:%02d", hor, min, sec), 2)
+    draw_exp_info(actor, 0, 240)
+    self.contents.font.color = system_color
+    self.contents.draw_text(0, 336, 180, WLH, CTV::GOLD)
+    draw_currency_value($game_party.gold, 0, 360, 180)
+  end
+end
+
+class Scene_Menu < Scene_Base
+  def initialize(menu_index = 0)
+    @menu_index = menu_index
+  end  
+  def start
+    s1 = Vocab::equip
+    s2 = Vocab::skill
+    s3 = Vocab::item
+    s4 = CTV::FAMILLIARS
+    s5 = Vocab::save
+    s6 = CTV::WINDOWSKIN
+    s7 = Vocab::game_end    
+    super
+    create_menu_background
+    @wstatus = Window_CTVStatus.new
+    @wcommand = Window_Command.new(160,[s1, s2, s3, s4, s5, s6, s7])
+    @wcommand.x = 199
+    @wcommand.y = 144
+    @wcommand.index = @menu_index
+    if $game_system.save_disabled       # Se salvar for proibido
+      @wcommand.draw_item(4, false)     # Desabilita "Salvar"
+    end
+    @wskin = Window_Command.new(160,CTV::SKIN_LIST)
+    @wskin.x = 327
+    @wskin.y = 264
+    @wskin.height = 128
+    @wskin.active = false
+    @wskin.visible = false
+  end
+  def terminate
+    super
+    dispose_menu_background
+    @wstatus.dispose
+    @wcommand.dispose
+    @wskin.dispose
+  end
+  def update
+    super
+    update_menu_background
+    @wstatus.update
+    if @wskin.active
+      @wskin.update
+      if Input.trigger?(Input::B)
+        Sound.play_cancel
+        @wskin.active = false
+        @wskin.visible = false
+      end
+      if Input.trigger?(Input::C)
+        Sound.play_decision
+        $game_system.skin = CTV::SKIN_LIST[@wskin.index]
+        @wstatus.update
+        @wcommand.update
+        @wskin.update
+      end
+    else
+      @wcommand.update
+      if Input.trigger?(Input::B)
+        Sound.play_cancel
+        $scene = Scene_Map.new
+      end
+      if Input.trigger?(Input::C)
+        case @wcommand.index
+          when 0    # Equipamentos
+            $scene = Scene_Equip.new(0)
+          when 1    # Técnicas
+            $scene = Scene_Skill.new(0)
+          when 2    # Relíquias
+            $scene = Scene_Item.new
+          when 3    # Ajudantes
+            $scene = Scene_CTVFamilliars.new
+          when 4    # Salvar
+            $scene = Scene_File.new(true, false, false)
+          when 5    # Windowskin
+            @wskin.active = true
+            @wskin.visible = true
+            @wskin.refresh
+          when 6    # Sair
+            $scene = Scene_End.new          
+        end
+      end
+    end
+  end
+end
+
+class Window_Item < Window_Selectable
+  def initialize(x, y, width, height)
+    super(x, y, width, height)
+    @column_max = 5
+    self.index = 0
+    refresh
+  end  
+  def draw_item(index)
+    rect = item_rect(index)
+    self.contents.clear_rect(rect)
+    item = @data[index]
+    if item != nil
+      number = $game_party.item_number(item)
+      enabled = enable?(item)
+      rect.width -= 4
+      draw_icon(item.icon_index, rect.x, rect.y, enabled)
+      self.contents.font.color = normal_color
+      self.contents.font.color.alpha = enabled ? 255 : 128
+      self.contents.draw_text(rect, sprintf(": %2d", number), 2)
+    end
+  end
+end
+
+class Window_ShopBuy < Window_Selectable
+  def initialize(x, y)
+    super(x, y, 304, 304)
+    @column_max = 2
+    @shop_goods = $game_temp.shop_goods
+    refresh
+    self.index = 0
+  end  
+  def draw_item(index)
+    item = @data[index]
+    number = $game_party.item_number(item)
+    enabled = (item.price <= $game_party.gold and number < 99)
+    rect = item_rect(index)
+    self.contents.clear_rect(rect)
+    draw_icon(item.icon_index, rect.x, rect.y, enabled)
+    self.contents.font.color = normal_color
+    self.contents.font.color.alpha = enabled ? 255 : 128
+    rect.width -= 4
+    self.contents.draw_text(rect, item.price, 2)
+  end
+end
+
+class Scene_Battle < Scene_Base
+  alias ctv_battle_end battle_end
+  def battle_end(result)
+    if result == 0
+      for enemy in $game_troop.dead_members
+        unless enemy.hidden
+          $game_system.monsters[enemy.enemy_id] = true
+          $game_system.kills += 1
+        end
+      end
+    end
+    ctv_battle_end(result)
+  end
+end
+
+class Window_CTVFamilliars < Window_Base
+ def initialize
+    super(0, 0, 544, 416)
+    refresh
+  end
+  def draw_actor_level(actor, x, y)
+    self.contents.font.color = system_color
+    self.contents.draw_text(x, y, 64, WLH, Vocab::level)
+    self.contents.font.color = normal_color
+    self.contents.draw_text(x + 64, y, 24, WLH, actor.level, 2)
+  end
+  def draw_exp_info(actor, x, y)
+    s1 = actor.exp_s
+    s2 = actor.next_rest_exp_s
+    s_next = sprintf(Vocab::ExpNext, Vocab::level)
+    self.contents.font.color = system_color
+    self.contents.draw_text(x, y + WLH * 0, 180, WLH, Vocab::ExpTotal)
+    self.contents.draw_text(x, y + WLH * 2, 180, WLH, s_next)
+    self.contents.font.color = normal_color
+    self.contents.draw_text(x, y + WLH * 1, 180, WLH, s1, 2)
+    self.contents.draw_text(x, y + WLH * 3, 180, WLH, s2, 2)
+  end  
+  def refresh
+    self.contents.clear
+    if $game_party.members[1] != nil
+      draw_actor_face ($game_party.members[1],   0,  24)
+      draw_actor_level($game_party.members[1],   0, 120)
+      draw_exp_info   ($game_party.members[1],   0, 144)
+    end
+    if $game_party.members[2] != nil
+      draw_actor_face ($game_party.members[2], 208, 168)
+      draw_actor_level($game_party.members[2], 166, 264)
+      draw_exp_info   ($game_party.members[2], 166, 288)
+    end
+    if $game_party.members[3] != nil
+      draw_actor_face ($game_party.members[3], 332,  24)
+      draw_actor_level($game_party.members[3], 332, 120)
+      draw_exp_info   ($game_party.members[3], 332, 144)
+    end
+    self.contents.draw_text(0,0,self.width-32,WLH,CTV::FAMILLIARS,1)
+  end
+end
+
+class Scene_CTVFamilliars < Scene_Base
+  def start
+    super
+    create_menu_background
+    @wfamilliars = Window_CTVFamilliars.new
+  end
+  def terminate
+    super
+    dispose_menu_background
+    @wfamilliars.dispose
+  end
+  def update
+    super
+    update_menu_background
+    @wfamilliars.update
+    if Input.trigger?(Input::B)
+      Sound.play_cancel
+      $scene = Scene_Menu.new(3)
+    end    
+  end
+end
+{% endhighlight %}
+
+<h3>Créditos e Agradecimentos</h3>
+
+<ul><li>Script de Trocar Windowskin de Woratana</li></ul>
+
+br_lemes, o Paladino insano (Demente) 

@@ -1,0 +1,145 @@
+---
+comments: true
+layout: post
+title: "[Script VX] Mais de 20 pictures"
+tags: [RPG Maker]
+---
+
+{% include aviso.html %}
+
+<h3>Introdução</h3>
+
+<p>No RPG Maker VX você não pode usar mais do que 20 pictures, esse script te
+possibilita adicionar quantas pictures quiser. Ótimo para menus por eventos,
+sistemas e outras coisas.
+
+<p>Este script cria um "deslocamento" no array de pictures para que você use
+mais que 20 pictures no RPG Maker VX. Você usa o comando de evento Mostrar
+Imagem normalmente, porém junto com uma variável que indica o deslocamento.
+
+<h3>Screenshots</h3>
+
+<!-- pictures.png -->
+
+<h3>Como usar</h3>
+
+<p>Cole em scripts adicionais, acima de Main.
+
+<p>Configure o número máximo de pictures e a ID da variável de deslocamento.
+Crie o evento desta forma:
+
+<!-- evento.png -->
+
+<h3>Demo</h3>
+
+<!-- Pictures.rar -->
+
+<h3>Script</h3>
+
+{% highlight ruby %}
+=begin
+  Mais de 20 pictures
+  por br_lemes
+
+  É permitido, livre de quaisquer ônus, usar, copiar, modificar e/ou
+  distribuir cópias deste script, desde que seja mantido este aviso.
+  NÃO HÁ QUALQUER GARANTIA, USE POR SUA PRÓPRIA CONTA E RISCO.
+=end
+
+# Este script cria um "deslocamento" no array de pictures para que você use
+# mais que 20 pictures no RPG Maker VX. Você usa o comando de evento Mostrar
+# Imagem normalmente, porém junto com uma variável que indica o deslocamento.
+
+$PICTURE_MAXNUM = 20 * 2 # Número máximo de pictures
+$PICTURE_OFFSET =      1 # ID da variável de deslocamento
+
+class Game_Screen
+  def clear
+    @brightness = 255
+    @fadeout_duration = 0
+    @fadein_duration = 0
+    @tone = Tone.new(0, 0, 0, 0)
+    @tone_target = Tone.new(0, 0, 0, 0)
+    @tone_duration = 0
+    @flash_color = Color.new(0, 0, 0, 0)
+    @flash_duration = 0
+    @shake_power = 0
+    @shake_speed = 0
+    @shake_duration = 0
+    @shake_direction = 1
+    @shake = 0
+    @pictures = []
+    for i in 0..$PICTURE_MAXNUM
+      @pictures.push(Game_Picture.new(i))
+    end
+    @weather_type = 0
+    @weather_max = 0.0
+    @weather_type_target = 0
+    @weather_max_target = 0.0
+    @weather_duration = 0
+  end  
+end
+
+class Game_Interpreter
+  def command_231 # Mostrar Imagem
+    if @params[3] == 0    # Especificação direta
+      x = @params[4]
+      y = @params[5]
+    else                  # Especificação variável
+      x = $game_variables[@params[4]]
+      y = $game_variables[@params[5]]
+    end
+    screen.pictures[@params[0]+$game_variables[$PICTURE_OFFSET]*20].show(
+      @params[1], @params[2], x, y, @params[6], @params[7], @params[8], @params[9])
+    return true
+  end
+  def command_232 # Mover Imagem
+    if @params[3] == 0    # Especificação Direta
+      x = @params[4]
+      y = @params[5]
+    else                  # Especificação Variável
+      x = $game_variables[@params[4]]
+      y = $game_variables[@params[5]]
+    end
+    screen.pictures[@params[0]+$game_variables[$PICTURE_OFFSET]*20].move(
+      @params[2], x, y, @params[6],@params[7], @params[8], @params[9], @params[10])
+    @wait_count = @params[10] if @params[11]
+    return true
+  end
+  def command_233 # Girar imagem
+    screen.pictures[@params[0]+$game_variables[$PICTURE_OFFSET]*20].rotate(@params[1])
+    return true
+  end
+  def command_234 # Tonalidade da imagem
+    screen.pictures[@params[0]+$game_variables[$PICTURE_OFFSET]*20].start_tone_change(@params[1], @params[2])
+    @wait_count = @params[2] if @params[3]
+    return true
+  end
+  def command_235 # Apagar imagem
+    screen.pictures[@params[0]+$game_variables[$PICTURE_OFFSET]*20].erase
+    return true
+  end  
+end
+
+class Spriteset_Map
+  def create_pictures
+    @picture_sprites = []
+    for i in 1..$PICTURE_MAXNUM
+      @picture_sprites.push(Sprite_Picture.new(@viewport2,
+        $game_map.screen.pictures[i]))
+    end
+  end  
+end
+
+class Spriteset_Battle
+  def create_pictures
+    @picture_sprites = []
+    for i in 1..$PICTURE_MAXNUM
+      @picture_sprites.push(Sprite_Picture.new(@viewport2,
+        $game_troop.screen.pictures[i]))
+    end
+  end
+end
+{% endhighlight %}
+
+br_lemes, o Saci insano (Esquizofrênico)
