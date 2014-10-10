@@ -9,12 +9,17 @@
 					<div class="panel-heading">
 						<h1 class="post-title">
 							<a href="{{ site.baseurl}}{{ page.url }}">
-								{{ page.date | date: "%b %-d, %Y" }}
-								- {{ page.title }}
+								{{ page.title }}
 							</a>
 						</h1>
 					</div>
 					<div class="panel-body">
+						<a href="#" class="btn btn-primary btn-sm">
+							{{ page.date | date_to_string }}
+						</a>
+						{% for tag in page.tags %}
+							<a href="#" class="btn btn-primary btn-sm">{{ tag }}</a>
+						{% endfor %}
 						{% if site.comments == true and page.comments == true and site.disqus != '' %}
 							<p class="author">
 								<a href="#disqus_thread">Comments</a>
