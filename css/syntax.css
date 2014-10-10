@@ -60,14 +60,14 @@
 .highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
 
 .highlight pre code * {
-    white-space: nowrap;    /* this sets all children inside to nowrap */
+	white-space: nowrap; /* this sets all children inside to nowrap */
 }
 
 .highlight pre {
-    max-height: 350px;
-    overflow: auto;       /* this sets the scrolling */
+	max-height: 350px;
+	overflow: auto; /* this sets the scrolling */
 }
 
 .highlight pre code {
-    white-space: pre;       /* forces <code> to respect <pre> formatting */
+	white-space: pre; /* forces <code> to respect <pre> formatting */
 }
