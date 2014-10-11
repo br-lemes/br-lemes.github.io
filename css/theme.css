@@ -21,16 +21,6 @@ section {
 	color: #ee4444;
 }
 
-.sidebar li {
-	margin-top: .7em;
-	line-height: 1em;
-}
-
-.sidebar ul {
-	margin: 7px;
-	padding: 0;
-}
-
 .container-left {
 	margin: 0;
 }
