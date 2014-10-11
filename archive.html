@@ -11,7 +11,6 @@ layout: default
 			{% unless post.next %}
 				<h2>{{ post.date | date: '%Y' }}</h2>
 				<a name="{{ post.date | date: '%Y' }}"></a>
-				<ul>
 			{% else %}
 				{% capture year %}
 					{{ post.date | date: '%Y' }}
@@ -20,15 +19,11 @@ layout: default
 					{{ post.next.date | date: '%Y' }}
 				{% endcapture %}
 				{% if year != nyear %}
-					</ul>
 					<h2>{{ post.date | date: '%Y' }}</h2>
 					<a name="{{ post.date | date: '%Y' }}"></a>
-					<ul>
 				{% endif %}
 			{% endunless %}
-			<li><a href="{{ site.baseurl}}{{ post.url }}">
-				{{ post.date | date: "%b %-d" }} - {{ post.title }}
-			</a></li>
+			{% include postline.html post=post %}
 		{% endfor %}
 		</ul>
 	</div>

@@ -8,13 +8,9 @@ layout: default
 	</div>
 	<div class="panel-body">
 		{% if site.tags[page.tag] %}
-			<ul>
 			{% for post in site.tags[page.tag] %}
-				<li><a href="{{ site.baseurl}}{{ post.url }}">
-					{{ post.title }}
-				</a></li>
+				{% include postline.html post=post %}
 			{% endfor %}
-			</ul>
 		{% else %}
 			<p>There are no posts for this tag.</p>
 		{% endif %}

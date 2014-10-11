@@ -14,13 +14,7 @@
 						</h1>
 					</div>
 					<div class="panel-body">
-						<a href="{{ site.baseurl}}/archive.html#{{ page.date | date: '%Y' }}" class="btn btn-primary btn-sm">
-							{{ page.date | date: '%d/%m/%Y' }}
-						</a>
-						{% for tag in page.tags %}
-							<a href="{{ site.baseurl}}/tags/{{ tag | downcase | replace: ' ', '-' }}.html"
-								class="btn btn-primary btn-sm">{{ tag }}</a>
-						{% endfor %}
+						{% include posttags.html post=page %}
 						{% if site.comments == true and page.comments == true and site.disqus != '' %}
 							<p class="author">
 								<a href="#disqus_thread">Comments</a>

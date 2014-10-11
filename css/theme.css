@@ -49,3 +49,8 @@ body {
 .post-title a {
 	color: inherit;
 }
+
+.post-line {
+	font-weight: 700;
+	font-size: 1.5em;
+}

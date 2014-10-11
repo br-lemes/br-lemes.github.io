@@ -13,13 +13,7 @@ layout: default
 			</h1>
 		</div>
 		<div class="panel-body">
-			<a href="{{ site.baseurl}}/archive.html#{{ post.date | date: '%Y' }}" class="btn btn-primary btn-sm">
-				{{ post.date | date: '%d/%m/%Y' }}
-			</a>
-			{% for tag in post.tags %}
-				<a href="{{ site.baseurl}}/tags/{{ tag | downcase | replace: ' ', '-' }}.html"
-					class="btn btn-primary btn-sm">{{ tag }}</a>
-			{% endfor %}
+			{% include posttags.html post=post %}
 			{% if site.comments == true and post.comments == true and site.disqus != '' %}
 				<p class="author"><a href="{{ site.baseurl }}{{ post.url }}/#disqus_thread">Comments</a></p>
 			{% endif %}
