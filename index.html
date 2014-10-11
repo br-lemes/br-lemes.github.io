@@ -18,7 +18,10 @@ layout: default
 				<p class="author"><a href="{{ site.baseurl }}{{ post.url }}/#disqus_thread">Comments</a></p>
 			{% endif %}
 			<div class="content">
-				{{ post.content }}
+				{{ post.excerpt }}
+				<p style="text-align: right">
+				<a href="{{ site.baseurl}}{{ post.url }}#more"
+					class="btn btn-primary">Read More</a>
 			</div>
 		</div>
 	</div>
