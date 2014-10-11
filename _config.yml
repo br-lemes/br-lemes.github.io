@@ -34,4 +34,4 @@ redcarpet:
 
 exclude: ['README.md', 'LICENSE']
 
-excerpt_separator: '<a name="more"></a>'
+excerpt_separator: '<!-- more -->'
