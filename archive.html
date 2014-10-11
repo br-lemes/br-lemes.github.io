@@ -9,7 +9,8 @@ layout: default
 	<div class="panel-body">
 		{%for post in site.posts %}
 			{% unless post.next %}
-				<h1>{{ post.date | date: '%Y' }}</h1>
+				<h2>{{ post.date | date: '%Y' }}</h2>
+				<a name="{{ post.date | date: '%Y' }}"></a>
 				<ul>
 			{% else %}
 				{% capture year %}
@@ -20,7 +21,8 @@ layout: default
 				{% endcapture %}
 				{% if year != nyear %}
 					</ul>
-					<h1>{{ post.date | date: '%Y' }}</h1>
+					<h2>{{ post.date | date: '%Y' }}</h2>
+					<a name="{{ post.date | date: '%Y' }}"></a>
 					<ul>
 				{% endif %}
 			{% endunless %}

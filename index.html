@@ -13,11 +13,12 @@ layout: default
 			</h1>
 		</div>
 		<div class="panel-body">
-			<a href="#" class="btn btn-primary btn-sm">
-				{{ post.date | date_to_string }}
+			<a href="{{ site.baseurl}}/archive.html#{{ post.date | date: '%Y' }}" class="btn btn-primary btn-sm">
+				{{ post.date | date: '%d/%m/%Y' }}
 			</a>
 			{% for tag in post.tags %}
-				<a href="#" class="btn btn-primary btn-sm">{{ tag }}</a>
+				<a href="{{ site.baseurl}}/tags/{{ tag | downcase | replace: ' ', '-' }}.html"
+					class="btn btn-primary btn-sm">{{ tag }}</a>
 			{% endfor %}
 			{% if site.comments == true and post.comments == true and site.disqus != '' %}
 				<p class="author"><a href="{{ site.baseurl }}{{ post.url }}/#disqus_thread">Comments</a></p>

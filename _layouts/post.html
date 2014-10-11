@@ -14,11 +14,12 @@
 						</h1>
 					</div>
 					<div class="panel-body">
-						<a href="#" class="btn btn-primary btn-sm">
-							{{ page.date | date_to_string }}
+						<a href="{{ site.baseurl}}/archive.html#{{ page.date | date: '%Y' }}" class="btn btn-primary btn-sm">
+							{{ page.date | date: '%d/%m/%Y' }}
 						</a>
 						{% for tag in page.tags %}
-							<a href="#" class="btn btn-primary btn-sm">{{ tag }}</a>
+							<a href="{{ site.baseurl}}/tags/{{ tag | downcase | replace: ' ', '-' }}.html"
+								class="btn btn-primary btn-sm">{{ tag }}</a>
 						{% endfor %}
 						{% if site.comments == true and page.comments == true and site.disqus != '' %}
 							<p class="author">
