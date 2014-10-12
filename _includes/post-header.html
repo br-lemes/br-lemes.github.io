@@ -1,0 +1,28 @@
+<div class="panel panel-success">
+	<div class="panel-heading">
+		<h1 class="post-title">
+			<a href="{{ site.baseurl }}{{ include.post.url }}">
+				{{ include.post.title }}
+			</a>
+		</h1>
+	</div>
+	<div class="panel-body">
+		<p>
+		<a href="{{ site.baseurl}}/archive.html#{{ include.post.date | date: '%Y' }}"
+			class="btn btn-success btn-xs">
+			<i class="fa fa-calendar"></i>
+			{{ include.post.date | date: '%d/%m/%Y' }}
+		</a>
+		{% for tag in include.post.tags %}
+			<a href="{{ site.baseurl}}/tags/{{ tag | downcase | replace: ' ', '-' }}.html"
+				class="btn btn-success btn-xs">
+				<i class="fa fa-tag"></i> {{ tag }}
+			</a>
+		{% endfor %}
+		{% if site.comments == true and include.post.comments == true and site.disqus != '' %}
+			<a class="btn btn-success btn-xs"
+				href="{{ site.baseurl }}{{ include.post.url }}/#disqus_thread">
+				<i class="fa fa-comments"></i> Comments
+			</a>
+		{% endif %}
+		</p>
