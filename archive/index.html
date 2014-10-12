@@ -2,29 +2,53 @@
 layout: default
 ---
 
+{% capture archive %}{{ post.baseurl }}/archive{% endcapture %}
+{% capture entry_begin %}
 <div class="panel panel-success">
-	<div class="panel-heading">
-		<h1 class="post-title">Archive</h1>
-	</div>
-	<div class="panel-body">
-		{%for post in site.posts %}
-			{% unless post.next %}
-				<h2>{{ post.date | date: '%Y' }}</h2>
-				<a name="{{ post.date | date: '%Y' }}"></a>
-			{% else %}
-				{% capture year %}
-					{{ post.date | date: '%Y' }}
-				{% endcapture %}
-				{% capture nyear %}
-					{{ post.next.date | date: '%Y' }}
-				{% endcapture %}
-				{% if year != nyear %}
-					<h2>{{ post.date | date: '%Y' }}</h2>
-					<a name="{{ post.date | date: '%Y' }}"></a>
-				{% endif %}
-			{% endunless %}
-			{% include postline.html post=post %}
-		{% endfor %}
-		</ul>
+	<div class="panel-heading post-title-heading">
+{% endcapture %}
+{% capture entry_end %}
 	</div>
 </div>
+{% endcapture %}
+
+{{ entry_begin }}
+	<a href="{{ archive }}/">
+	<i class="fa fa-folder-open pull-left post-title">
+	</i>
+	</a>
+	<h1 class="post-title">
+		<a href="{{ archive }}/">Archive</a>
+	</h1>
+{{ entry_end }}
+
+{{ entry_begin }}
+{%for post in site.posts %}
+	{% unless post.next %}
+		{% unless forloop.first %}{{ entry_end }}{% endunless %}
+		<h2 class="post-title">
+			<a href="{{ archive }}/{{ post.date | date: '%Y' }}.html">
+				<i class="fa fa-calendar"></i> {{ post.date | date: '%Y' }}
+			</a>
+		</h2></div>
+	{% else %}
+		{% capture year %}
+			{{ post.date | date: '%Y' }}
+		{% endcapture %}
+		{% capture nyear %}
+			{{ post.next.date | date: '%Y' }}
+		{% endcapture %}
+		{% if year != nyear %}
+			{% unless forloop.first %}{{ entry_end }}{% endunless %}
+			<h2 class="post-title">
+				<a href="{{ archive }}/{{ post.date | date: '%Y' }}.html">
+					<i class="fa fa-calendar"></i> {{ post.date | date: '%Y' }}
+				</a>
+			</h2></div>
+		{% endif %}
+	{% endunless %}
+	<a href="{{ site.baseurl }}{{ post.url}}" class="list-group-item">
+		{{ post.title }}
+	</a>
+{% endfor %}
+{{ entry_end }}
