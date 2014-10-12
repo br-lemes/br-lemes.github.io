@@ -1,7 +1,7 @@
-<a href="{{ site.baseurl}}/archive.html#{{ post.date | date: '%Y' }}" class="btn btn-primary btn-sm">
+<a href="{{ site.baseurl}}/archive.html#{{ post.date | date: '%Y' }}" class="btn btn-success btn-xs">
 	{{ include.post.date | date: '%d/%m/%Y' }}
 </a>
 {% for tag in include.post.tags %}
 	<a href="{{ site.baseurl}}/tags/{{ tag | downcase | replace: ' ', '-' }}.html"
-		class="btn btn-primary btn-sm">{{ tag }}</a>
+		class="btn btn-success btn-xs">{{ tag }}</a>
 {% endfor %}

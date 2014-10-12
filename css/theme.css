@@ -1,11 +1,15 @@
+---
+---
+
 body {
-	padding-top: 60px;
-	padding-bottom: 60px;
+	padding-top: 70px;
+	padding-bottom: 70px;
+	background-image: url('{{ site.baseurl }}/images/stripe.png');
 }
 
 section {
-	padding-top: 60px;
-	margin-top: -60px;
+	padding-top: 70px;
+	margin-top: -70px;
 }
 
 .copyright {

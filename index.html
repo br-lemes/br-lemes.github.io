@@ -4,7 +4,7 @@ layout: default
 
 {% for post in paginator.posts %}
 <div class="article">
-	<div class="panel panel-primary">
+	<div class="panel panel-success">
 		<div class="panel-heading">
 			<h1 class="post-title">
 				<a href="{{ site.baseurl}}{{ post.url }}">
@@ -21,7 +21,7 @@ layout: default
 				{{ post.excerpt }}
 				<p style="text-align: right">
 				<a href="{{ site.baseurl}}{{ post.url }}#more"
-					class="btn btn-primary">Read More</a>
+					class="btn btn-success btn-sm">Read More</a>
 			</div>
 		</div>
 	</div>
