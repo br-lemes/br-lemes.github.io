@@ -1,7 +1,11 @@
-<a href="{{ site.baseurl}}/archive.html#{{ post.date | date: '%Y' }}" class="btn btn-success btn-xs">
+<a href="{{ site.baseurl}}/archive.html#{{ post.date | date: '%Y' }}"
+	class="btn btn-success btn-xs">
+	<i class="fa fa-calendar"></i>
 	{{ include.post.date | date: '%d/%m/%Y' }}
 </a>
 {% for tag in include.post.tags %}
 	<a href="{{ site.baseurl}}/tags/{{ tag | downcase | replace: ' ', '-' }}.html"
-		class="btn btn-success btn-xs">{{ tag }}</a>
+		class="btn btn-success btn-xs">
+		<i class="fa fa-tag"></i> {{ tag }}
+	</a>
 {% endfor %}

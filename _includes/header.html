@@ -7,6 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<script src="{{ site.baseurl }}/js/jquery.min.js"></script>
 	<script src="{{ site.baseurl }}/js/bootstrap.min.js"></script>
+	<link href="{{ site.baseurl }}/css/font-awesome.min.css" rel="stylesheet">
 	<link href="{{ site.baseurl }}/css/bootstrap.css" rel="stylesheet">
 	<link href="{{ site.baseurl }}/css/theme.css" rel="stylesheet">
 	<link href="{{ site.baseurl }}/css/syntax.css" rel="stylesheet">
@@ -31,13 +32,13 @@
 			</div>
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li><a href="{{ site.baseurl }}/">Home</a></li>
+					<li><a href="{{ site.baseurl }}/"><i class="fa fa-home fa-lg"></i> Home</a></li>
 					<li class="visible-xs-block"><a href="{{ site.baseurl }}/links.html">Links</a></li>
-					<li><a href="{{ site.baseurl }}/archive.html">Archive</a></li>
-					<li><a href="{{ site.baseurl }}/about.html">About</a></li>
-					<li><a href="{{ site.baseurl }}/feed.xml">RSS</a></li>
+					<li><a href="{{ site.baseurl }}/archive.html"><i class="fa fa-folder-open fa-lg"></i> Archive</a></li>
+					<li><a href="{{ site.baseurl }}/about.html"><i class="fa fa-info-circle fa-lg"></i> About</a></li>
+					<li><a href="{{ site.baseurl }}/feed.xml"><i class="fa fa-rss fa-lg"></i> RSS</a></li>
 					{% if site.github != '' %}
-						<li><a href="https://github.com/{{ site.github }}">Github</a></li>
+						<li><a href="https://github.com/{{ site.github }}"><i class="fa fa-github fa-lg"></i> Github</a></li>
 					{% endif %}
 				</ul>
 			</div>
