@@ -50,12 +50,13 @@ section {
 }
 
 .post-title a {
+	text-decoration: none;
 	color: inherit;
 }
 
-.post-line {
-	font-weight: 700;
-	font-size: 1.5em;
+
+.post-title-heading:hover {
+	background-color: #128f76;
 }
 
 a:visited {
