@@ -17,6 +17,10 @@ section {
 	margin: 0;
 }
 
+.copyright a:visited {
+	color: #18BC9C;
+}
+
 .footer {
 	text-align: center;
 }
@@ -52,4 +56,8 @@ section {
 .post-line {
 	font-weight: 700;
 	font-size: 1.5em;
+}
+
+a:visited {
+	color: #551A8B;
 }
