@@ -4,15 +4,14 @@ layout: default
 
 <div class="panel panel-success">
 	<div class="panel-heading">
-		<h1 class="post-title">Posts tagged with {{ page.tag }}</h1>
-	</div>
-	<div class="panel-body">
-		{% if site.tags[page.tag] %}
-			{% for post in site.tags[page.tag] %}
-				{% include postline.html post=post %}
-			{% endfor %}
-		{% else %}
-			<p>There are no posts for this tag.</p>
-		{% endif %}
+		<h1 class="post-title">
+			<a href="{{ site.baseurl }}/tags/{{ page.tag | downcase | replace: ' ', '-' }}.html">
+				Posts tagged with {{ page.tag }}
+			</a>
+		</h1>
 	</div>
 </div>
+
+{% if site.tags[page.tag] %} {% for post in site.tags[page.tag] %}
+	{% include excerpt.html post=post %}
+{% endfor %}{% endif %}
