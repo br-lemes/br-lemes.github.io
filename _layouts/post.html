@@ -1,26 +1,30 @@
 {% include header.html %}
 
-<div class="container container-left">
+<div class="container">
 	<div class="row">
 		<div class="col-md-3 hidden-xs">{% include sidebar.html %}</div>
 		<div class="col-md-9">
 			{% include post-header.html post=page %}
 			{{ content }}
-			</p>
+			<hr>
+			<ul class="pager">
 				{% if page.previous %}
-					<a class="btn btn-success pull-left previous"
-						href="{{ site.baseurl}}{{ page.previous.url }}">
+					<li class="previous">
+						<a href="{{ site.baseurl}}{{ page.previous.url }}">
 							<i class="fa fa-chevron-circle-left fa-lg"></i>
 							Older Post
-					</a>
+						</a>
+					</li>
 				{% endif %}
 				{% if page.next %}
-					<a class="btn btn-success pull-right next"
-						href="{{ site.baseurl}}{{ page.next.url }}">
+					<li class="next">
+						<a href="{{ site.baseurl}}{{ page.next.url }}">
 							Newer Post
 							<i class="fa fa-chevron-circle-right fa-lg"></i>
-					</a>
+						</a>
+					</li>
 				{% endif %}
+			</ul>
 			{% if page.comments %}
 				<div id="disqus_thread">
 					<noscript>Please enable JavaScript to view the
