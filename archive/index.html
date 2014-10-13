@@ -3,29 +3,27 @@ layout: default
 ---
 
 {% capture archive %}{{ post.baseurl }}/archive{% endcapture %}
-{% capture entry_begin %}
+
+{% capture header %}
 <div class="panel panel-success">
 	<div class="panel-heading post-title-heading">
 {% endcapture %}
-{% capture entry_end %}
-	</div>
-</div>
-{% endcapture %}
 
-{{ entry_begin }}
+{{ header }}
 	<a href="{{ archive }}/">
-	<i class="fa fa-folder-open pull-left post-title">
-	</i>
+		<i class="fa fa-folder-open pull-left post-title"></i>
 	</a>
 	<h1 class="post-title">
 		<a href="{{ archive }}/">Archive</a>
 	</h1>
-{{ entry_end }}
+</div></div>
 
-{{ entry_begin }}
+{{ header }}
 {%for post in site.posts %}
 	{% unless post.next %}
-		{% unless forloop.first %}{{ entry_end }}{% endunless %}
+		{% unless forloop.first %}
+			</div>{{ header }}
+		{% endunless %}
 		<h2 class="post-title">
 			<a href="{{ archive }}/{{ post.date | date: '%Y' }}.html">
 				<i class="fa fa-calendar"></i> {{ post.date | date: '%Y' }}
@@ -39,7 +37,9 @@ layout: default
 			{{ post.next.date | date: '%Y' }}
 		{% endcapture %}
 		{% if year != nyear %}
-			{% unless forloop.first %}{{ entry_end }}{% endunless %}
+			{% unless forloop.first %}
+				</div>{{ header }}
+			{% endunless %}
 			<h2 class="post-title">
 				<a href="{{ archive }}/{{ post.date | date: '%Y' }}.html">
 					<i class="fa fa-calendar"></i> {{ post.date | date: '%Y' }}
@@ -47,8 +47,8 @@ layout: default
 			</h2></div>
 		{% endif %}
 	{% endunless %}
-	<a href="{{ site.baseurl }}{{ post.url}}" class="list-group-item">
+	<a class="list-group-item" href="{{ site.baseurl }}{{ post.url}}">
 		{{ post.title }}
 	</a>
 {% endfor %}
-{{ entry_end }}
+</div>
