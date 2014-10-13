@@ -2,11 +2,11 @@
 
 <div class="container">
 	<div class="row">
-		<div class="col-md-3 hidden-xs">
-			{% include sidebar.html %}
-		</div>
-		<div class="col-md-9">
+		<div class="col-md-9 col-md-push-3">
 			{{ content }}
+		</div>
+		<div class="col-md-3 col-md-pull-9">
+			{% include recent-posts.html %}
 		</div>
 	</div>
 </div>
