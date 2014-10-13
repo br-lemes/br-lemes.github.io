@@ -10,9 +10,9 @@ layout: default
 {% endcapture %}
 
 {{ header }}
-	<a href="{{ tagspath }}/">
-		<i class="fa fa-tags pull-left post-title"></i>
-	</a>
+	<div class="post-title">
+		<i class="fa fa-tags pull-left btn-tag"></i>
+	</div>
 	<h1 class="post-title">
 		<a href="{{ tagspath }}/">All tagged posts</a>
 	</h1>
@@ -24,8 +24,9 @@ layout: default
 {% for tag in sortedtags %}
 	{{ header }}
 	<h2 class="post-title">
+		<i class="fa fa-tag btn-tag"></i>
 		<a href="{{ tagspath }}/{{ tag | downcase | replace: ' ', '-' }}.html">
-			<i class="fa fa-tag"></i> {{ tag }}
+			{{ tag }}
 		</a>
 	</h2></div>
 	{% for post in site.tags[tag] %}
