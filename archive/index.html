@@ -10,9 +10,9 @@ layout: default
 {% endcapture %}
 
 {{ header }}
-	<a href="{{ archive }}/">
-		<i class="fa fa-folder-open pull-left post-title"></i>
-	</a>
+	<div class="post-title">
+		<i class="fa fa-folder-open pull-left btn-tag"></i>
+	</div>
 	<h1 class="post-title">
 		<a href="{{ archive }}/">Archive</a>
 	</h1>
@@ -25,8 +25,9 @@ layout: default
 			</div>{{ header }}
 		{% endunless %}
 		<h2 class="post-title">
+			<i class="fa fa-calendar btn-tag"></i>
 			<a href="{{ archive }}/{{ post.date | date: '%Y' }}.html">
-				<i class="fa fa-calendar"></i> {{ post.date | date: '%Y' }}
+				{{ post.date | date: '%Y' }}
 			</a>
 		</h2></div>
 	{% else %}
@@ -41,8 +42,9 @@ layout: default
 				</div>{{ header }}
 			{% endunless %}
 			<h2 class="post-title">
+				<i class="fa fa-calendar btn-tag"></i>
 				<a href="{{ archive }}/{{ post.date | date: '%Y' }}.html">
-					<i class="fa fa-calendar"></i> {{ post.date | date: '%Y' }}
+					{{ post.date | date: '%Y' }}
 				</a>
 			</h2></div>
 		{% endif %}
