@@ -2,19 +2,12 @@
 layout: default
 ---
 
-{% capture tagspath %}{{ post.baseurl }}/tags{% endcapture %}
-
-{% capture header %}
-<div class="panel panel-success">
-	<div class="panel-heading post-title-heading">
-{% endcapture %}
-
-{{ header }}
-	<div class="post-title">
+{% include open-panel.html %}
+	<div class="panel-title">
 		<i class="fa fa-tags pull-left btn-tag"></i>
 	</div>
-	<h1 class="post-title">
-		<a href="{{ tagspath }}/">All tagged posts</a>
+	<h1 class="panel-title">
+		<a href="/tags/">Todas as postagens com marcadores</a>
 	</h1>
 </div></div>
 
@@ -22,15 +15,15 @@ layout: default
 {% assign sortedtags = tags | split:'!' | sort %}
 
 {% for tag in sortedtags %}
-	{{ header }}
-	<h2 class="post-title">
+	{% include open-panel.html %}
+	<h2 class="panel-title">
 		<i class="fa fa-tag btn-tag"></i>
-		<a href="{{ tagspath }}/{{ tag | downcase | replace: ' ', '-' }}.html">
+		<a href="/tags/{{ tag | downcase | replace: ' ', '-' }}.html">
 			{{ tag }}
 		</a>
 	</h2></div>
 	{% for post in site.tags[tag] %}
-		<a class="list-group-item" href="{{ site.baseurl }}{{ post.url}}">
+		<a class="list-group-item" href="{{ post.url}}">
 			{{ post.title }}
 		</a>
 	{% endfor %}
