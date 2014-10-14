@@ -3,7 +3,6 @@
 	Inicia um painel.
 	Parâmetros:
 	* type: um tipo entre default, primary, success, info, warning e danger
-	* class: se necessário alguma classe personalizada
 
 	ATENÇÃO 2 <DIV> ABERTO!
 -->
@@ -16,4 +15,4 @@
 {% endcase %}
 
 <div class="panel panel-{{ panel_type }}">
-	<div class="panel-heading {{ include.class }}">
+	<div class="panel-heading">
