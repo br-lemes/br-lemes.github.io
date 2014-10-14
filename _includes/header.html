@@ -5,12 +5,12 @@
 	<meta charset="UTF-8">
 	<title>{{ site.name }}</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<script src="{{ site.baseurl }}/js/jquery.min.js"></script>
-	<script src="{{ site.baseurl }}/js/bootstrap.min.js"></script>
-	<link href="{{ site.baseurl }}/css/font-awesome.min.css" rel="stylesheet">
-	<link href="{{ site.baseurl }}/css/bootstrap.css" rel="stylesheet">
-	<link href="{{ site.baseurl }}/css/theme.css" rel="stylesheet">
-	<link href="{{ site.baseurl }}/css/syntax.css" rel="stylesheet">
+	<script src="/js/jquery.min.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+	<link href="/css/font-awesome.min.css" rel="stylesheet">
+	<link href="/css/bootstrap.css" rel="stylesheet">
+	<link href="/css/theme.css" rel="stylesheet">
+	<link href="/css/syntax.css" rel="stylesheet">
 </head>
 
 <body>
@@ -25,19 +25,19 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="{{ site.baseurl }}/">
-					<img src="{{ site.baseurl }}/images/icon-24x24.png"
+				<a class="navbar-brand" href="/">
+					<img src="/images/icon-24x24.png"
 						width="24" height="24"> {{ site.name }}
 				</a>
 			</div>
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-					<li><a href="{{ site.baseurl }}/"><i class="fa fa-home fa-lg"></i> Home</a></li>
-					<li class="visible-xs-block"><a href="{{ site.baseurl }}/links.html"><i class="fa fa-link fa-lg"></i> Links</a></li>
-					<li><a href="{{ site.baseurl }}/archive/"><i class="fa fa-folder-open fa-lg"></i> Archive</a></li>
-					<li><a href="{{ site.baseurl }}/tags/"><i class="fa fa-tags fa-lg"></i> Tags</a></li>
-					<li><a href="{{ site.baseurl }}/about.html"><i class="fa fa-info-circle fa-lg"></i> About</a></li>
-					<li><a href="{{ site.baseurl }}/feed.xml"><i class="fa fa-rss fa-lg"></i> RSS</a></li>
+					<li><a href="/"><i class="fa fa-home fa-lg"></i> Home</a></li>
+					<li class="visible-xs-block"><a href="/links.html"><i class="fa fa-link fa-lg"></i> Links</a></li>
+					<li><a href="/archive/"><i class="fa fa-folder-open fa-lg"></i> Archive</a></li>
+					<li><a href="/tags/"><i class="fa fa-tags fa-lg"></i> Tags</a></li>
+					<li><a href="/about.html"><i class="fa fa-info-circle fa-lg"></i> About</a></li>
+					<li><a href="/feed.xml"><i class="fa fa-rss fa-lg"></i> RSS</a></li>
 					{% if site.github != '' %}
 						<li><a href="https://github.com/{{ site.github }}"><i class="fa fa-github fa-lg"></i> Github</a></li>
 					{% endif %}

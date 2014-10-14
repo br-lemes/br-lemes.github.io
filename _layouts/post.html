@@ -10,7 +10,7 @@ layout: default
 <ul class="pager">
 	{% if page.previous %}
 		<li class="previous">
-			<a href="{{ site.baseurl}}{{ page.previous.url }}">
+			<a href="{{ page.previous.url }}">
 				<i class="fa fa-chevron-circle-left fa-lg"></i>
 				Older Post
 			</a>
@@ -18,7 +18,7 @@ layout: default
 	{% endif %}
 	{% if page.next %}
 		<li class="next">
-			<a href="{{ site.baseurl}}{{ page.next.url }}">
+			<a href="{{ page.next.url }}">
 				Newer Post
 				<i class="fa fa-chevron-circle-right fa-lg"></i>
 			</a>
