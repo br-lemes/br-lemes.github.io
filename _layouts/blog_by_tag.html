@@ -4,9 +4,12 @@ layout: default
 
 {% include open-panel.html %}
 		<h1 class="panel-title">
-			<a href="{{ site.baseurl }}/tags/{{ page.tag | downcase | replace: ' ', '-' }}.html">
-				Postagens marcadas com {{ page.tag }}
+			<i class="fa fa-tag"></i>
+			<a href="/tags/{{ page.tag | downcase | replace: ' ', '-' }}.html">
+				{{ page.tag }}
 			</a>
+			<i class="fa fa-tags pull-right"></i>
+			<a class="pull-right" href="/tags/">Todas as tags</a>
 		</h1>
 	</div>
 </div>
