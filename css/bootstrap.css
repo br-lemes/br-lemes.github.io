@@ -5747,3 +5747,14 @@ input:focus {
 .popover {
   color: #2c3e50;
 }
+
+/* personalização */
+
+a:visited {
+	color: #551a8b;
+}
+
+p {
+	text-align: justify;
+	margin-top: 20px;
+}

@@ -1,11 +1,6 @@
 ---
 ---
 
-p {
-	text-align: justify;
-	margin-top: 20px;
-}
-
 body {
 	padding-top: 70px;
 	padding-bottom: 70px;
@@ -18,6 +13,10 @@ section {
 	margin-top: -70px;
 }
 
+.btn-tag {
+	margin-bottom: 5px;
+}
+
 .footer {
 	display: none;
 }
@@ -27,6 +26,8 @@ section {
 		display: block;
 	}
 }
+
+/* O código abaixo precisa ser revisado (retirar cores) */
 
 .footer a {
 	color: #18bc9c;
@@ -40,36 +41,4 @@ section {
 	margin: 0;
 	text-align: center;
 	color: #fff;
-}
-
-.btn-tag {
-	margin-bottom: 5px;
-	color: #551a8b;
-}
-
-.btn-tag:hover {
-	color: #551a8b;
-	border-color: #18bc9c;
-	background-color: #18bc9c;
-}
-
-.post-title {
-	margin-top: 0px;
-	margin-bottom: 0px;
-	font-weight: 700;
-	font-size: 1.5em;
-	color: inherit;
-}
-
-.post-title a {
-	text-decoration: none;
-	color: inherit;
-}
-
-.post-title a:hover {
-	color: #fff;
-}
-
-a:visited {
-	color: #551a8b;
 }
