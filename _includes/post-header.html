@@ -7,24 +7,28 @@
 	</div>
 	<div class="panel-body">
 		<div class="btn-group">
-			<i class="btn btn-success btn-xs btn-tag fa fa-calendar"></i>
+			<a class="btn btn-success btn-xs btn-tag fa fa-calendar"
+				href="/archive/{{ include.post.date | date: '%Y' }}.html"></a>
 			<a class="btn btn-success btn-xs"
-				href="{{ site.baseurl}}/archive/{{ include.post.date | date: '%Y' }}.html">
+				href="/archive/{{ include.post.date | date: '%Y' }}.html">
 				{{ include.post.date | date: '%d/%m/%Y' }}
 			</a>
 		</div>
 		{% for tag in include.post.tags %}
 			<div class="btn-group">
-				<i class="btn btn-success btn-xs btn-tag fa fa-tag"></i>
+				<a class="btn btn-success btn-xs btn-tag fa fa-tag"
+					href="/tags/{{ tag | downcase | replace: ' ', '-' }}.html"></a>
 				<a class="btn btn-success btn-xs"
-					href="{{ site.baseurl}}/tags/{{ tag | downcase | replace: ' ', '-' }}.html">
+					href="/tags/{{ tag | downcase | replace: ' ', '-' }}.html">
 						{{ tag }}
 				</a>
 			</div>
 		{% endfor %}
 		{% if site.comments == true and include.post.comments == true and site.disqus != '' %}
 		<div class="btn-group">
-			<i class="btn btn-success btn-xs btn-tag fa fa-comments"></i>
+			<a class="btn btn-success btn-xs btn-tag fa fa-comments"
+				href="{{ site.baseurl }}{{ include.post.url }}#disqus_thread">
+			</a>
 			<a class="btn btn-success btn-xs post-btn"
 				href="{{ site.baseurl }}{{ include.post.url }}#disqus_thread">
 				Comentários
