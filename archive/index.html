@@ -4,51 +4,30 @@ layout: default
 
 {% capture archive %}{{ post.baseurl }}/archive{% endcapture %}
 
-{% capture header %}
-<div class="panel panel-success">
-	<div class="panel-heading post-title-heading">
-{% endcapture %}
-
-{{ header }}
+{% include open-panel.html class="post-title-heading" %}
 	<div class="post-title">
 		<i class="fa fa-folder-open pull-left btn-tag"></i>
 	</div>
 	<h1 class="post-title">
-		<a href="{{ archive }}/">Archive</a>
+		<a href="{{ archive }}/">Arquivo</a>
 	</h1>
 </div></div>
 
-{{ header }}
+{% comment %}
+	Precisa abrir uma div para ter o que fechar na primeira interação.
+{% endcomment %} <div>
+
 {%for post in site.posts %}
-	{% unless post.next %}
-		{% unless forloop.first %}
-			</div>{{ header }}
-		{% endunless %}
+	{% ifchanged %}
+		</div>
+		{% include open-panel.html class="post-title-heading" %}
 		<h2 class="post-title">
 			<i class="fa fa-calendar btn-tag"></i>
 			<a href="{{ archive }}/{{ post.date | date: '%Y' }}.html">
 				{{ post.date | date: '%Y' }}
 			</a>
 		</h2></div>
-	{% else %}
-		{% capture year %}
-			{{ post.date | date: '%Y' }}
-		{% endcapture %}
-		{% capture nyear %}
-			{{ post.next.date | date: '%Y' }}
-		{% endcapture %}
-		{% if year != nyear %}
-			{% unless forloop.first %}
-				</div>{{ header }}
-			{% endunless %}
-			<h2 class="post-title">
-				<i class="fa fa-calendar btn-tag"></i>
-				<a href="{{ archive }}/{{ post.date | date: '%Y' }}.html">
-					{{ post.date | date: '%Y' }}
-				</a>
-			</h2></div>
-		{% endif %}
-	{% endunless %}
+	{% endifchanged %}
 	<a class="list-group-item" href="{{ site.baseurl }}{{ post.url}}">
 		{{ post.title }}
 	</a>
