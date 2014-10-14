@@ -1,0 +1,19 @@
+{% comment %}
+<!--
+	Inicia um painel.
+	Parâmetros:
+	* type: um tipo entre default, primary, success, info, warning e danger
+	* class: se necessário alguma classe personalizada
+
+	ATENÇÃO 2 <DIV> ABERTO!
+-->
+{% endcomment %}
+
+{% assign panel_type = include.type %}
+{% case include.type %}
+	{% when "default" or "primary" or "success" or "info" or "warning" or "danger" %}
+	{% else %} {% assign panel_type = site.default_paneltype %}
+{% endcase %}
+
+<div class="panel panel-{{ panel_type }}">
+	<div class="panel-heading {{ include.class }}">
