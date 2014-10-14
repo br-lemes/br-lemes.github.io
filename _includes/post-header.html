@@ -1,6 +1,5 @@
-<div class="panel panel-success">
-	<div class="panel-heading post-title-heading">
-		<h1 class="post-title">
+{% include open-panel.html %}
+	<h1 class="panel-title">
 			<a href="{{ site.baseurl }}{{ include.post.url }}">
 				{{ include.post.title }}
 			</a>
@@ -28,7 +27,7 @@
 			<i class="btn btn-success btn-xs btn-tag fa fa-comments"></i>
 			<a class="btn btn-success btn-xs post-btn"
 				href="{{ site.baseurl }}{{ include.post.url }}#disqus_thread">
-				Comments
+				Comentários
 			</a>
 		</div>
 		{% endif %}

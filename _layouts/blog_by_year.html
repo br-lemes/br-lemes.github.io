@@ -2,10 +2,9 @@
 layout: default
 ---
 
-<div class="panel panel-success">
-	<div class="panel-heading post-title-heading">
-		<h1 class="post-title">
-			<a href="{{ site.baseurl }}/archive/{{ page.year }}.html">
+{% include open-panel.html %}
+		<h1 class="panel-title">
+			<a href="/archive/{{ page.year }}.html">
 				{{ page.year }}
 			</a>
 		</h1>

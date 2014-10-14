@@ -2,11 +2,10 @@
 layout: default
 ---
 
-<div class="panel panel-success">
-	<div class="panel-heading post-title-heading">
-		<h1 class="post-title">
+{% include open-panel.html %}
+		<h1 class="panel-title">
 			<a href="{{ site.baseurl }}/tags/{{ page.tag | downcase | replace: ' ', '-' }}.html">
-				Posts tagged with {{ page.tag }}
+				Postagens marcadas com {{ page.tag }}
 			</a>
 		</h1>
 	</div>
