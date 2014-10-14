@@ -4,11 +4,11 @@ layout: default
 
 {% capture archive %}{{ post.baseurl }}/archive{% endcapture %}
 
-{% include open-panel.html class="post-title-heading" %}
-	<div class="post-title">
+{% include open-panel.html %}
+	<div class="panel-title">
 		<i class="fa fa-folder-open pull-left btn-tag"></i>
 	</div>
-	<h1 class="post-title">
+	<h1 class="panel-title">
 		<a href="{{ archive }}/">Arquivo</a>
 	</h1>
 </div></div>
@@ -20,8 +20,8 @@ layout: default
 {%for post in site.posts %}
 	{% ifchanged %}
 		</div>
-		{% include open-panel.html class="post-title-heading" %}
-		<h2 class="post-title">
+		{% include open-panel.html %}
+		<h2 class="panel-title">
 			<i class="fa fa-calendar btn-tag"></i>
 			<a href="{{ archive }}/{{ post.date | date: '%Y' }}.html">
 				{{ post.date | date: '%Y' }}
