@@ -6,28 +6,35 @@ layout: default
 	{% include excerpt.html post=post %}
 {% endfor %}
 
-<div class="pagination">
-	{% if paginator.previous_page %}
-		{% if paginator.previous_page == 1 %}
-			<a class="btn btn-default"
-				href="{{ site.baseurl}}/index.html"
-				class="previous">Newer
-			</a>
-		{% else %}
-			<a class="btn btn-default"
-				href="{{ site.baseurl}}/page{{ paginator.previous_page }}"
-				class="previous">Newer
-			</a>
-		{% endif %}
-	{% endif %}
-	<span class="page_number ">
-		Page: {{ paginator.page }}
-		of {{ paginator.total_pages }}
-	</span>
-	{% if paginator.next_page %}
-		<a class="btn btn-default"
-			href="{{ site.baseurl}}/page{{ paginator.next_page }}"
-			class="next">Older
-		</a>
-	{% endif %}
+<div class="panel panel-default">
+	<div class="panel-body">
+		<div class="text-center">Página: {{ paginator.page }} de {{ paginator.total_pages }}</div>
+		{% if paginator.next_page %}
+		<ul class="pager">
+			{% if paginator.previous_page %}
+				{% if paginator.previous_page == 1 %}
+					<li class="previous">
+						<a href="{{ site.baseurl}}/index.html">
+							<i class="fa fa-chevron-circle-left fa-lg"></i>
+							Postagens mais recentes
+						</a>
+					</li>
+				{% else %}
+					<li class="previous">
+						<i class="fa fa-chevron-circle-left fa-lg"></i>
+						<a href="{{ site.baseurl}}/page{{ paginator.previous_page }}">
+							Postagens mais recentes
+						</a>
+					</li>
+				{% endif %}
+			{% endif %}
+				<li class="next">
+					<a href="{{ site.baseurl}}/page{{ paginator.next_page }}">
+						Postagens mais antigas
+						<i class="fa fa-chevron-circle-right fa-lg"></i>
+					</a>
+				</li>
+			{% endif %}
+		</ul>
+	</div>
 </div>
