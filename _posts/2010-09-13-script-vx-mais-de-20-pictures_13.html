@@ -11,40 +11,36 @@ tags: [RPG Maker]
 
 <h3>Introdução</h3>
 
-{{ page.img_path }}
 <p>No RPG Maker VX você não pode usar mais do que 20 pictures, esse script te
 possibilita adicionar quantas pictures quiser. Ótimo para menus por eventos,
-sistemas e outras coisas.
+sistemas e outras coisas.</p>
 
 <p>Este script cria um "deslocamento" no array de pictures para que você use
 mais que 20 pictures no RPG Maker VX. Você usa o comando de evento Mostrar
-Imagem normalmente, porém junto com uma variável que indica o deslocamento.
+Imagem normalmente, porém junto com uma variável que indica o deslocamento.</p>
 
 <!-- more -->
 
 <section id="more">
 <h3>Screenshots</h3>
-
-<p><a href="{{ img_path }}/pictures.png"><img src="{{ img_path }}/pictures.png"
-	alt="Screenshot script mais de 20 pictures para RPG Maker VX" 
+<a href="{{ img_path }}/pictures.png"><img src="{{ img_path }}/pictures.png"
+	alt="Screenshot script mais de 20 pictures para RPG Maker VX"
 	class="img-responsive" /></a>
 </section>
 
 <h3>Como usar</h3>
 
-<p>Cole em scripts adicionais, acima de Main.
-
-<p>Configure o número máximo de pictures e a ID da variável de deslocamento.
-Crie o evento desta forma:
+<p>Cole em scripts adicionais, acima de Main. Configure o número máximo de
+pictures e a ID da variável de deslocamento. Crie o evento desta forma:
 
 <p><a href="{{ img_path }}/evento.png"><img src="{{ img_path }}/evento.png"
 	alt="Exemplo de evento com mais de 20 pictures para RPG Maker VX"
-	class="img-responsive" /></a>
+	class="img-responsive" /></a></p>
 
 <h3>Demo</h3>
 
-<p><big><strong><a href="{{ site.baseurl }}/downloads/rpg-maker/Pictures.rar">
-	Pictures.rar</a></strong></big>
+<p><strong><a href="{{ site.baseurl }}/downloads/rpg-maker/Pictures.rar">
+	Pictures.rar</a></strong></p>
 
 <h3>Script</h3>
 
@@ -89,7 +85,7 @@ class Game_Screen
     @weather_type_target = 0
     @weather_max_target = 0.0
     @weather_duration = 0
-  end  
+  end
 end
 
 class Game_Interpreter
@@ -130,7 +126,7 @@ class Game_Interpreter
   def command_235 # Apagar imagem
     screen.pictures[@params[0]+$game_variables[$PICTURE_OFFSET]*20].erase
     return true
-  end  
+  end
 end
 
 class Spriteset_Map
@@ -140,7 +136,7 @@ class Spriteset_Map
       @picture_sprites.push(Sprite_Picture.new(@viewport2,
         $game_map.screen.pictures[i]))
     end
-  end  
+  end
 end
 
 class Spriteset_Battle
@@ -154,4 +150,4 @@ class Spriteset_Battle
 end
 {% endhighlight %}
 
-br_lemes, o Saci insano (Esquizofrênico)
+<p>br_lemes, o Saci insano (Esquizofrênico)</p>

@@ -12,23 +12,21 @@ tags: [RPG Maker]
 <h3>Introdução</h3>
 
 <p>Este é um menu estilo Castlevania para um só herói, com troca de windowskin,
-bestiário e familiares.
+bestiário e familiares.</p>
 
 <!-- more -->
 
 <section id="more">
 <h3>Screenshots</h3>
-
-<p><a href="{{ img_path }}/CTVMenu.jpg"><img src="{{ img_path }}/CTVMenu.jpg"
-	alt="Screenshot do script menu estilo Castlevania para RPG Maker VX" 
+<a href="{{ img_path }}/CTVMenu.jpg"><img src="{{ img_path }}/CTVMenu.jpg"
+	alt="Screenshot do script menu estilo Castlevania para RPG Maker VX"
 	class="img-responsive" /></a>
 </section>
 
 <h3>Como usar</h3>
 
-<p>Cole em scripts adicionais, acima de Main.<br />
-
-<p>As configurações estão destacadas e explicadas na primeira parte do script.
+<p>Cole em scripts adicionais, acima de Main. As configurações estão
+destacadas e explicadas na primeira parte do script.
 
 <h3>Demo</h3>
 
@@ -97,13 +95,13 @@ end
 class Game_System
   attr_accessor :skin
   attr_accessor :monsters
-  attr_accessor :kills  
+  attr_accessor :kills
   alias wor_changeskin_gamesys_ini initialize
   def initialize
     wor_changeskin_gamesys_ini
     @skin = CTV::SKIN_DEFAULT
     @monsters = []
-    @kills = 0    
+    @kills = 0
   end
 end
 
@@ -189,11 +187,11 @@ class Window_CTVStatus < Window_Base
       draw_actor_parameter(actor, 348, WLH * (6+i), i)
     end
     self.contents.font.color = system_color
-    self.contents.draw_text(348, 264, 80, WLH, CTV::MONSTERS)    
+    self.contents.draw_text(348, 264, 80, WLH, CTV::MONSTERS)
     self.contents.draw_text(348, 288, 80, WLH, CTV::KILLS)
     self.contents.font.color = normal_color
     self.contents.draw_text(428, 264, 76, WLH, "#{$game_system.monsters.nitems}/#{$data_enemies.size}",2)
-    self.contents.draw_text(428, 288, 76, WLH, $game_system.kills,2)    
+    self.contents.draw_text(428, 288, 76, WLH, $game_system.kills,2)
     self.contents.font.color = system_color
     self.contents.draw_text(348, 360, 120, WLH, CTV::TIME)
     tmp = Graphics.frame_count / Graphics.frame_rate
@@ -213,7 +211,7 @@ end
 class Scene_Menu < Scene_Base
   def initialize(menu_index = 0)
     @menu_index = menu_index
-  end  
+  end
   def start
     s1 = Vocab::equip
     s2 = Vocab::skill
@@ -221,7 +219,7 @@ class Scene_Menu < Scene_Base
     s4 = CTV::FAMILLIARS
     s5 = Vocab::save
     s6 = CTV::WINDOWSKIN
-    s7 = Vocab::game_end    
+    s7 = Vocab::game_end
     super
     create_menu_background
     @wstatus = Window_CTVStatus.new
@@ -287,7 +285,7 @@ class Scene_Menu < Scene_Base
             @wskin.visible = true
             @wskin.refresh
           when 6    # Sair
-            $scene = Scene_End.new          
+            $scene = Scene_End.new
         end
       end
     end
@@ -300,7 +298,7 @@ class Window_Item < Window_Selectable
     @column_max = 5
     self.index = 0
     refresh
-  end  
+  end
   def draw_item(index)
     rect = item_rect(index)
     self.contents.clear_rect(rect)
@@ -324,7 +322,7 @@ class Window_ShopBuy < Window_Selectable
     @shop_goods = $game_temp.shop_goods
     refresh
     self.index = 0
-  end  
+  end
   def draw_item(index)
     item = @data[index]
     number = $game_party.item_number(item)
@@ -375,7 +373,7 @@ class Window_CTVFamilliars < Window_Base
     self.contents.font.color = normal_color
     self.contents.draw_text(x, y + WLH * 1, 180, WLH, s1, 2)
     self.contents.draw_text(x, y + WLH * 3, 180, WLH, s2, 2)
-  end  
+  end
   def refresh
     self.contents.clear
     if $game_party.members[1] != nil
@@ -415,7 +413,7 @@ class Scene_CTVFamilliars < Scene_Base
     if Input.trigger?(Input::B)
       Sound.play_cancel
       $scene = Scene_Menu.new(3)
-    end    
+    end
   end
 end
 {% endhighlight %}
@@ -424,4 +422,4 @@ end
 
 <ul><li>Script de Trocar Windowskin de Woratana</li></ul>
 
-br_lemes, o Paladino insano (Demente) 
+<p>br_lemes, o Paladino insano (Demente)</p>
