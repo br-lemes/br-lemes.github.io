@@ -1,0 +1,959 @@
+---
+comments: true
+layout: post
+title: "[Script XP e VX] Debug Avançado"
+tags: [RPG Maker]
+---
+
+{% include aviso.html %}
+
+<h3>Introdução</h3>
+
+<p>Este script substitui a <strong>Scene_Debug</strong> original por uma
+mais avançada, com muito mais opções. É ideal para facilitar a vida na hora
+de corrigir os bugs do seu jogo.</p>
+
+<!-- more -->
+
+<section id="more">
+<h3>Características</h3>
+</section>
+
+<ul>
+	<li>
+		Funciona em ambos, RPG Maker XP e VX, sem alterações é só colar
+		acima de main e rodar;
+	</li>
+	<li>
+		Separa variáveis de switches, deixando mais fácil e organizado na
+		hora de trabalhar com um grande número delas;
+	</li>
+	<li>
+		Permite modificar a quantidade de itens, armas e armaduras possuídos;
+	</li>
+	<li>
+		Permite modificar diversos parâmetros do jogo, como Dinheiro, Tempo
+		de Jogo, Contador de Passos, Contador de Saves, Timer, Proibir Save,
+		Proibir Menu e Proibir Encontros;
+	</li>
+	<li>
+		Permite modificar o grupo e diversos parâmetros dos heróis, como
+		Classe, HP, MP, Exp, Nível, etc.
+	</li>
+</ul>
+
+<h3>Screenshots</h3>
+
+<p>
+<a href="/images/rpg-maker/debugvx.png"><img src="/images/rpg-maker/debugvx.png"
+	alt="Screenshot do script debug avançado para RPG Maker VX"
+	class="img-responsive" /></a>
+</p><p>
+<a href="/images/rpg-maker/debugxp.png"><img src="/images/rpg-maker/debugxp.png"
+	alt="Screenshot do script debug avançado para RPG Maker VX"
+	class="img-responsive" /></a>
+</p>
+
+<h3>Como usar</h3>
+
+<p>Cole acima de Main e pronto. É só apretar F9 durante o jogo.</p>
+
+<h3>Demo</h3>
+
+<p>Não é necessário.</p>
+
+<h3>Script</h3>
+
+{% highlight ruby %}
+=begin
+  Debug Avançado por br_lemes
+
+  É permitido, livre de quaisquer ônus, usar, copiar, modificar e/ou
+  distribuir cópias deste script, desde que seja mantido este aviso.
+  NÃO HÁ QUALQUER GARANTIA, USE POR SUA PRÓPRIA CONTA E RISCO.
+=end
+
+################################################################################
+# CONFIGURAÇÕES - modifique a vontade, mas com cuidado
+################################################################################
+
+$RMVX = $TEST != nil
+
+$DEBUG_OPTIONS = [
+  "Switches",
+  "Variáveis",
+  "Itens",
+  "Outros"]
+
+$PARTY_OPTIONS = [
+  "Dinheiro",
+  "Tempo de Jogo",
+  "Contador de Passos",
+  "Contador de Saves",
+  "Controle de Tempo",
+  "  * Minutos",
+  "  * Segundos",
+  "Proibir Save",
+  "Proibir Menu",
+  "Proibir Encontros"]
+
+$ACTOR_OPTIONS = [
+  "Grupo",
+  "Classe",
+  "HP",
+  $RMVX ? "MP" : "SP",
+  "Exp",
+  "Nível",
+  "HP Máx",
+  $RMVX ? "MP Máx" : "SP Máx",
+  "Ataque",
+  "Defesa",
+  "Agilidade",
+  "Inteligência"]
+
+################################################################################
+# FIM DAS CONFIGURAÇÕES - não modifique apartir daqui
+# A menos que você saiba realmente o que está fazendo
+################################################################################
+
+$WLH  = $RMVX ? 24 : 32
+$RM_W = $RMVX ? Graphics.width  : 640
+$RM_H = $RMVX ? Graphics.height : 480
+
+$DEBUG_SWITCHES  = 0
+$DEBUG_VARIABLES = 1
+$DEBUG_ITEMS     = 2
+$DEBUG_MISC      = 3
+
+$ITEMTYPE_NONE   = 0
+$ITEMTYPE_ITEM   = 1
+$ITEMTYPE_WEAPON = 2
+$ITEMTYPE_ARMOR  = 3
+
+class Game_Party
+  attr_accessor :steps
+end
+
+class Game_Temp
+  attr_accessor :debug_maindex
+  alias advdbg_initialize initialize
+  def initialize
+    advdbg_initialize
+    @debug_top_row = [0,0,0,0]
+    @debug_index = [0,0,0,0]
+    @debug_maindex = 0
+  end
+end
+
+if !$RMVX
+class Window_Selectable < Window_Base
+  def item_rect(index)
+    rect = Rect.new(0, 0, 0, 0)
+    rect.width = (contents.width + 32) / @column_max - 32
+    rect.height = $WLH
+    rect.x = index % @column_max * (rect.width + 32)
+    rect.y = index / @column_max * $WLH
+    return rect
+  end
+end
+end
+
+class Window_DebugCommand < Window_Selectable
+  def initialize
+    super(0, 0, $RM_W, $WLH + 32)
+    self.contents = Bitmap.new(width - 32, height - 32) if !$RMVX
+    @commands = $DEBUG_OPTIONS
+    @item_max = @commands.size
+    @column_max = @commands.size
+    refresh
+    self.index = 0
+  end
+  def refresh
+    self.contents.clear
+    for i in 0...@item_max
+      draw_item(i)
+    end
+  end
+  def draw_item(index)
+    rect = item_rect(index)
+    rect.x += 4
+    rect.width -= 8
+    self.contents.font.color = normal_color
+    self.contents.draw_text(rect, @commands[index])
+  end
+end
+
+class Window_DebugLeft < Window_Selectable
+  attr_reader :mode
+  def initialize
+    super(0, $WLH + 32, 192, $RM_H - ($WLH + 32))
+    self.contents = Bitmap.new(width - 32, height - 32) if !$RMVX
+    self.index = -1
+    self.active = false
+    self.mode = $DEBUG_SWITCHES # refresh
+  end
+  def refresh
+    @item_max = get_item_max
+    self.contents.dispose
+    self.contents = Bitmap.new(width - 32, [height - 32, @item_max * $WLH].max)
+    for i in 0...@item_max
+      draw_item(i)
+    end
+  end
+  def draw_item(index)
+    case @mode
+      when $DEBUG_SWITCHES
+        n = index * 10
+        text = sprintf("[%04d-%04d]", n+1, n+10)
+      when $DEBUG_VARIABLES
+        n = index * 10
+        text = sprintf("[%04d-%04d]", n+1, n+10)
+      when $DEBUG_ITEMS
+        if index < num_items
+          n = index * 10
+          text = sprintf("[%04d-%04d] I", n+1, n+10)
+        elsif index - num_items < num_weapons
+          n = (index - num_items) * 10
+          text = sprintf("[%04d-%04d] W", n+1, n+10)
+        else
+          n = (index - num_items - num_weapons) * 10
+          text = sprintf("[%04d-%04d] A", n+1, n+10)
+        end
+      when $DEBUG_MISC
+        text = index == 0 ? "Todos" : sprintf("%04d: %s", index, $data_actors[index].name)
+    end
+    rect = item_rect(index)
+    rect.x += 4
+    rect.width -= 8
+    self.contents.draw_text(rect, text) if text != nil
+  end
+  def num_items
+    return ($data_items.size - 1 + 9) / 10
+  end
+  def num_weapons
+    return ($data_weapons.size - 1 + 9) / 10
+  end
+  def num_armors
+    return ($data_armors.size - 1 + 9) / 10
+  end
+  def get_item_max
+    case @mode
+      when $DEBUG_SWITCHES
+        return ($data_system.switches.size - 1 + 9) / 10
+      when $DEBUG_VARIABLES
+        return ($data_system.variables.size - 1 + 9) / 10
+      when $DEBUG_ITEMS
+        return num_items + num_weapons + num_armors
+      when $DEBUG_MISC
+        return $data_actors.size
+    end
+  end
+  def item_type
+    if @mode == 2
+      if self.index < num_items
+        return $ITEMTYPE_ITEM
+      elsif self.index - num_items < num_weapons
+        return $ITEMTYPE_WEAPON
+      else
+        return $ITEMTYPE_ARMOR
+      end
+    else
+      return $ITEMTYPE_NONE
+    end
+  end
+  def mode=(mode)
+    if @mode != mode
+      @mode = mode
+      refresh
+    end
+  end
+  def top_id
+    case @mode
+      when $DEBUG_SWITCHES
+        return self.index * 10 + 1
+      when $DEBUG_VARIABLES
+        return self.index * 10 + 1
+      when $DEBUG_ITEMS
+        case item_type
+          when $ITEMTYPE_ITEM
+            return self.index * 10 + 1
+          when $ITEMTYPE_WEAPON
+            return (self.index - num_items) * 10 + 1
+          when $ITEMTYPE_ARMOR
+            return (self.index - num_items - num_weapons) * 10 + 1
+        end
+      when $DEBUG_MISC
+        return self.index
+    end
+  end
+end
+
+class Window_DebugRight < Window_Selectable
+  attr_reader   :mode
+  attr_reader   :item_type
+  attr_reader   :top_id
+  def initialize
+    super(192, $WLH + 32, $RM_W - 192, 10 * $WLH + 32)
+    self.contents = Bitmap.new(width - 32, height - 32) if !$RMVX
+    self.index = -1
+    self.active = false
+    @top_id = 1
+    self.mode = $DEBUG_SWITCHES # refresh
+  end
+  def update
+    super
+    if @mode == $DEBUG_MISC and @top_id == 0
+      refresh
+    end
+  end
+  def refresh
+    if @mode != $DEBUG_MISC
+      @item_max = 10
+    else
+      if @top_id == 0
+        @item_max = $PARTY_OPTIONS.size
+      else
+        @item_max = $ACTOR_OPTIONS.size
+      end
+    end
+    self.contents.dispose
+    self.contents = Bitmap.new(width - 32, [height - 32, @item_max * $WLH].max)
+    for i in 0...@item_max
+      draw_item(i)
+    end
+  end
+  def draw_item(index)
+    if @mode == $DEBUG_MISC
+      draw_misc(index)
+      return
+    end
+    current_id = @top_id + index
+    id_text = sprintf("%04d:", current_id)
+    case @mode
+      when $DEBUG_SWITCHES
+        name = $data_system.switches[current_id]
+        status = $game_switches[current_id] ? "[ON]" : "[OFF]"
+      when $DEBUG_VARIABLES
+        name = $data_system.variables[current_id]
+        status = $game_variables[current_id].to_s
+      when $DEBUG_ITEMS
+        case @item_type
+          when $ITEMTYPE_ITEM
+            item = $data_items[current_id]
+            status = $game_party.item_number(item.id).to_s if !$RMVX
+          when $ITEMTYPE_WEAPON
+            item = $data_weapons[current_id]
+            status = $game_party.weapon_number(item.id).to_s if !$RMVX
+          when $ITEMTYPE_ARMOR
+            item = $data_armors[current_id]
+            status = $game_party.armor_number(item.id).to_s if !$RMVX
+          end
+          name = item != nil ? item.name : ""
+          status = $game_party.item_number(item).to_s if $RMVX
+    end
+    id_width = self.contents.text_size(id_text).width
+    name = "" if name == nil
+    status = "" if status == nil
+    rect = item_rect(index)
+    rect.x += 4
+    rect.width -= 8
+    self.contents.font.color = normal_color
+    self.contents.draw_text(rect, id_text)
+    rect.x += id_width + 4
+    rect.width -= id_width + 64
+    if @mode == $DEBUG_ITEMS
+      if $RMVX
+        draw_icon(item.icon_index, rect.x, rect.y) if item != nil
+      elsif item != nil
+        bitmap = RPG::Cache.icon(item.icon_name)
+        self.contents.blt(rect.x, rect.y + 4, bitmap, Rect.new(0, 0, 24, 24), 255)
+      end
+      rect.x += 24 + 4
+      rect.width -= 24 + 4
+    end
+    self.contents.draw_text(rect, name)
+    rect.width += 60
+    self.contents.draw_text(rect, status, 2)
+  end
+  def draw_misc(index)
+    rect = item_rect(index)
+    rect.x += 4
+    rect.width -= 8
+    self.contents.font.color = normal_color
+    if @top_id == 0
+      self.contents.draw_text(rect, $PARTY_OPTIONS[index])
+      case index
+        when 0 # Dinheiro
+          self.contents.draw_text(rect, $game_party.gold.to_s, 2)
+        when 1 # Tempo de Jogo
+          self.contents.draw_text(rect, (Graphics.frame_count / Graphics.frame_rate).to_s, 2)
+        when 2 # Contador de Passos
+          self.contents.draw_text(rect, $game_party.steps.to_s.to_s, 2)
+        when 3 # Contador de Saves
+          self.contents.draw_text(rect, $game_system.save_count.to_s, 2)
+        when 4 # Controle de Tempo
+          self.contents.draw_text(rect, $game_system.timer_working ? "[ON]" : "[OFF]", 2)
+        when 5 #   * Minutos
+          self.contents.draw_text(rect, (($game_system.timer / Graphics.frame_rate) / 60).to_s, 2)
+        when 6 #   * Segundos
+          self.contents.draw_text(rect, (($game_system.timer / Graphics.frame_rate) % 60).to_s, 2)
+        when 7 # Proibir Save
+          self.contents.draw_text(rect, $game_system.save_disabled ? "[ON]" : "[OFF]", 2)
+        when 8 # Proibir Menu
+          self.contents.draw_text(rect, $game_system.menu_disabled ? "[ON]" : "[OFF]", 2)
+        when 9 # Proibir Encontros
+          self.contents.draw_text(rect, $game_system.encounter_disabled ? "[ON]" : "[OFF]", 2)
+      end
+    else
+      if index != 0 then self.contents.draw_text(rect, $ACTOR_OPTIONS[index]) end
+      case index
+        when 0 # Grupo
+          if $RMVX
+            draw_vx_graphic($data_actors[@top_id], rect.x, rect.y)
+          else
+            draw_xp_graphic($data_actors[@top_id], rect.x, rect.y)
+          end
+          rect.x += 32 + 4
+          rect.width -= 32 + 4
+          self.contents.draw_text(rect, $ACTOR_OPTIONS[0])
+          if $RMVX
+            self.contents.draw_text(rect, $game_party.members.include?($game_actors[@top_id]) ? "[ON]" : "[OFF]", 2)
+          else
+            self.contents.draw_text(rect, $game_party.actors.include?($game_actors[@top_id]) ? "[ON]" : "[OFF]", 2)
+          end
+        when 1 # Classe
+          self.contents.draw_text(rect, $data_classes[$game_actors[@top_id].class_id].name, 2)
+        when 2 # HP
+          self.contents.draw_text(rect, $game_actors[@top_id].hp.to_s, 2)
+        when 3 # MP
+          if $RMVX
+            self.contents.draw_text(rect, $game_actors[@top_id].mp.to_s, 2)
+          else
+            self.contents.draw_text(rect, $game_actors[@top_id].sp.to_s, 2)
+          end
+        when 4 # Exp
+          self.contents.draw_text(rect, $game_actors[@top_id].exp.to_s, 2)
+        when 5 # Nível
+          self.contents.draw_text(rect, $game_actors[@top_id].level.to_s, 2)
+        when 6 # HP Máx
+          self.contents.draw_text(rect, $game_actors[@top_id].maxhp.to_s, 2)
+        when 7 # MP Máx
+          if $RMVX
+            self.contents.draw_text(rect, $game_actors[@top_id].maxmp.to_s, 2)
+          else
+            self.contents.draw_text(rect, $game_actors[@top_id].maxsp.to_s, 2)
+          end
+        when 8 # Ataque
+          if $RMVX
+            self.contents.draw_text(rect, $game_actors[@top_id].atk.to_s, 2)
+          else
+            self.contents.draw_text(rect, $game_actors[@top_id].str.to_s, 2)
+          end
+        when 9 # Defesa
+          if $RMVX
+            self.contents.draw_text(rect, $game_actors[@top_id].def.to_s, 2)
+          else
+            self.contents.draw_text(rect, $game_actors[@top_id].dex.to_s, 2)
+          end
+        when 10 # Agilidade
+          if $RMVX
+            self.contents.draw_text(rect, $game_actors[@top_id].agi.to_s, 2)
+          else
+            self.contents.draw_text(rect, $game_actors[@top_id].agi.to_s, 2)
+          end
+        when 11 # Inteligência
+          if $RMVX
+            self.contents.draw_text(rect, $game_actors[@top_id].spi.to_s, 2)
+          else
+            self.contents.draw_text(rect, $game_actors[@top_id].int.to_s, 2)
+          end
+      end
+    end
+  end
+  def draw_vx_graphic(actor, x, y)
+    bitmap = Cache.character(actor.character_name)
+    sign = actor.character_name[/^[\!\$]./]
+    if sign != nil and sign.include?('$')
+      cw = bitmap.width / 3
+      ch = bitmap.height / 4
+    else
+      cw = bitmap.width / 12
+      ch = bitmap.height / 8
+    end
+    n = actor.character_index
+    src_rect = Rect.new((n%4*3+1)*cw, (n/4*4)*ch, cw, 24)
+    self.contents.blt(x + 16 - cw / 2, y + 32 - ch, bitmap, src_rect)
+  end
+  def draw_xp_graphic(actor, x, y)
+    bitmap = RPG::Cache.character(actor.character_name, actor.character_hue)
+    cw = bitmap.width / 4
+    ch = bitmap.height / 4
+    src_rect = Rect.new(0, 0, cw, 24)
+    self.contents.blt(x + 16 - cw / 2, y + 2, bitmap, src_rect)
+  end
+  def mode=(mode)
+    if @mode != mode
+      @mode = mode
+      refresh
+    end
+  end
+  def item_type=(item_type)
+    if @item_type != item_type and item_type != $ITEMTYPE_NONE
+      @item_type = item_type
+      refresh
+    end
+  end
+  def top_id=(id)
+    if @mode == $DEBUG_MISC
+      id = 0 if id < 0
+    else
+      return if id == 0
+      id = 1 if id < 0
+    end
+    if @top_id != id
+      @top_id = id
+      refresh
+    end
+  end
+  def update
+    # Desativar PageDown/PageUp (será usado para +10/-10 nos valores)
+    return if Input.repeat?(Input::R) or Input.repeat?(Input::L)
+    super
+  end
+end
+
+class Scene_Debug
+  def main
+    create_menu_background if $RMVX
+    @command_window = Window_DebugCommand.new
+    @left_window = Window_DebugLeft.new
+    @right_window = Window_DebugRight.new
+    @help_window = Window_Base.new(192, 64 + ($WLH * 11), $RM_W - 192, $RM_H - (64 + ($WLH * 11)))
+    @help_window.contents = Bitmap.new(@help_window.width - 32, @help_window.height - 32) if !$RMVX
+    @command_window.index = $game_temp.debug_maindex
+    # start
+    Graphics.transition(10)
+    Input.update
+    loop do
+      Graphics.update
+      Input.update
+      update
+      break if $scene != self
+    end
+    Graphics.update
+    Graphics.freeze
+    # terminate
+    @help_window.dispose
+    @right_window.dispose
+    @left_window.dispose
+    @command_window.dispose
+    dispose_menu_background if $RMVX
+    $game_map.refresh
+  end
+  def update
+    update_menu_background if $RMVX
+    @left_window.mode = @command_window.index
+    @right_window.mode = @command_window.index
+    @right_window.item_type = @left_window.item_type
+    @right_window.top_id = @left_window.top_id
+    @command_window.update
+    @left_window.update
+    @right_window.update
+    $game_temp.debug_maindex = @command_window.index
+    if @command_window.active
+      update_command_input
+    elsif @left_window.active
+      $game_temp.debug_top_row[@command_window.index] = @left_window.top_row
+      $game_temp.debug_index[@command_window.index] = @left_window.index
+      update_left_input
+    elsif @right_window.active
+      update_right_input
+    end
+  end
+  def update_command_input
+    if Input.trigger?(Input::B)
+      $RMVX ? Sound.play_cancel : $game_system.se_play($data_system.cancel_se)
+      $scene = Scene_Map.new
+      return
+    elsif Input.trigger?(Input::C)
+      $RMVX ? Sound.play_decision : $game_system.se_play($data_system.decision_se)
+      @command_window.active = false
+      @left_window.active = true
+      @left_window.top_row = $game_temp.debug_top_row[@command_window.index]
+      @left_window.index = $game_temp.debug_index[@command_window.index]
+    end
+  end
+  def update_left_input
+    if Input.trigger?(Input::B)
+      $RMVX ? Sound.play_cancel : $game_system.se_play($data_system.cancel_se)
+      @command_window.active = true
+      @left_window.active = false
+      @left_window.index = -1
+    elsif Input.trigger?(Input::C)
+      $RMVX ? Sound.play_decision : $game_system.se_play($data_system.decision_se)
+      if @left_window.mode == 0
+          @help_window.contents.draw_text(4, 0,
+            @help_window.contents.width - 8, $WLH,
+            "C (Enter) : ON / OFF")
+      elsif @left_window.mode != 3
+          @help_window.contents.draw_text(4, 0,
+            @help_window.contents.width - 8, $WLH,
+            "?: -1 ?: +1 Pageup: -10 Pagedown: +10")
+      end
+      @left_window.active = false
+      @right_window.active = true
+      @right_window.index = 0
+    end
+  end
+  def update_right_input
+    if Input.trigger?(Input::B)
+      $RMVX ? Sound.play_cancel : $game_system.se_play($data_system.cancel_se)
+      @left_window.active = true
+      @right_window.active = false
+      @right_window.index = -1
+      @help_window.contents.clear
+    else
+      current_id = @right_window.top_id + @right_window.index
+      case @right_window.mode
+        when $DEBUG_SWITCHES
+          if Input.trigger?(Input::C)
+            $RMVX ? Sound.play_cancel : $game_system.se_play($data_system.cancel_se)
+            $game_switches[current_id] = (not $game_switches[current_id])
+            @right_window.refresh
+          end
+        when $DEBUG_VARIABLES
+          last_value = $game_variables[current_id]
+          if Input.repeat?(Input::RIGHT)
+            $game_variables[current_id] += 1
+          elsif Input.repeat?(Input::LEFT)
+            $game_variables[current_id] -= 1
+          elsif Input.repeat?(Input::R)
+            $game_variables[current_id] += 10
+          elsif Input.repeat?(Input::L)
+            $game_variables[current_id] -= 10
+          end
+          if $game_variables[current_id] > 99999999
+            $game_variables[current_id] = 99999999
+          elsif $game_variables[current_id] < -99999999
+            $game_variables[current_id] = -99999999
+          end
+          if $game_variables[current_id] != last_value
+            $RMVX ? Sound.play_cursor : $game_system.se_play($data_system.cursor_se)
+            @right_window.refresh
+          end
+        when $DEBUG_ITEMS
+          if Input.repeat?(Input::RIGHT)
+            n = 1
+          elsif Input.repeat?(Input::LEFT)
+            n = -1
+          elsif Input.repeat?(Input::R)
+            n = 10
+          elsif Input.repeat?(Input::L)
+            n = -10
+          else
+            n = 0
+          end
+          if n != 0
+            last_value = $game_party.item_number(current_id)
+            case @right_window.item_type
+              when $ITEMTYPE_ITEM
+                if $RMVX
+                  item = $data_items[current_id]
+                else
+                  last_value = $game_party.item_number(current_id)
+                  $game_party.gain_item(current_id, n)
+                  new_value = $game_party.item_number(current_id)
+                end
+              when $ITEMTYPE_WEAPON
+                if $RMVX
+                  item = $data_weapons[current_id]
+                else
+                  last_value = $game_party.weapon_number(current_id)
+                  $game_party.gain_weapon(current_id, n)
+                  new_value = $game_party.weapon_number(current_id)
+                end
+              when $ITEMTYPE_ARMOR
+                if $RMVX
+                  item = $data_armors[current_id]
+                else
+                  last_value = $game_party.armor_number(current_id)
+                  $game_party.gain_armor(current_id, n)
+                  new_value = $game_party.armor_number(current_id)
+                end
+            end
+            if $RMVX
+              last_value = $game_party.item_number(item)
+              $game_party.gain_item(item, n)
+              new_value = $game_party.item_number(item)
+            end
+            if new_value != last_value
+              $RMVX ? Sound.play_cursor : $game_system.se_play($data_system.cursor_se)
+              @right_window.refresh
+            end
+          end
+        when $DEBUG_MISC
+          onoff_value = false
+          if Input.repeat?(Input::RIGHT)
+            n = 1
+          elsif Input.repeat?(Input::LEFT)
+            n = -1
+          elsif Input.repeat?(Input::R)
+            n = 10
+          elsif Input.repeat?(Input::L)
+            n = -10
+          else
+            n = 0
+          end
+          if @left_window.index == 0 # Todos
+            case @right_window.index
+              when 0 # Dinheiro
+                if n != 0
+                  last_value = $game_party.gold
+                  $game_party.gain_gold(n)
+                  new_value = $game_party.gold
+                end
+              when 1 # Tempo de Jogo
+                if n != 0
+                  last_value = Graphics.frame_count
+                  Graphics.frame_count += n * Graphics.frame_rate
+                  Graphics.frame_count = 0 if Graphics.frame_count < 0
+                  new_value = Graphics.frame_count
+                end
+              when 2 # Contador de Passos
+                if n != 0
+                  last_value = $game_party.steps
+                  $game_party.steps += n
+                  $game_party.steps = 0 if $game_party.steps < 0
+                  new_value = $game_party.steps
+                end
+              when 3 # Contador de Saves
+                if n != 0
+                  last_value = $game_system.save_count
+                  $game_system.save_count += n
+                  $game_system.save_count = 0 if $game_system.save_count < 0
+                  new_value = $game_system.save_count
+                end
+              when 4 # Controle de Tempo
+                last_value = $game_system.timer_working
+                if Input.trigger?(Input::C)
+                  $game_system.timer_working = !$game_system.timer_working
+                end
+                onoff_value = true
+                new_value = $game_system.timer_working
+              when 5 # *  Minutos
+                min_value = ($game_system.timer / Graphics.frame_rate) / 60 + n
+                sec_value = ($game_system.timer / Graphics.frame_rate) % 60
+                min_value = 0 if min_value < 0 # precisa de um limite superior?
+                last_value = $game_system.timer
+                $game_system.timer = (min_value * 60 + sec_value) * Graphics.frame_rate
+                new_value = $game_system.timer
+              when 6 # *  Segundos
+                min_value = ($game_system.timer / Graphics.frame_rate) / 60
+                sec_value = ($game_system.timer / Graphics.frame_rate) % 60 + n
+                if sec_value < 0
+                  sec_value = 0
+                elsif sec_value > 59
+                  sec_value = 59
+                end
+                last_value = $game_system.timer
+                $game_system.timer = (min_value * 60 + sec_value) * Graphics.frame_rate
+                new_value = $game_system.timer
+              when 7 # Proibir Save
+                last_value = $game_system.save_disabled
+                if Input.trigger?(Input::C)
+                  $game_system.save_disabled = !$game_system.save_disabled
+                end
+                onoff_value = true
+                new_value = $game_system.save_disabled
+              when 8 # Proibir Menu
+                last_value = $game_system.menu_disabled
+                if Input.trigger?(Input::C)
+                  $game_system.menu_disabled = !$game_system.menu_disabled
+                end
+                onoff_value = true
+                new_value = $game_system.menu_disabled
+              when 9 # Proibir Encontros
+                last_value = $game_system.encounter_disabled
+                if Input.trigger?(Input::C)
+                  $game_system.encounter_disabled = !$game_system.encounter_disabled
+                end
+                onoff_value = true
+                new_value = $game_system.encounter_disabled
+                $game_player.make_encounter_count
+            end
+          else
+            actor = $game_actors[@left_window.index]
+            case @right_window.index
+              when 0 # Grupo
+                if $RMVX
+                  last_value = $game_party.members.include?(actor)
+                else
+                  last_value = $game_party.actors.include?(actor)
+                end
+                if Input.trigger?(Input::C)
+                  if last_value
+                    $game_party.remove_actor(@left_window.index)
+                  else
+                    $game_party.add_actor(@left_window.index)
+                  end
+                end
+                if $RMVX
+                  new_value = $game_party.members.include?(actor)
+                else
+                  new_value = $game_party.actors.include?(actor)
+                end
+                onoff_value = true
+              when 1 # Classe
+                if n != 0
+                  last_value = actor.class_id
+                  new_value = last_value + n
+                  if new_value < 1
+                    new_value = 1
+                  elsif new_value > $data_classes.nitems
+                    new_value = $data_classes.nitems
+                  end
+                  actor.class_id = new_value
+                end
+              when 2 # HP
+                if n != 0
+                  last_value = actor.hp
+                  new_value = last_value + n
+                  if new_value < 0
+                    new_value = 0
+                  elsif new_value > actor.maxhp
+                    new_value = actor.maxhp
+                  end
+                  actor.hp = new_value
+                end
+              when 3 # MP
+                if n != 0
+                  last_value = $RMVX ? actor.mp : actor.sp
+                  new_value = last_value + n
+                  max_value = $RMVX ? actor.maxmp : actor.maxsp
+                  if new_value < 0
+                    new_value = 0
+                  elsif new_value > max_value
+                    new_value = max_value
+                  end
+                  if $RMVX
+                    actor.mp = new_value
+                  else
+                    actor.sp = new_value
+                  end
+                end
+              when 4 # Exp
+                if n != 0
+                  last_value = actor.exp
+                  if $RMVX
+                    actor.change_exp(last_value + n, false)
+                  else
+                    actor.exp += n
+                  end
+                  new_value = actor.exp
+                end
+              when 5 # Nível
+                if n != 0
+                  last_value = actor.level
+                  if $RMVX
+                    actor.change_level(last_value + n, false)
+                  else
+                    actor.level += n
+                  end
+                  new_value = actor.level
+                end
+              when 6 # HP Máx
+                if n != 0
+                  last_value = actor.maxhp
+                  new_value = last_value + n
+                  new_value = 1 if new_value < 1 # precisa de um limite superior?
+                  actor.maxhp = new_value
+                end
+              when 7 # MP Máx
+                if n != 0
+                  last_value = $RMVX ? actor.maxmp : actor.maxsp
+                  new_value = last_value + n
+                  new_value = 1 if new_value < 1 # precisa de um limite superior?
+                  if $RMVX
+                    actor.maxmp = new_value
+                  else
+                    actor.maxsp = new_value
+                  end
+                end
+              when 7 # MP Máx
+                if n != 0
+                  last_value = $RMVX ? actor.maxmp : actor.maxsp
+                  new_value = last_value + n
+                  new_value = 1 if new_value < 1 # precisa de um limite superior?
+                  if $RMVX
+                    actor.maxmp = new_value
+                  else
+                    actor.maxsp = new_value
+                  end
+                end
+              when 8 # Ataque
+                if n != 0
+                  last_value = $RMVX ? actor.atk : actor.str
+                  new_value = last_value + n
+                  new_value = 1 if new_value < 1 # precisa de um limite superior?
+                  if $RMVX
+                    actor.atk = new_value
+                  else
+                    actor.str = new_value
+                  end
+                end
+              when 9 # Defesa
+                if n != 0
+                  last_value = $RMVX ? actor.def : actor.dex
+                  new_value = last_value + n
+                  new_value = 1 if new_value < 1 # precisa de um limite superior?
+                  if $RMVX
+                    actor.def = new_value
+                  else
+                    actor.dex = new_value
+                  end
+                end
+              when 10 # Agilidade
+                if n != 0
+                  last_value = actor.agi
+                  new_value = last_value + n
+                  new_value = 1 if new_value < 1 # precisa de um limite superior?
+                  actor.agi = new_value
+                end
+              when 11 # Inteligência
+                if n != 0
+                  last_value = $RMVX ? actor.spi : actor.int
+                  new_value = last_value + n
+                  new_value = 1 if new_value < 1 # precisa de um limite superior?
+                  if $RMVX
+                    actor.spi = new_value
+                  else
+                    actor.int = new_value
+                  end
+                end
+            end
+          end
+          @help_window.contents.clear
+          if onoff_value
+              @help_window.contents.draw_text(4, 0,
+                @help_window.contents.width - 8, $WLH,
+                "C (Enter) : ON / OFF")
+          else
+              @help_window.contents.draw_text(4, 0,
+                @help_window.contents.width - 8, $WLH,
+                "?: -1 ?: +1 Pageup: -10 Pagedown: +10")
+          end
+          if new_value != last_value
+            if onoff_value
+              $RMVX ? Sound.play_cancel : $game_system.se_play($data_system.cancel_se)
+            else
+              $RMVX ? Sound.play_cursor : $game_system.se_play($data_system.cursor_se)
+            end
+            @right_window.refresh
+          end
+      end
+    end
+  end
+end
+{% endhighlight %}
+
+<p>br_lemes, o Morto-Vivo insano (Demente)</p>
