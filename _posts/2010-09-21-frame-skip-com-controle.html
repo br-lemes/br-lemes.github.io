@@ -1,0 +1,162 @@
+---
+comments: true
+layout: post
+title: "[Script XP e VX] Frame Skip com Controle"
+tags: [RPG Maker]
+---
+
+<div class="alert alert-danger"><strong>
+	Contém código originalmente desenvolvido por Aleworks (vgvgf)
+</strong></div>
+
+<h3>Introdução</h3>
+
+<p>Este script tem o propósito de pular alguns graphics updates ou
+"graphics frames", de forma que o jogo passe mais rápido.</p>
+
+<h3>Características</h3>
+
+<ul>
+	<li>
+		Funciona em ambos, RPG Maker XP e VX, sem alterações;
+	</li>
+	<li>
+		Você pode acionar o Frame Skip através de uma tecla apenas
+		durante o Play Test; e
+	</li>
+	<li>
+		Você pode controlar o Frame Rate através de uma variável (opcional).
+	</li>
+</ul>
+
+<!-- more -->
+
+<section id="more">
+<h3>Screenshots</h3>
+</section>
+
+<p>Não possui efeitos visuais perceptíveis por screenshots.</p>
+
+<h3>Como usar</h3>
+
+<p>Cole os dois scripts acima de Main. Configure as três primeiras linhas
+do segundo script conforme indicado.</p>
+
+<h3>Demo</h3>
+
+<p>Não necessita de Demo.</p>
+
+<h3>Script</h3>
+
+<h4>Frame Skip (AFS)</h4>
+
+{% highlight ruby %}
+#==============================================================================
+# * Aleworks Frame Skipping Script(AFS)
+#------------------------------------------------------------------------------
+# Criado por Aleworks(vgvgf)
+# Versão: 1.00
+# Última modificação: 13/03/2007 (day/month/year)
+#------------------------------------------------------------------------------
+#==== Descrição ====
+# Este script tem o propósito de pular alguns graphics updates ou
+# "graphics frames", de forma que o jogo passe mais rápido.
+#------------------------------------------------------------------------------
+#==== Instruções ====
+# Existem dois modos de pular frames, um que pula as frames a cada
+# graphics update (modo 0), e outro que pula as frames a cada
+# segundo (modo 1). O último não pode ser tão rápido quanto o primeiro,
+# mas é mais suave.
+# Para mudar o modo use: Graphics.frame_skip_mode = modo
+# Para mudar a taxa de pulos use: Graphics.frame_skip_rate = modo
+# Quando Graphics.frame_skip_rate for 0, será o modo normal.
+# Se você quiser que não pule as frames em algum lugar, por exemplo
+# no menu, use Graphics.update(false) ao invés de Graphics.update.
+#------------------------------------------------------------------------------
+#==== AFS Edits ====
+# * module Graphics
+#  - alias method: update; alias name: aleworks_frameskip_graphics_update
+#==============================================================================
+
+#=============================================================================
+# * Graphics Module
+#=============================================================================
+module Graphics
+  @frame_skip_rate = 0
+  @frame_skip_count = 0
+  @frame_skip_mode = 0
+  #---------------------------------------------------------------------------
+  class << self
+    attr_accessor :frame_skip_rate, :frame_skip_mode
+    if @aleworks_frameskip_aliased.nil?
+      alias aleworks_frameskip_graphics_update update
+      @aleworks_frameskip_aliased = true
+    end
+    #---------------------------------------------------------------------------
+    # * Graphics update
+    #---------------------------------------------------------------------------
+    def update(frame_skip = true)
+      if @frame_skip_rate > 0 and frame_skip
+        case @frame_skip_mode
+        when 0
+          @frame_skip_count += 1
+          if @frame_skip_count >= @frame_skip_rate
+            @frame_skip_count = 0
+          else
+            return
+          end
+        when 1
+          @frame_skip_count += [@frame_skip_rate, frame_rate / 2].min
+          if @frame_skip_count >= frame_rate
+            @frame_skip_count = 0
+            return
+          end
+        end
+      end
+      aleworks_frameskip_graphics_update
+    end
+  end
+end
+{% endhighlight %}
+
+<h4>Controle</h4>
+
+{% highlight ruby %}
+$FSCTRL_DEFRATE = 5 # Frame rate padrão (se não usar variável)
+$FSCTRL_VARRATE = 0 # ID da variável com a frame rate ou 0 para usar o padrão
+$FSCTRL_KEY     = Input::SHIFT # Tecla que ativa o frame skip
+
+$FSCTRL_ACTIVE  = $TEST != nil ? $TEST : $DEBUG # Condição para ativar o frame skip
+
+class Scene_Map
+  alias fsctrl_main main
+  def main
+    fsctrl_main
+    Graphics.frame_skip_rate = 0
+  end
+  alias fsctrl_update update
+  def update
+    if $FSCTRL_ACTIVE
+      if Input::press?($FSCTRL_KEY)
+        if $FSCTRL_VARRATE == 0
+          Graphics.frame_skip_rate = $FSCTRL_DEFRATE
+        else
+          Graphics.frame_skip_rate = $game_variables[$FSCTRL_VARRATE]
+        end
+      else
+        Graphics.frame_skip_rate = 0
+      end
+    end
+    fsctrl_update
+  end
+end
+{% endhighlight %}
+
+<h3>Créditos e Agradecimentos</h3>
+
+<ul>
+	<li>Tradução e Controle por br_lemes</li>
+    <li>Frame Skip por Aleworks</li>
+</ul>
+
+<p>br_lemes, o Andróide insano (Demente)</p>
