@@ -1,0 +1,107 @@
+---
+comments: true
+layout: post
+title: "[Script XP e VX] Evento Comum no Teletransporte"
+tags: [RPG Maker]
+---
+
+{% include aviso.html %}
+
+<h3>Introdução</h3>
+
+<p>Este script permite chamar um evento comum ao entrar ou sair de determinado
+mapa, tornando mais fácil a programação de mapas com efeitos especiais, como
+cor de tela (mapas noturnos), efeitos de clima, etc. O objetivo é que você
+não precise programar todos esses efeitos em todos os eventos de
+teletransporte do mapa.</p>
+
+<h3>Características</h3>
+
+<ul>
+	<li>
+		Funciona em ambos, RPG Maker XP e VX, sem alterações; e
+	</li>
+	<li>
+		Premite configurar um evento comum para entrada e outro para saída
+		de cada mapa.
+	</li>
+</ul>
+
+<!-- more -->
+
+<section id="more">
+<h3>Screenshots</h3>
+</section>
+
+<p>Não possui efeitos visuais perceptíveis por screenshots.</p>
+
+<h3>Como usar</h3>
+
+<p>Cole em scripts adicionais, acima de Main. Os mapas que terão eventos
+comuns deverão ser nomeados da seguinte forma:
+<em>[ENT=ID-SAI=ID]Nome do mapa</em>. Onde "ID" é a ID do evento e
+"Nome do mapa" é qualquer nome a sua escolha.
+
+<h3>Demo</h3>
+
+<p><strong><a href="/downloads/rpg-maker/Evento-VX.rar">
+	Evento-VX.rar</a></strong></p>
+<p><strong><a href="/downloads/rpg-maker/Evento-XP.rar">
+	Evento-XP.rar</a></strong></p>
+
+<h3>Script</h3>
+
+{% highlight ruby %}
+=begin
+  Evento Comum no Teletransporte
+  por br_lemes
+
+  É permitido, livre de quaisquer ônus, usar, copiar, modificar e/ou
+  distribuir cópias deste script, desde que seja mantido este aviso.
+  NÃO HÁ QUALQUER GARANTIA, USE POR SUA PRÓPRIA CONTA E RISCO.
+=end
+
+$RMVX = $TEST != nil
+
+class RPG::MapInfo
+  def name
+    return @name.gsub(/\[ENT=.+\-SAI=.+\]/,"")
+  end
+  def evtel_in
+    a = @name.scan(/\[ENT=(.+)\-SAI=.+\]/)[0]
+    return a != nil ? a[0].to_i : 0
+  end
+  def evtel_out
+    a = @name.scan(/\[ENT=.+\-SAI=(.+)\]/)[0]
+    return a != nil ? a[0].to_i : 0
+  end
+end
+
+class Game_Map
+  alias evtel_initialize initialize
+  def initialize
+    evtel_initialize
+    @aux_interpreter  = $RMVX ? Game_Interpreter.new : Interpreter.new
+  end
+  alias evtel_update update
+  def update
+    evtel_update
+    @aux_interpreter.update if @aux_interpreter.running?
+  end
+  alias evtel_setup setup
+  def setup(map_id)
+    m = load_data($RMVX ? "Data/MapInfos.rvdata":"Data/MapInfos.rxdata")
+    i = m[@map_id] != nil ? m[@map_id].evtel_out : 0
+    if i != 0 and $data_common_events[i] != nil then
+      @aux_interpreter.setup($data_common_events[i].list,i)
+    end
+    evtel_setup(map_id)
+    i = m[@map_id].evtel_in
+    if i != 0 and $data_common_events[i] != nil then
+      @aux_interpreter.setup($data_common_events[i].list,i)
+    end
+  end
+end
+{% endhighlight %}
+
+<p>br_lemes, o Licantropo insano (Piromaníaco)</p>
