@@ -1,0 +1,126 @@
+---
+comments: true
+layout: post
+title: "[Script XP e VX] Recuperação por passo"
+tags: [RPG Maker]
+---
+
+{% include aviso.html %}
+
+<h3>Introdução</h3>
+
+<p>Este script permite que um, todos ou uma lista de heróis recuperem uma
+determinada quantia ou percentagem do seu HP ou MP/SP a cada passo.</p>
+
+<h3>Características</h3>
+
+<ul>
+	<li>
+		Funciona em ambos, RPG Maker XP e VX, sem alterações é só colar
+		acima de main e rodar;
+	</li>
+	<li>
+		Recupera em um, todos, ou um grupo de heróis; e
+	</li>
+	<li>
+		Recupera distintamente HP e MP/SP em valor absoluto e/ou percentagem.
+	</li>
+</ul>
+
+<!-- more -->
+
+<section id="more">
+<h3>Screenshots</h3>
+</section>
+
+<p>Não possiu efeitos visuais perceptíveis por screenshots.</p>
+
+<h3>Como usar</h3>
+
+<p>Cole o script acima de Main. As configurações funcionam assim:</p>
+
+<p>Se STPREC::ACTOR for 0 recupera em todos os personagens. Se for a ID de
+algum herói, recupera somente para aquele. Se for uma lista de ID recupera
+apenas para aqueles que estão na lista. A lista é um array, no seguint
+e formato: [1, 7, ...]</p>
+
+<p>Se STPREC::HP_FACTOR ou STPREC::MP_FACTOR for um número inteiro
+(sem ponto) recupera aquela quantia por passo (ex.: 10). Se for um número
+de ponto flutuante (com ponto) recupera aquela percentagem (ex.: 0.1 = 10%)</p>
+
+<h3>Demo</h3>
+
+<p>Não necessita de demo.</p>
+
+<h3>Script</h3>
+
+{% highlight ruby %}
+=begin
+  Recuperação por passo
+  por br_lemes
+
+  É permitido, livre de quaisquer ônus, usar, copiar, modificar e/ou
+  distribuir cópias deste script, desde que seja mantido este aviso.
+  NÃO HÁ QUALQUER GARANTIA, USE POR SUA PRÓPRIA CONTA E RISCO.
+=end
+
+# Este script permite que um, todos ou uma lista de heróis
+# recuperem uma determinada quantia ou percentagem do seu
+# HP ou MP/SP a cada passo
+
+# CONFIGURE AQUI!
+
+module STPREC
+  # * se ACTOR for 0 recupera em todos os personagens
+  # * se for a ID de algum herói, recupera somente para aquele
+  # * se for uma lista de ID recupera apenas para aqueles que
+  #   estão na lista. A lista é um array, no seguinte formato:
+  #   [1, 7, ...]
+  ACTOR     = 0
+  # * se HP_FACTOR ou MP_FACTOR for um número inteiro (sem ponto)
+  #   recupera aquela quantia por passo (ex.: 10)
+  # * se HP_FACTOR ou MP_FACTOR for um número de ponto flutuante
+  #   (com ponto) recupera aquela percentagem (ex.: 0.1 = 10%)
+  HP_FACTOR = 10
+  MP_FACTOR = 10 # MP ou SP
+end
+
+# NÃO ALTERE A PARTIR DAQUI!
+
+$RMVX = $TEST != nil
+
+class Game_Party
+  alias original increase_steps
+  def do_recover(actor)
+    if (STPREC::ACTOR.type == Array and STPREC::ACTOR.include?(actor.id)) or
+       (STPREC::ACTOR.type != Array and (STPREC::ACTOR == 0 or STPREC::ACTOR == actor.id))
+      if STPREC::HP_FACTOR.type == Float
+        actor.hp += Integer(actor.maxhp * STPREC::HP_FACTOR)
+      else
+        actor.hp += STPREC::HP_FACTOR
+      end
+      if STPREC::MP_FACTOR.type == Float
+        $RMVX ? actor.mp += Integer(actor.maxmp * STPREC::MP_FACTOR) : actor.sp += Integer(actor.maxsp * STPREC::MP_FACTOR)
+      else
+        $RMVX ? actor.mp += STPREC::MP_FACTOR : actor.sp += STPREC::MP_FACTOR
+      end
+    end
+  end
+  def increase_steps
+    original
+    if $RMVX
+      i = 0
+      for i in @actors
+        actor = $game_actors[i]
+        do_recover(actor)
+      end
+    else
+      for actor in @actors
+        do_recover(actor)
+      end
+    end
+  end
+end
+{% endhighlight %}
+
+<p>br_lemes, o Homem-Anfíbio insano (Sonâmbulo)</p>
