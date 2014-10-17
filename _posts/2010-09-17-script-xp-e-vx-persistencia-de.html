@@ -1,0 +1,152 @@
+---
+comments: true
+layout: post
+title: "[Script XP e VX] Persistência de variáveis e switches"
+tags: [RPG Maker]
+---
+
+{% include aviso.html %}
+
+<h3>Introdução</h3>
+
+<p>Este script permite definir variáveis e switches que vão manter o seu
+valor mesmo quando reiniciar o jogo (game over), escolher um novo jogo, ou
+continuar um jogo diferente. Os valores serão salvos (se tornarão
+persistentes) automaticamente ao salvar o jogo, ao dar game over ou
+manualmente ao chamar o método "persist_save".</p>
+
+<p>O objetivo é permitir implementar um HighScore ou outras coisas que sua
+imaginação permitir.</p>
+
+<h3>Características</h3>
+
+<ul>
+	<li>
+		Funciona em ambos, RPG Maker XP e VX, sem alterações é só colar
+		acima de main e rodar;
+	</li>
+	<li>
+		Permite que variáveis e switches definidos por você mantenha o valor
+		mesmo ao reiniciar o jogo.
+	</li>
+</ul>
+
+<!-- more -->
+
+<section id="more">
+<h3>Screenshots</h3>
+</section>
+
+<p>Não possui efeitos visuais perceptíveis por screenshots.</p>
+
+<h3>Como usar</h3>
+
+<p>Cole o script acima de Main. E coloque a lista de variáveis e switches no
+local indicado.</p>
+
+<h3>Demo</h3>
+
+<p>Não é necessário.</p>
+
+<h3>Script</h3>
+
+{% highlight ruby %}
+=begin
+  Persistência de variáveis e switches
+  por br_lemes
+
+  É permitido, livre de quaisquer ônus, usar, copiar, modificar e/ou
+  distribuir cópias deste script, desde que seja mantido este aviso.
+  NÃO HÁ QUALQUER GARANTIA, USE POR SUA PRÓPRIA CONTA E RISCO.
+=end
+
+# Este script permite definir variáveis e switches que vão
+# manter o seu valor mesmo quando reiniciar o jogo (game over),
+# escolher um novo jogo, ou continuar um jogo diferente.
+# Os valores serão salvos (se tornarão persistentes)
+# automaticamente ao salvar o jogo, ao dar game over ou manualmente ao
+# chamar o método "persist_save".
+
+# O objetivo é permitir implementar um HighScore ou outras coisas
+# que sua imaginação permitir.
+
+$RMVX = $TEST != nil
+
+# Coloque a lista de ID das variáveis e switches aqui
+$PERSIST_VARIABLES = [2, 5]
+$PERSIST_SWITCHES  = []
+
+$PERSIST_NAME = $RMVX ? "persist.rvdata" : "persist.rxdata"
+
+def persist_save
+  persist_data = [{},{}]
+  for i in 0..$PERSIST_VARIABLES.size - 1
+    persist_data[0][i] = $game_variables[$PERSIST_VARIABLES[i]]
+  end
+  for i in 0..$PERSIST_SWITCHES.size - 1
+    persist_data[1][i] = $game_switches[$PERSIST_SWITCHES[i]]
+  end
+  save_data(persist_data, $PERSIST_NAME)
+end
+
+def persist_load
+  return if !FileTest.exist?($PERSIST_NAME)
+  persist_data = load_data($PERSIST_NAME)
+  for i in 0..$PERSIST_VARIABLES.size - 1
+    $game_variables[$PERSIST_VARIABLES[i]] = persist_data[0][i]
+  end
+  for i in 0..$PERSIST_SWITCHES.size - 1
+    $game_switches[$PERSIST_SWITCHES[i]] = persist_data[1][i]
+  end
+  $game_map.refresh
+end
+
+class Scene_Title
+  alias persist_command_new_game command_new_game
+  def command_new_game
+    persist_command_new_game
+    persist_load
+  end
+end
+
+if $RMVX
+  class Scene_File
+    alias persist_do_save do_save
+    def do_save
+      persist_do_save
+      persist_save
+    end
+    alias persist_do_load do_load
+    def do_load
+      persist_do_load
+      persist_load
+    end
+  end
+else
+  class Scene_Load
+    alias persist_on_decision on_decision
+    def on_decision(filename)
+      persist_on_decision(filename)
+      persist_load
+    end
+  end
+
+  class Scene_Save
+    alias persist_on_decision on_decision
+    def on_decision(filename)
+      persist_on_decision(filename)
+      persist_save
+    end
+  end
+end
+
+class Scene_Gameover
+  alias persist_main main
+  def main
+    persist_save
+    persist_main
+  end
+end
+{% endhighlight %}
+
+<p>br_lemes, o Paladino insano (Fantasia)</p>
