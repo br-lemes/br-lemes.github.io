@@ -1,0 +1,436 @@
+---
+comments: true
+layout: post
+title: "[Script XP e VX] Dragon HUD"
+tags: [RPG Maker]
+---
+
+{% include aviso.html %}
+
+<h3>Introdução</h3>
+
+<p>Esta é uma HUD para um só personagem que mostra HP, MP, Exp, equipamentos
+e itens. É configurável e, apesar de poucas opções, e possível criar efeitos
+visuais bem diferentes.</p>
+
+<h3>Características</h3>
+
+<ul>
+	<li>Funciona em ambos, RPG Maker XP e VX, sem alterações;</li>
+	<li>Mostra HP, MP, Exp, equipamentos e itens determinados;</li>
+	<li>Pode ligar ou desligar a HUD através de uma switch;</li>
+	<li>Usa uma imagem para o fundo e uma imagem para decoração;</li>
+	<li>
+		A imagem decorativa pode ser ligada ou desligada de ambos os lados
+		independentemente, mas note que a imagem do lado direito é a mesma do
+		lado esquerdo porém invertida; e
+	</li>
+	<li>
+		Opções de configuração para mudar a opacidade das imagens e para
+		mudar a coordenada y das informações (para ajustar caso a imagem
+		de fundo seja maior ou menor).
+	</li>
+</ul>
+
+<section id="more">
+<h3>Screenshots</h3>
+</section>
+
+<p>
+<a href="/images/rpg-maker/DHUD_VX.jpg"><img src="/images/rpg-maker/DHUD_VX.jpg"
+	alt="Screenshot do script dragon hud para RPG Maker VX"
+	class="img-responsive" /></a>
+</p><p>
+<a href="/images/rpg-maker/DHUD_XP.png"><img src="/images/rpg-maker/DHUD_XP.png"
+	alt="Screenshot do script dragon hud para RPG Maker XP"
+	class="img-responsive" /></a>
+</p>
+
+<h3>Como usar</h3>
+
+<p>Cole em scripts adicionais, acima de Main. Configure o trecho onde diz
+"CONFIGURAÇÕES: modifique aqui" conforme instruções no próprio script. Você
+vai precisar destas imagens na pasta System (RPG Maker VX) ou Windowskins
+(RPG Maker XP) do seu projeto. Você pode trocar por outras, desde que elas
+tenham o mesmo nome:</p>
+
+<p>
+<a href="/images/rpg-maker/dragon.png"><img src="/images/rpg-maker/dragon.png"
+	alt="Dragão"
+	class="img-responsive" /></a>
+</p>
+
+<p>Versão VX:</p>
+
+<p>
+<a href="/images/rpg-maker/backVX.png"><img src="/images/rpg-maker/backVX.png"
+	alt="Fundo RPG Maker VX"
+	class="img-responsive" /></a>
+</p>
+
+<p>Versão XP:</p>
+
+<p>
+<a href="/images/rpg-maker/backXP.png"><img src="/images/rpg-maker/backXP.png"
+	alt="Fundo RPG Maker XP"
+	class="img-responsive" /></a>
+</p>
+
+<h3>Demo</h3>
+
+<p><strong><a href="/downloads/rpg-maker/DHUD_VX.rar">
+	DHUD_VX.rar</a></strong></p>
+<p><strong><a href="/downloads/rpg-maker/DHUD_XP.rar">
+	DHUD_XP.rar</a></strong></p>
+
+<h3>Script</h3>
+
+{% highlight ruby %}
+=begin
+  Dragon HUD
+  por br_lemes
+
+  É permitido, livre de quaisquer ônus, usar, copiar, modificar e/ou
+  distribuir cópias deste script, desde que seja mantido este aviso.
+  NÃO HÁ QUALQUER GARANTIA, USE POR SUA PRÓPRIA CONTA E RISCO.
+=end
+
+################################################################################
+# CONFIGURAÇÕES - modifique a vontade, mas com cuidado
+################################################################################
+
+$RMVX = $TEST != nil
+
+$DHUD_DRAGON1 = true # mostrar dragão 1
+$DHUD_DRAGON2 = true # mostrar dragão 2
+
+# lista com a ID de 4 (VX) ou 6 (XP) itens a serem mostrados ou 0 para não mostrar
+$DHUD_ITEMS = [1, 4, 7, 9, 12, 13]
+
+# Estado inicial da HUD
+$DHUD_DEFAULT = true # true é visível, false não é visível
+$DHUD_SWITCH  = 1    # switch que ativa/desativa a HUD
+
+$DHUD_OPACITY = 215 # opacidade das imagens
+
+$DHUD_Y = $RMVX ? 382 : 446 # coordenada y de referência
+
+#--------------------------------------------------------------------------
+# APENAS XP - cores das barras de hp/mp/ex
+# 0 = Vermelho
+# 1 = Azul
+# 2 = Verde
+# 3 = Rosa
+# 4 = Azul Claro
+# 5 = Amarelo
+# 6 = Branco
+#--------------------------------------------------------------------------
+$DHUD_HP_COLOR  = 0
+$DHUD_SP_COLOR  = 1
+$DHUD_EXP_COLOR = 2
+
+################################################################################
+# FIM DAS CONFIGURAÇÕES - não modifique apartir daqui
+# A menos que você saiba realmente o que está fazendo
+################################################################################
+
+$dhud_eq_needrefresh = true
+$dhud_it_needrefresh = true
+
+class Game_Actor < Game_Battler
+  def now_exp
+    return @exp - @exp_list[@level]
+  end
+  def next_exp
+    return @exp_list[@level+1] > 0 ? @exp_list[@level+1] - @exp_list[@level] : 0
+  end
+  if $RMVX
+    alias dhud_change_equip change_equip
+    def change_equip(equip_type, item, test = false)
+      dhud_change_equip(equip_type, item, test)
+      $dhud_eq_needrefresh = true
+    end
+  else
+    alias dhud_equip equip
+    def equip(equip_type, item)
+      dhud_equip(equip_type, item)
+      $dhud_eq_needrefresh = true
+    end
+  end
+end
+
+class Game_Party
+  alias dhud_gain_item gain_item
+  def gain_item(item, n, include_equip = false)
+    $RMVX ? dhud_gain_item(item, n, include_equip) : dhud_gain_item(item, n)
+    $dhud_it_needrefresh = true
+  end
+end
+
+class Scene_Map
+  alias dhud_main main
+  def main
+    if $RMVX then @windowskin = Cache.system("Window") end
+    @hud_checkex = -1
+    @hud_back = Sprite.new
+    @hud_back.z += 1
+    @hud_back.opacity = $DHUD_OPACITY
+    @hud_dragon1 = Sprite.new
+    @hud_dragon1.z += 2
+    @hud_dragon1.opacity = $DHUD_OPACITY
+    @hud_dragon2 = Sprite.new
+    @hud_dragon2.z += 2
+    @hud_dragon2.mirror = true
+    @hud_dragon2.opacity = $DHUD_OPACITY
+    @hud_dragon1.visible = $DHUD_DRAGON1
+    @hud_dragon2.visible = $DHUD_DRAGON2
+    if $RMVX
+      @hud_back.bitmap = Cache.system("backVX")
+      @hud_back.y = 416 - @hud_back.height
+      @hud_dragon1.bitmap = Cache.system("dragon")
+      @hud_dragon1.y = 416 - @hud_dragon1.height
+      @hud_dragon2.bitmap = Cache.system("dragon")
+      @hud_dragon2.x = 544 - @hud_dragon2.width
+      @hud_dragon2.y = 416 - @hud_dragon2.height
+    else
+      @hud_back.bitmap = RPG::Cache.windowskin("backXP")
+      @hud_back.y = 480 - @hud_back.bitmap.height
+      @hud_dragon1.bitmap = RPG::Cache.windowskin("dragon")
+      @hud_dragon1.y = 480 - @hud_dragon1.bitmap.height
+      @hud_dragon2.bitmap = RPG::Cache.windowskin("dragon")
+      @hud_dragon2.x = 640 - @hud_dragon2.bitmap.width
+      @hud_dragon2.y = 480 - @hud_dragon2.bitmap.height
+    end
+    @hud_hp = Sprite.new
+    @hud_hp.x = 70
+    @hud_hp.y = $DHUD_Y + 2
+    @hud_hp.z += 2
+    @hud_hp.bitmap = Bitmap.new(83, 4)
+    @hud_mp = Sprite.new
+    @hud_mp.x = 70
+    @hud_mp.y = $DHUD_Y + 10
+    @hud_mp.z += 2
+    @hud_mp.bitmap = Bitmap.new(83, 4)
+    @hud_ex = Sprite.new
+    @hud_ex.x = 70
+    @hud_ex.y = $DHUD_Y + 18
+    @hud_ex.z += 2
+    @hud_ex.bitmap = Bitmap.new(83, 4)
+    @hud_eq = Sprite.new
+    @hud_eq.x = 186
+    @hud_eq.y = $DHUD_Y
+    @hud_eq.z += 2
+    @hud_eq.bitmap = Bitmap.new(142, 24)
+    @hud_it = Sprite.new
+    @hud_it.x = 360
+    @hud_it.y = $DHUD_Y
+    @hud_it.z += 2
+    if $RMVX
+      @hud_it.bitmap = Bitmap.new(114, 24)
+    else
+      @hud_it.bitmap = Bitmap.new(172, 24)
+    end
+    @hud_it.bitmap.font.size = 14
+    $dhud_eq_needrefresh = true
+    $dhud_it_needrefresh = true
+    refresh
+    dhud_main
+    @hud_back.dispose
+    @hud_dragon1.dispose
+    @hud_dragon2.dispose
+    @hud_hp.dispose
+    @hud_mp.dispose
+    @hud_ex.dispose
+    @hud_eq.dispose
+    @hud_it.dispose
+  end
+  def refresh
+    hudswitch = (($DHUD_DEFAULT && !$game_switches[$DHUD_SWITCH]) or (!$DHUD_DEFAULT && $game_switches[$DHUD_SWITCH]))
+    @hud_back.visible = hudswitch
+    if hudswitch
+      @hud_dragon1.visible = $DHUD_DRAGON1
+      @hud_dragon2.visible = $DHUD_DRAGON2
+    else
+      @hud_dragon1.visible = false
+      @hud_dragon2.visible = false
+    end
+    @hud_hp.visible = hudswitch
+    @hud_mp.visible = hudswitch
+    @hud_ex.visible = hudswitch
+    @hud_eq.visible = hudswitch
+    @hud_it.visible = hudswitch
+    draw_hp
+    draw_mp
+    draw_ex
+    draw_eq if $dhud_eq_needrefresh
+    draw_it if $dhud_it_needrefresh
+  end
+  if $RMVX
+    def text_color(n)
+      x = 64 + (n % 8) * 8
+      y = 96 + (n / 8) * 8
+      return @windowskin.get_pixel(x, y)
+    end
+  else
+    def bar_color(bitmap, x, y, w, color)
+      case color
+      when 0
+        bitmap.fill_rect(x, y + 0, w, 1, Color.new(255, 96, 96, 255))
+        bitmap.fill_rect(x, y + 1, w, 1, Color.new(255, 0, 0, 255))
+        bitmap.fill_rect(x, y + 2, w, 1, Color.new(192, 0, 0, 255))
+        bitmap.fill_rect(x, y + 3, w, 1, Color.new(128, 0, 0, 255))
+      when 1
+        bitmap.fill_rect(x, y + 0, w, 1, Color.new(96, 96, 255, 255))
+        bitmap.fill_rect(x, y + 1, w, 1, Color.new(0, 0, 255, 255))
+        bitmap.fill_rect(x, y + 2, w, 1, Color.new(0, 0, 192, 255))
+        bitmap.fill_rect(x, y + 3, w, 1, Color.new(0, 0, 128, 255))
+      when 2
+        bitmap.fill_rect(x, y + 0, w, 1, Color.new(96, 255, 96, 255))
+        bitmap.fill_rect(x, y + 1, w, 1, Color.new(0, 255, 0, 255))
+        bitmap.fill_rect(x, y + 2, w, 1, Color.new(0, 192, 0, 255))
+        bitmap.fill_rect(x, y + 3, w, 1, Color.new(0, 128, 0, 255))
+      when 3
+        bitmap.fill_rect(x, y + 0, w, 1, Color.new(255, 128, 255, 255))
+        bitmap.fill_rect(x, y + 1, w, 1, Color.new(255, 0, 255, 255))
+        bitmap.fill_rect(x, y + 2, w, 1, Color.new(192, 0, 192, 255))
+        bitmap.fill_rect(x, y + 3, w, 1, Color.new(128, 0, 128, 255))
+      when 4
+        bitmap.fill_rect(x, y + 0, w, 1, Color.new(128, 255, 255, 255))
+        bitmap.fill_rect(x, y + 1, w, 1, Color.new(0, 255, 255, 255))
+        bitmap.fill_rect(x, y + 2, w, 1, Color.new(0, 192, 192, 255))
+        bitmap.fill_rect(x, y + 3, w, 1, Color.new(0, 128, 128, 255))
+      when 5
+        bitmap.fill_rect(x, y + 0, w, 1, Color.new(255, 255, 128, 255))
+        bitmap.fill_rect(x, y + 1, w, 1, Color.new(255, 255, 0, 255))
+        bitmap.fill_rect(x, y + 2, w, 1, Color.new(192, 192, 0, 255))
+        bitmap.fill_rect(x, y + 3, w, 1, Color.new(128, 128, 0, 255))
+      when 6
+        bitmap.fill_rect(x, y + 0, w, 1, Color.new(255, 255, 255, 255))
+        bitmap.fill_rect(x, y + 1, w, 1, Color.new(255, 255, 255, 255))
+        bitmap.fill_rect(x, y + 2, w, 1, Color.new(192, 192, 192, 255))
+        bitmap.fill_rect(x, y + 3, w, 1, Color.new(128, 128, 128, 255))
+      end
+    end
+  end
+  def draw_hp
+    if $RMVX
+      if @hud_checkhp == $game_party.members[0].hp then return end
+      @hud_mp.bitmap.clear
+      gw = 83 * $game_party.members[0].hp / $game_party.members[0].maxhp
+      @hud_hp.bitmap.gradient_fill_rect(0, 0, gw, 4, text_color(20), text_color(21))
+      @hud_checkhp = $game_party.members[0].hp
+    else
+      if @hud_checkhp == $game_party.actors[0].hp then return end
+      @hud_mp.bitmap.clear
+      gw = 83 * $game_party.actors[0].hp / $game_party.actors[0].maxhp
+      bar_color(@hud_hp.bitmap, 0, 0, gw, $DHUD_HP_COLOR)
+      @hud_checkhp = $game_party.actors[0].hp
+    end
+  end
+  def draw_mp
+    if $RMVX
+      if @hud_checkmp == $game_party.members[0].mp then return end
+      @hud_mp.bitmap.clear
+      gw = 83 * $game_party.members[0].mp / $game_party.members[0].maxmp
+      @hud_mp.bitmap.gradient_fill_rect(0, 0, gw, 4, text_color(22), text_color(23))
+      @hud_checkmp = $game_party.members[0].mp
+    else
+      if @hud_checkmp == $game_party.actors[0].sp then return end
+      @hud_mp.bitmap.clear
+      gw = 83 * $game_party.actors[0].sp / $game_party.actors[0].maxsp
+      bar_color(@hud_mp.bitmap, 0, 0, gw, $DHUD_SP_COLOR)
+      @hud_checkmp = $game_party.actors[0].sp
+    end
+  end
+  def draw_ex
+    if $RMVX
+      if @hud_checkex == $game_party.members[0].next_exp then return end
+      @hud_ex.bitmap.clear
+      ex = $game_party.members[0].next_exp != 0 ? ex = $game_party.members[0].now_exp : ex = 1
+      gw = 83 * ex / [$game_party.members[0].next_exp, 1].max
+      @hud_ex.bitmap.gradient_fill_rect(0, 0, gw, 4, text_color(30), text_color(31))
+      @hud_checkex = ex
+    else
+      if @hud_checkex == $game_party.actors[0].next_exp then return end
+      @hud_ex.bitmap.clear
+      ex = $game_party.actors[0].next_exp != 0 ? ex = $game_party.actors[0].now_exp : ex = 1
+      gw = 83 * ex / [$game_party.actors[0].next_exp, 1].max
+      bar_color(@hud_ex.bitmap, 0, 0, gw, $DHUD_EXP_COLOR)
+      @hud_checkex = ex
+    end
+  end
+  def draw_icon(contents, icon, x, y, enabled = true)
+    if $RMVX
+      bitmap = Cache.system("Iconset")
+      rect = Rect.new(icon % 16 * 24, icon / 16 * 24, 24, 24)
+      contents.blt(x, y, bitmap, rect, enabled ? 255 : 128)
+    else
+      bitmap = RPG::Cache.icon(icon)
+      contents.blt(x, y, bitmap, Rect.new(0, 0, 24, 24), enabled ? 255 : 128)
+    end
+  end
+  def draw_eq
+    @hud_eq.bitmap.clear
+    if $RMVX
+      actor = $game_party.members[0]
+      draw_icon(@hud_eq.bitmap, $data_weapons[actor.weapon_id].icon_index, 0, 0, true) if actor.weapon_id != 0
+      if actor.armor1_id != 0
+        if actor.two_swords_style
+          draw_icon(@hud_eq.bitmap, $data_weapons[actor.armor1_id].icon_index, 29, 0, true) if actor.armor1_id != 0
+        else
+          draw_icon(@hud_eq.bitmap, $data_armors[actor.armor1_id].icon_index, 29, 0, true) if actor.armor1_id != 0
+        end
+      end
+      draw_icon(@hud_eq.bitmap, $data_armors[actor.armor2_id].icon_index, 58, 0, true) if actor.armor2_id != 0
+      draw_icon(@hud_eq.bitmap, $data_armors[actor.armor3_id].icon_index, 87, 0, true) if actor.armor3_id != 0
+      draw_icon(@hud_eq.bitmap, $data_armors[actor.armor4_id].icon_index, 116, 0, true) if actor.armor4_id != 0
+    else
+      actor = $game_party.actors[0]
+      draw_icon(@hud_eq.bitmap, $data_weapons[actor.weapon_id].icon_name, 0, 0, true) if actor.weapon_id != 0
+      draw_icon(@hud_eq.bitmap, $data_armors[actor.armor1_id].icon_name, 29, 0, true) if actor.armor1_id != 0
+      draw_icon(@hud_eq.bitmap, $data_armors[actor.armor2_id].icon_name, 58, 0, true) if actor.armor2_id != 0
+      draw_icon(@hud_eq.bitmap, $data_armors[actor.armor3_id].icon_name, 87, 0, true) if actor.armor3_id != 0
+      draw_icon(@hud_eq.bitmap, $data_armors[actor.armor4_id].icon_name, 116, 0, true) if actor.armor4_id != 0
+    end
+    $dhud_eq_needrefresh = false
+  end
+  def draw_it
+    @hud_it.bitmap.clear
+    x = 0
+    n = $RMVX ? 3 : 5
+    for i in 0..n
+      if $DHUD_ITEMS[i] != 0
+        item = $data_items[$DHUD_ITEMS[i]]
+        if $RMVX
+          if item and $game_party.item_number(item) != 0
+            draw_icon(@hud_it.bitmap, item.icon_index, x, 0, true)
+            @hud_it.bitmap.draw_text(x + 16, 10, 12, 14, $game_party.item_number(item))
+          end
+        else
+          if item and $game_party.item_number($DHUD_ITEMS[i]) != 0
+            draw_icon(@hud_it.bitmap, item.icon_name, x, 0, true)
+            @hud_it.bitmap.draw_text(x + 16, 10, 12, 14, $game_party.item_number($DHUD_ITEMS[i]).to_s)
+          end
+        end
+      end
+      x += 29
+    end
+    $dhud_it_needrefresh = false
+  end
+  alias dhud_update update
+  def update
+    dhud_update
+    refresh
+    @hud_back.update
+    @hud_dragon1.update
+    @hud_dragon2.update
+    @hud_hp.update
+    @hud_mp.update
+    @hud_ex.update
+    @hud_eq.update
+    @hud_it.update
+  end
+end
+{% endhighlight %}
+
+<p>br_lemes, o Anão insano (Múltipla Personalidade)</p>
