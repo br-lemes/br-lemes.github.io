@@ -1,0 +1,121 @@
+---
+comments: true
+layout: post
+title: "[Script TW] Filtro de Ataque e/ou Apoio"
+tags: [Tribal Wars]
+---
+
+{% include autorizado.html topic="120261" %}
+
+<p>Sempre tive dificuldade em organizar quais aldeias estão recebendo ataques
+e garantir que todas elas estejam recebendo apoio suficiente. Mesmo com a
+conta premium, verificar todas as aldeias sob ataques é sofrível.</p>
+
+<p>Este script trabalha na tabela de visualizações de aldeias, mostrando
+aldeias que satisfazem determinados critérios escolhidos por você e ocultando
+todas as demais.</p>
+
+<p>
+	<img class="center-block img-responsive"
+		src="/images/tribal-wars/br_asfilter.png">
+</p>
+
+<!-- more -->
+
+<section id="more">
+<p>As opções funcionam da seguinte forma:</p>
+</section>
+
+<table class="table">
+	<tr>
+		<td><img src="/images/tribal-wars/br_asfilter1.png"></td>
+		<td>Mostra aldeias recebendo ataque (independente de estar ou não recebendo apoio)</td>
+	</tr>
+	<tr>
+		<td><img src="/images/tribal-wars/br_asfilter2.png"></td>
+		<td>Mostra aldeias recebendo apoio (independente de estar ou não recebendo ataque)</td>
+	</tr>
+	<tr>
+		<td><img src="/images/tribal-wars/br_asfilter3.png"></td>
+		<td>Mostra aldeias recebendo ataque e apoio (ambos)</td>
+	</tr>
+	<tr>
+		<td><img src="/images/tribal-wars/br_asfilter4.png"></td>
+		<td>Mostra aldeias que <b>não</b> estejam recebendo ataque (independente de estar ou não recebendo apoio)</td>
+	</tr>
+	<tr>
+		<td><img src="/images/tribal-wars/br_asfilter5.png"></td>
+		<td>Mostra aldeias que <b>não</b> estejam recebendo apoio (independente de estar ou não recebendo ataque)</td>
+	</tr>
+	<tr>
+		<td><img src="/images/tribal-wars/br_asfilter6.png"></td>
+		<td>Mostra aldeias recebendo ataque e/ou apoio (ambos ou apenas um - não importa qual)</td>
+	</tr>
+	<tr>
+		<td><img src="/images/tribal-wars/br_asfilter7.png"></td>
+		<td>Mostra aldeias recebendo <b>somente</b> ataque</td>   </tr>
+	<tr>
+		<td><img src="/images/tribal-wars/br_asfilter8.png"></td>
+		<td>Mostra aldeias recebendo <b>somente</b> apoio</td>
+	</tr>
+	<tr>
+		<td><img src="/images/tribal-wars/br_asfilter9.png"></td>
+		<td>Mostra aldeias que <b>não</b> estejam recebendo nem ataque nem apoio (nenhum dos dois)</td>
+	</tr>
+</table>
+
+<p>Funciona em visualizações - combinado, produção, tropas, edifícios,
+pesquisa ou grupos. Em tropas é onde está a parte mais interessante, pois
+você pode verificar com mais facilidade se os apoios que estão na aldeia
+são suficiente para as aldeias que estão sendo atacadas ou, se existem
+apoios desnecessários nas aldeias que não estão recebendo ataque. Em
+edifícios também é interessante, para conferir como estão as muralhas das
+aldeias em ataque. Em fim, as possibilidades são muitas.</p>
+
+<p>Script para colar na barra de acesso rápido:</p>
+
+{% highlight js %}
+javascript:$.getScript('http://dl.dropbox.com/u/72485850/tribalwarsbrasil/filtro_de_ataqueapoio.js');void(0);
+{% endhighlight %}
+
+<p>Script completo:</p>
+
+{% highlight js %}
+m=game_data.mode;
+s=game_data.screen;
+function check(){
+  if(s=='overview_villages'){
+    if(m==null){
+      m=$('table#overview_menu td.selected').html();
+      m==null?m='production':m=m.match(/mode=(.*)"/)[1];
+    }
+    switch(m){
+      case 'trader':
+      case 'commands':
+      case 'incomings':
+        return false;
+        break;
+      case 'prod':
+        m='production';
+        break;
+      case 'tech':
+        m='techs';
+        break;
+      case 'groups':
+        m='group_assign';
+        break;
+    }
+    return true;
+  } else return false;
+}
+if(check()){
+  if(!$('table#asfilter_table')[0]){
+    out='<table id="asfilter_table" align="center"><tr><td><input type="radio" id="asfilter_op" name="asfilter_op" value="1" checked /><img src="graphic/command/attack.png?1" /></td><td><input type="radio" id="asfilter_op" name="asfilter_op" value="2" /><img align="right" src="graphic/command/support.png?1" /></td><td><input type="radio" id="asfilter_op" name="asfilter_op" value="3" /><img src="graphic/command/attack.png?1" />+<img src="graphic/command/support.png?1" /></td></tr><tr><td><input type="radio" id="asfilter_op" name="asfilter_op" value="4" /><img src="graphic/delete.png" /></td><td><input type="radio" id="asfilter_op" name="asfilter_op" value="5" /><img align="right" src="graphic/delete.png" /></td><td><input type="radio" id="asfilter_op" name="asfilter_op" value="6" /><img src="graphic/command/attack.png?1" />*<img src="graphic/command/support.png?1" /></td></tr><tr><td><input type="radio" id="asfilter_op" name="asfilter_op" value="7" /><img src="graphic/command/attack.png?1" /><img src="graphic/delete.png" /></td><td><input type="radio" id="asfilter_op" name="asfilter_op" value="8" /><img src="graphic/delete.png" /><img src="graphic/command/support.png?1" /></td><td><input type="radio" id="asfilter_op" name="asfilter_op" value="9"/><img src="graphic/delete.png" /><img src="graphic/delete.png" /></td></tr><tr align="center"><td colspan="3"><input type="button" name="asfilter" value="Ok" /></td></tr></table>';
+    if((x=$('#paged_view_content table:first'))[0])x.append(out);else $('table[id='+m+'_table]').parent().prepend(out);
+    $('head').append("<script>function test(e){var v=false;var a=$(e).html().match('attack.png')!==null;var s=$(e).html().match('support.png')!==null;$('input[id=asfilter_op]').each(function(i,r){if(r.checked){switch($(r).val()){case'1': v=a;break;case '2':v=s;break;case '3':v=a&&s;break;case '4':v=!a;break;case '5':v=!s;break;case '6':v=a||s;break;case '7':v=a&&!s;break;case '8':v=!a&&s;break;case '9':v=!a&&!s;break;}}});return v;}function run(){var c=0;var k=0;$('table[id='+m+'_table] tr:not(:first)').each(function(i,e){if(c==0){if(k==1&&!$(e).html().match('colspan=\"2\"'))k=0;if(test(e)){if($(e).css('display')=='none')$(e).show();if(m=='units'){k=$(e).html().match(/rowspan=\"(\d)\"/);if(k==null)k=1;else{c=k[1]-1;k=0;}}}else if(k==0)$(e).hide();}else c--;});}$('[name=asfilter]').click(run);</script>");
+  }
+}
+void(0);
+{% endhighlight %}
+
+<p>br_lemes, o Druida insano (Compulsivo)</p>
