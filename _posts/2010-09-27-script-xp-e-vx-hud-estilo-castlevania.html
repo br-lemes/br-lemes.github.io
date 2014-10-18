@@ -1,0 +1,221 @@
+---
+comments: true
+layout: post
+title: "[Script XP e VX] HUD Estilo Castlevania"
+tags: [RPG Maker]
+---
+
+{% include aviso.html %}
+
+<h3>Introdução</h3>
+
+<p>Esta é uma HUD estilo Castlevania para um só herói, com barra de HP e MP.
+Os gráficos foram uma gentileza de KáHh, agradecimentos à ela.</p>
+
+<h3>Características</h3>
+
+<ul>
+	<li>
+		Funciona em ambos, RPG Maker XP e VX, sem alterações é só colar
+		acima de main e rodar; e
+	</li>
+	<li>
+		Pode ser ativada/desativada através de uma switch.
+	</li>
+</ul>
+
+<!-- more -->
+
+<section id="more">
+<h3>Screenshots</h3>
+</section>
+
+<p>
+<a href="/images/rpg-maker/CTVHUD_VX.png"><img src="/images/rpg-maker/CTVHUD_VX.png"
+	alt="Screenshot do script HUD Estilo Castlevania para RPG Maker VX"
+	class="img-responsive"></a>
+</p><p>
+<a href="/images/rpg-maker/CTVHUD_XP.png"><img src="/images/rpg-maker/CTVHUD_XP.png"
+	alt="Screenshot do script HUD Estilo Castlevania para RPG Maker XP"
+	class="img-responsive"></a>
+</p>
+
+<h3>Como usar</h3>
+
+<p>Cole acima de Main, para configurar a switch para ativar/desativar a
+HUD modifique as seguintes linhas:
+
+{% highlight ruby %}
+# Estado inicial da HUD
+$CTV_DEFAULT = true # true é visível, false não é visível
+$CTV_SWITCH  = 1    # ID da switch que ativa/desativa a HUD ou 0 para nenhum
+{% endhighlight %}
+
+<p>Onde $CTV_DEFAULT é true se você deseja que a HUD seja visível imediatamente
+ao iniciar o jogo. Ou false para que ela seja visível apenas quando o valor
+da switch especificada estiver ON. Note que se $CTV_DEFAULT for true a HUD
+estará ativada quando a switch for OFF e desativada quando for ON, porém se
+$CTV_DEFAULT for false será o contrário: se a switch estiver OFF a HUD vai
+estar desativada, se a switch estiver ON a HUD estará ativada.</p>
+
+<p>Você vai precisar das seguintes imagens na pasta System (RPG Maker VX)
+ou Windowskins (RPG Maker XP) do seu projeto:</p>
+
+<p>
+<a href="/images/rpg-maker/HUD_Base.png"><img src="/images/rpg-maker/HUD_Base.png"
+	alt="Base da HUD"
+	class="img-responsive"></a>
+</p><p>
+<a href="/images/rpg-maker/HUD_BG.png"><img src="/images/rpg-maker/HUD_BG.png"
+	alt="Fundo da HUD"
+	class="img-responsive"></a>
+</p><p>
+<a href="/images/rpg-maker/HUD_HP.png"><img src="/images/rpg-maker/HUD_HP.png"
+	alt="Barra de HP da HUD"
+	class="img-responsive"></a>
+</p><p>
+<a href="/images/rpg-maker/HUD_MP.png"><img src="/images/rpg-maker/HUD_MP.png"
+	alt="Barra de MP da HUD"
+	class="img-responsive"></a>
+</p>
+
+<h3>Demo</h3>
+
+<p><strong><a href="/downloads/rpg-maker/CTVHUD_VX.rar">
+	CTVHUD_VX.rar</a></strong></p>
+<p><strong><a href="/downloads/rpg-maker/CTVHUD_XP.rar">
+	CTVHUD_XP.rar</a></strong></p>
+
+<h3>Script</h3>
+
+{% highlight ruby %}
+=begin
+  HUD Estilo Castlevania
+  por br_lemes
+
+  É permitido, livre de quaisquer ônus, usar, copiar, modificar e/ou
+  distribuir cópias deste script, desde que seja mantido este aviso.
+  NÃO HÁ QUALQUER GARANTIA, USE POR SUA PRÓPRIA CONTA E RISCO.
+=end
+
+# Estado inicial da HUD
+$CTV_DEFAULT = true # true é visível, false não é visível
+$CTV_SWITCH  = 1    # ID da switch que ativa/desativa a HUD ou 0 para nenhum
+
+$RMVX = $TEST != nil
+
+class Scene_Map
+  alias ctvhud_main main
+  def main
+    @hud_bg = Sprite.new
+    @hud_bg.x = 60
+    @hud_bg.y = 20
+    if $RMVX
+      @hud_bg.bitmap = Cache.system("HUD_BG")
+    else
+      @hud_bg.bitmap = RPG::Cache.windowskin("HUD_BG")
+    end
+    @hud_bg.z += 1
+    @hud_base = Sprite.new
+    if $RMVX
+      @hud_base.bitmap = Cache.system("HUD_Base")
+    else
+      @hud_base.bitmap = RPG::Cache.windowskin("HUD_Base")
+    end
+    @hud_base.z += 3
+    @hud_hp = Sprite.new
+    @hud_hp.bitmap = Bitmap.new(121,15)
+    @hud_hp.x = 60
+    @hud_hp.y = 20
+    @hud_hp.z += 2
+    @hud_mp = Sprite.new
+    @hud_mp.bitmap = Bitmap.new(121,15)
+    @hud_mp.x = 60
+    @hud_mp.y = 35
+    @hud_mp.z += 1
+    @hud_base.z += 2
+    check_switch
+    draw_hp
+    draw_mp
+    ctvhud_main
+    @hud_bg.dispose
+    @hud_hp.dispose
+    @hud_mp.dispose
+    @hud_base.dispose
+  end
+  def check_switch
+    if ($CTV_DEFAULT && !$game_switches[$CTV_SWITCH]) or (!$CTV_DEFAULT && $game_switches[$CTV_SWITCH])
+      @hud_bg.visible = true
+      @hud_hp.visible = true
+      @hud_mp.visible = true
+      @hud_base.visible = true
+    else
+      @hud_bg.visible = false
+      @hud_hp.visible = false
+      @hud_mp.visible = false
+      @hud_base.visible = false
+    end
+  end
+  def draw_hp
+    if $RMVX
+      if @hud_checkhp == $game_party.members[0].hp then return end
+      meter = Cache.system("HUD_HP")
+      cw = meter.width  * $game_party.members[0].hp / $game_party.members[0].maxhp
+      @hud_checkhp = $game_party.members[0].hp
+    else
+      if @hud_checkhp == $game_party.actors[0].hp then return end
+      meter = RPG::Cache.windowskin("HUD_HP")
+      cw = meter.width  * $game_party.actors[0].hp / $game_party.actors[0].maxhp
+      @hud_checkhp = $game_party.actors[0].hp
+    end
+    @hud_hp.bitmap.clear
+    ch = meter.height
+    src_rect = Rect.new(0, 0, cw, ch)
+    @hud_hp.bitmap.blt(0, 0, meter, src_rect)
+  end
+  def draw_mp
+    if $RMVX
+      if @hud_checkmp == $game_party.members[0].mp then return end
+      meter = Cache.system("HUD_MP")
+      cw = meter.width  * $game_party.members[0].mp / $game_party.members[0].maxmp
+      @hud_checkmp = $game_party.members[0].mp
+    else
+      if @hud_checkmp == $game_party.actors[0].sp then return end
+      meter = RPG::Cache.windowskin("HUD_MP")
+      cw = meter.width  * $game_party.actors[0].sp / $game_party.actors[0].maxsp
+      @hud_checkmp = $game_party.actors[0].sp
+    end
+    @hud_mp.bitmap.clear
+    ch = meter.height
+    src_rect = Rect.new(0, 0, cw, ch)
+    @hud_mp.bitmap.blt(0, 0, meter, src_rect)
+  end
+  alias ctvhud_update update
+  def update
+    ctvhud_update
+    check_switch
+    draw_hp
+    draw_mp
+    @hud_bg.update
+    @hud_hp.update
+    @hud_mp.update
+    @hud_base.update
+  end
+end
+{% endhighlight %}
+
+<h3>Créditos e Agradecimentos</h3>
+
+<ul>
+	<li>
+		Alucard_2 quem pediu o script e ripou o gráfico original; e
+	</li>
+	<li>
+		KáHh quem realmente tornou os gráficos bonitos.
+	</li>
+</ul>
+
+<p>Também ao Atoa que me deu uma dica, Rafidelis e Shepher de quem eu
+"plagiei" algumas coisinhas xD.</p>
+
+<p>br_lemes, o Minotauro insano (Paranóico)</p>
