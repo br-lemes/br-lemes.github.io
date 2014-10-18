@@ -1,0 +1,66 @@
+---
+comments: true
+layout: post
+title: "[Script TW] Numerar aldeias conforme distancia"
+tags: [Tribal Wars]
+---
+
+{% include autorizado.html topic="118053" %}
+
+<p>Depois do sucesso do script para
+<a href="/2010/09/renomear-aldeias-conforme-distancia.html">renomear aldeias
+conforme distancia</a> venho apresentar a nova versão, uma evolução da
+anterior. <strong>A principal vantagem desta versão é que</strong> o script
+não troca os nomes das aldeias, apenas numera conforme a distância. Ou seja,
+<strong>você pode manter o esquema de nomes que você já usa</strong>.</p>
+
+<!-- more -->
+
+<section id="more">
+{% highlight js %}
+javascript: $.getScript('http://dl.dropbox.com/u/72485850/tribalwarsbrasil/numerar_aldeias_distancia.js');void(0);
+{% endhighlight %}
+</section>
+
+<p>Este script deve ser executado em Visualizações Combinado, Produção, Tropas,
+Edifícios, Pesquisa ou Grupos.</p>
+
+<p>Este script renomeia cada uma das suas aldeias para a distância de outra
+coordenada qualquer. Na verdade, o script mantém os nomes de suas aldeias e
+apenas insere um número na frente deles. Desta forma, você verá suas aldeias
+em ordem crescente de distancia para aquela coordenada. O formato do nome da
+aldeia é: “0000.0 Nome da aldeia”.</p>
+
+<p>Ao executar o script ele vai pedir para inserir uma coordenada. Se
+cancelar, anula o processo. Se ao invés de uma coordenada você deixar em
+branco e confirmar, o script não vai inserir os números, mas removê-los.
+Desta forma, você tem de volta o nome original da sua aldeia. Se o nome da
+sua aldeia já tem os números, então o script não vai inserir um outro número,
+mas substituí-los.</p>
+
+<p>Segue o script em sua forma completa:</p>
+{% highlight js %}
+coords=prompt('Distancia da Aldeia','500|500');
+thenames=$('[id^=edit_input]');
+theclick=$('input[onclick^=editSubmit]');
+thefname=$('span[id^=label_text]');
+if(coords==''){
+    thenames.each(function(i,e){
+        e.value=e.value.replace(/^\d{4}.\d (.*)/,'$1');
+    theclick[i].click();
+    });
+} else if(coords!=null&&coords.match(/^\d{1,3}\|\d{1,3}$/)){
+  coords=coords.split('|');
+  thenames.each(function(i,e){
+    basename=e.value.replace(/^\d{4}.\d (.*)/,'$1');
+    basexy=thefname[i].innerHTML.match(/\((\d{1,3}\|\d{1,3})\) K\d\d? ?$/)[1].toString().split('|');
+    n=Math.sqrt(Math.pow(basexy[0]-coords[0],2)+Math.pow(basexy[1]-coords[1],2)).toFixed(1).toString();
+    while(n.length<6){n='0'+n;}
+    e.value=n+' '+basename;
+    theclick[i].click();
+  });
+} else alert('Anulado.');
+void(0);
+{% endhighlight %}
+
+<p>br_lemes, o Lich insano (Esquizofrênico)</p>
