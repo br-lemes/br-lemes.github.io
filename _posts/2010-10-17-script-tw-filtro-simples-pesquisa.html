@@ -35,6 +35,7 @@ com ou sem arqueiro, não sei como são mundos com ferreiro por níveis.</p>
 <p>Para completar, confira o código completo do script:</p>
 
 {% highlight js %}
+javascript:
 $('#techs_table tr:not(:first)').each(function(i,e){
   var h = true;
   $(e).find('[class^=rtt]').each(function(i,e){
@@ -42,6 +43,7 @@ $('#techs_table tr:not(:first)').each(function(i,e){
   });
   if (h) e.parentNode.removeChild(e);
 });
+void(0);
 {% endhighlight %}
 
 <p>Este é bem simples né? É o primeiro que aprendi fazer com

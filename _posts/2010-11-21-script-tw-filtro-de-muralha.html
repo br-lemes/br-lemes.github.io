@@ -31,9 +31,11 @@ javascript:$.getScript('http://dl.dropbox.com/u/72485850/tribalwarsbrasil/filtro
 <p>Script completo (que nem é muito maior):</p>
 
 {% highlight js %}
+javascript:
 $('td [class="upgrade_building b_wall"]').each(function(i,e){
   if ($(e).text()==20) e.parentNode.parentNode.removeChild(e.parentNode);
 });
+void(0);
 {% endhighlight %}
 
 <p>br_lemes, o Imortal insano (Fúria)</p>

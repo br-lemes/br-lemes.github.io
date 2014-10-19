@@ -33,9 +33,11 @@ javascript:$.getScript('http://dl.dropbox.com/u/72485850/tribalwarsbrasil/trocar
 <p>Script completo (quase menor que o acima):</p>
 
 {% highlight js %}
+javascript:
 $('#buildings_table tr:not(:first) td[class=nowrap] span a').each(function(i,e){
   if(i%2==0)e.href+='&mode=destroy';
 });
+void(0);
 {% endhighlight %}
 
 <img class="img-responsive" src="/images/tribal-wars/trocarlink.png">
