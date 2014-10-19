@@ -1,0 +1,38 @@
+---
+comments: true
+layout: post
+title: "[Script TW] Filtro de muralha"
+tags: [Tribal Wars]
+---
+
+{% include autorizado.html topic="120261" %}
+
+<p>Reconstruir muralha é uma tarefa constante e enfadonha. Se descuidarmos
+perdemos tropas de apoio à toa por falta de refazer as muralhas. Tínhamos
+o <a href="http://forum.tribalwars.com.br/showthread.php?t=118511">Filtro
+de Edifícios</a> do Relaxeaza, mas este aqui é mais rápido - e tempo
+é essencial antes que cheguem os novos ataques.
+
+<!-- more -->
+
+<section id="more">
+<p>Funciona em Visualizações - Edifícios. Desparece as aldeias com muralha
+completa (nível 20) e ficam as aldeias com muralha incompleta. Não precisa
+configurar nada, só clicar e subir as muralhas.</p>
+<section>
+
+<p>Script para colar na barra de acesso rápido:</p>
+
+{% highlight js %}
+javascript:$.getScript('http://dl.dropbox.com/u/72485850/tribalwarsbrasil/filtro_de_muralha.js');void(0);
+{% endhighlight %}
+
+<p>Script completo (que nem é muito maior):</p>
+
+{% highlight js %}
+$('td [class="upgrade_building b_wall"]').each(function(i,e){
+  if ($(e).text()==20) e.parentNode.parentNode.removeChild(e.parentNode);
+});
+{% endhighlight %}
+
+<p>br_lemes, o Imortal insano (Fúria)</p>
