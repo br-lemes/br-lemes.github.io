@@ -1,0 +1,41 @@
+---
+comments: true
+layout: post
+title: "[Script TW] Trocar link de construir por demolir"
+tags: [Tribal Wars]
+date: 2010-11-21 02:06:00 -0400
+---
+
+{% include autorizado.html topic="123514" %}
+
+<p>Bom, se você gostou da minha ideia do
+<a href="/2010/11/script-tw-filtro-de-edificios-por.html">Filtro de
+edifícios por configurações</a> e resolveu deixar a preguiça e ir demolir
+edifícios inúteis vai descobrir que é muito chato abrir o edifício principal,
+depois clicar em demolição e depois começar a comandar as demolições.
+Principalmente se sua Internet for lenta (como a minha).</p>
+
+<!-- more -->
+
+<section id="more">
+<p>Então, para sua facilidade este script na página de Visualizações
+- Edifícios troca os links das aldeias que leva ao Edifício Principal
+para ir direto em Demolição. Pode clicar com o botão do meio do mouse
+e ir abrindo em abas para ir carregando várias ao mesmo tempo.</p>
+<section>
+
+<p>Script para colar na barra de acesso rápido:</p>
+
+{% highlight js %}
+javascript:$.getScript('http://dl.dropbox.com/u/72485850/tribalwarsbrasil/trocar_link_demolir.js');void(0);
+{% endhighlight %}
+
+<p>Script completo (quase menor que o acima):</p>
+
+{% highlight js %}
+$('#buildings_table tr:not(:first) td[class=nowrap] span a').each(function(i,e){
+  if(i%2==0)e.href+='&mode=destroy';
+});
+{% endhighlight %}
+
+<p>br_lemes, o Meio-Dragão insano (Fantasia)</p>
