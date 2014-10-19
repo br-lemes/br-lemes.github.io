@@ -1,0 +1,90 @@
+---
+comments: true
+layout: post
+title: "[Script TW] Filtro de edifícios (por configurações)"
+tags: [Tribal Wars]
+date: 2010-11-21 01:35:00 -0400
+---
+
+{% include autorizado.html topic="123515" %}
+
+<p>Este aqui não sei se só eu sou maluco suficiente para tentar padronizar
+as aldeias. Deixar aldeias com edifícios desnecessários é desperdício de
+tropas mas também deixar edifícios incompletos é desperdício de recursos
+(produção e armazenamento) e tempo (recrutamento). O problema é que ficar
+indo de uma a uma evoluindo e demolindo edifícios em cada aldeia também é
+desperdício do seu tempo.</p>
+
+<!-- more -->
+
+<section id="more">
+<p>Primeiro eu usava grupos: evoluir e demolir. Ao conquistar aldeias
+colocava no grupo evoluir, ao ver todos os edifícios padronizados mudava
+para o grupo demolir. O problema é que com a dinâmica do jogo, ataques com
+aríetes e/ou catapultas bagunçavam com minha organização. Precisava então
+de uma solução melhor.</p>
+</section>
+
+<p>Neste script você configura uma lista de padrões para os edifícios
+e ele desaparece com suas aldeias que já estão padronizadas, deixando
+visível apenas as aldeias em que precisa ser feita alguma coisa (evoluir
+ou demolir). Uma dica é primeiro ordenar por pontuação para depois usar
+o script, assim a maioria as aldeias que precisam de evolução estarão no
+início (pontuação menor) e as que precisam de demolição estarão no final
+(pontuação maior).</p>
+
+<p>Configure a lista de padrões de edifícios considerados completos,
+eu por exemplo uso a seguinte:</p>
+
+{% highlight js %}
+var config = [
+  [20,25,20,6,0,0,1,20,1,1,18,30,30,30,30,30,4,20],
+  [20,25,20,5,1,0,1,20,1,1,18,30,30,30,30,30,4,20],
+  [20,25,20,5,2,0,1,20,1,1,18,30,30,30,30,30,3,20],
+  [20,25,20,5,3,0,1,20,1,1,18,30,30,30,30,30,1,20],
+  [20,20,20,15,0,0,1,20,1,1,18,30,30,30,30,30,0,20],
+];
+{% endhighlight %}
+
+<p>Foi desenvolvido em mundo com igreja e estátua. Creio que funcione em
+mundos sem esses edifícios removendo eles da lista, no entanto não foi
+testado. A diferença entre este e o
+<a href="http://forum.tribalwars.com.br/showthread.php?t=118511">Filtro
+de Edifícios</a> do Relaxeaza é que este usa vários conjuntos configurações
+predeterminadas para definir as aldeias como completamente construídas.</p>
+
+{% highlight js %}
+javascript:
+var config = [
+  [20,25,20,6,0,0,1,20,1,1,18,30,30,30,30,30,4,20],
+];
+$.getScript('http://dl.dropbox.com/u/72485850/tribalwarsbrasil/filtro_de_edificios_config.js');
+void(0);
+{% endhighlight %}
+
+<p>Para complementar, ao demolir, você pode usar o script para
+<a href="/2010/11/script-tw-trocar-link-de-construir-por.html">
+trocar link de construir por demolir</a>. Para fechar, veja o script
+completo.</p>
+
+{% highlight js %}
+var config = [
+  [20,25,20,6,0,0,1,20,1,1,18,30,30,30,30,30,4,20],
+];
+function bhide(config){
+  $('#buildings_table tr:not(:first)').each(function(i,e){
+    var h = true;
+    var a = $(e).find('td');
+    for(i=0;i<config.length;i++){
+      if(config[i]!=$(a[i+4]).text()){
+        h = false;
+        break;
+      }
+    }
+    if(h) e.parentNode.removeChild(e);
+  });
+}
+for (i in config) bhide(config[i]);
+{% endhighlight %}
+
+<p>br_lemes, o Zumbi insano (Homicida)</p>
