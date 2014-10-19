@@ -1,0 +1,137 @@
+---
+comments: true
+layout: post
+title: "[Script TW] Atualização no Filtro de Edifícios"
+tags: [Tribal Wars]
+---
+
+{% include autorizado.html topic="123516" %}
+
+<p>Este era um excelente script criado pelo jogador
+<a href="http://forum.tribalwars.com.br/member.php?u=55673">Relaxeaza</a>.
+Tanto é que serviu de base para dois dos meus scripts, primeiro o
+<a href="/2010/11/script-tw-filtro-de-muralha.html">Filtro de muralha</a>
+e depois o <a href="/2010/11/script-tw-filtro-de-edificios-por.html">
+Filtro de edifícios (por configurações)</a>. O único problema deste
+script era a lentidão. Com 700 aldeias usando o
+<a href="http://br.mozdev.org/">Firefox</a> demorava cerca de 2 minutos para
+aplicar um filtro. E nem precisa recomendar o
+<a href="http://www.google.com/chrome?hl=pt-BR">Chrome</a> ou
+<a href="http://www.opera.com/">Opera</a>, porque mesmo que um fosse melhor
+que outro o problema ainda seria o script e a diferença entre um ou outro
+navegador pequena a ponto de ser irrelevante para o caso.</p>
+
+<!-- more -->
+
+<section id="more">
+<p>Bom, tudo começou a mudar quando o
+<a href="http://forum.tribalwars.com.br/member.php?u=9568">Johnny Tapia</a>
+enviou o script para
+<a href="http://forum.tribalwars.com.br/showthread.php?t=121004">Filtrar
+aldeias com/sem fazenda cheia</a> que era surpreendentemente rápido.
+Foi então que bolei o Filtro de muralha, que era minha principal necessidade.
+E algum tempo depois veio o Filtro de edifícios (por configurações), que já
+era uma ideia anterior ao Filtro de muralha, mas por ser algo mais complexo e
+ter o problema da lentidão eu não tinha colocado em prática até a ocasião.</p>
+</section>
+
+<p>Com o tempo veio a ideia de melhorar o script do Relaxeaza, era como lhe
+devolver o tributo da inspiração original com a experiência adquirida. E
+este foi o resultado:</p>
+
+{% highlight js %}
+javascript:$.getScript('http://dl.dropbox.com/u/72485850/tribalwarsbrasil/filtro_de_edificios.js');void(0);
+{% endhighlight %}
+
+<p>Então o que antes demorava mais de 2 minutos, agora acontece em menos de
+2 segundos. Se você já tinha este script instalado na sua barra de acesso
+rápido vai estranhar que não mudou nada. Bom, mudou sim, mas só lá no servidor:
+<a href="http://dl.dropbox.com/u/72485850/tribalwarsbrasil/filtro_de_edificios.js">
+http://dl.dropbox.com/u/72485850/tribalwarsbrasil/filtro_de_edificios.js</a>.
+Isso significa que você não precisa fazer nada para ter seu script atualizado,
+é só usar e ver que as coisas agora funcionam como deveria ser.</p>
+
+<p>Para aqueles que entendem alguma coisa de programação e gostaria de saber
+exatamente o que mudou, é o seguinte:</p>
+
+<p>Primeiro eu corrigi um bug que fazia aparecer a seleção de filtro mais de
+uma vez caso você clicasse mais de uma vez no script. Foi só adicionar uma
+instrução condicional <code>if(!$('[name=filterBuild]').val())</code> na
+linha 32.</p>
+
+<p>Depois alterei a posição de alguns seletores jQuery e troquei um código
+jQuery por Javascript puro. Tudo na linha 32, mas para ficar claro vou
+mostrar o código identado antes e depois:</p>
+
+<p><strong>Antes:</strong></p>
+
+{% highlight js %}
+$('[value=Filtrar]').click(function () {
+  $('#buildings_table tr').each(function (i, e) {
+    if (i != 0) {
+      build = $(e).find('.building_' + $('[name=filterBuild]').val()).text();
+      build = parseInt(build);
+      min = $('[name=min]').val();
+      max = $('[name=max]').val();
+      if (build < min || build >; max) $(e).hide()
+    }
+  })
+});
+void(0);
+{% endhighlight %}
+
+<p><strong>Depois:</strong></p>
+
+{% highlight js %}
+$('[value=Filtrar]').click(function () {
+  buildname = $('[name=filterBuild]').val();
+  min = $('[name=min]').val();
+  max = $('[name=max]').val();
+  $('#buildings_table tr:not(:first)').each(function (i, e) {
+    build = parseInt($(e).find('.building_' + buildname).text());
+    if (build < min || build > max) e.parentNode.removeChild(e);
+  })
+});
+void(0);
+{% endhighlight %}
+
+<p>Bom, isso é tudo. Agora é só aproveitar do script sem se estressar com
+a demora. Quer ver o código completinho? Então segue abaixo:</p>
+
+{% highlight js %}
+javascript:
+if (game_data.mode != 'buildings')
+  $(location).attr('href', game_data.link_base_pure + 'overview_villages&mode=buildings');
+builds = {
+  main: 'Edifício Principal',
+  barracks: 'Quartel',
+  stable: 'Estábulo',
+  garage: 'Oficina',
+  church: 'Igreja',
+  snob: 'Academia',
+  smith: 'Ferreiro',
+  place: 'Praça de Reunião',
+  statue: 'Estátua',
+  market: 'Mercado',
+  wood: 'Bosque',
+  stone: 'Poço de Argila',
+  iron: 'Mina de Ferro',
+  farm: 'Fazenda',
+  storage: 'Armazém',
+  hide: 'Esconderijo',
+  wall: 'Muralha'
+};
+$.each(builds, function (key, name) {
+  sel = key == 'wall' ? 'selected="selected"' : '';
+  if (key == 'main') out = '<br/>Filtrar <select name="filterBuild">';
+  out += '<option value="' + key + '" ' + sel + '>' + name + '</option>';
+  if (key == 'wall') {
+    out += '</select>';
+    out += ' Level Min:<input size="3" name="min" value="0"/> Level Max:<input size="3" name="max" value="19"/> <input type="button" value="Filtrar"/>'
+  }
+});
+if(!$('[name=filterBuild]').val()){$('#paged_view_content table:first').append(out);$('head').append("<script>$('[value=Filtrar]').click(function(){buildname=$('[name=filterBuild]').val();min=$('[name=min]').val();max=$('[name=max]').val();$('#buildings_table tr:not(:first)').each(function(i,e){build=parseInt($(e).find('.b_'+buildname).text());if(build<min||build>max)e.parentNode.removeChild(e);})});void(0);</script>")};
+void(0);
+{% endhighlight %}
+
+<p>br_lemes, o Lich insano (Fúria)</p>
