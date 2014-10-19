@@ -1,0 +1,75 @@
+---
+comments: true
+layout: post
+title: "Como mostrar código colorido no Blogger"
+tags: [Aleatoriedades, Programação]
+---
+
+<p>O público alvo deste blog - hã... eu não sabia que este blog tinha público
+mas... deixa pra lá, vamos continuar. Voltando, o público alvo inclui gente
+que não apenas copia e cola meus scripts, mas também aqueles que gostam de
+ler, estudar, aprender, modificar e fazer seja lá o que passa em suas
+cabeças insanas.</p>
+
+<p>Deixando de enrolação, é feio pra burro ler código preto. Se considerar
+que alguém quer aprender alguma coisa com isto e não tem todo o tempo do
+mundo, então precisamos facilitar as coisas. Código colorido para facilidade
+de leitura. Também conhecido como
+<a href="http://pt.wikipedia.org/wiki/Syntax_highlighting">Realce de sintaxe
+</a> ou <a href="http://en.wikipedia.org/wiki/Syntax_highlighting">Syntax
+highlighting</a>.</p>
+
+<!-- more -->
+
+<section id="more">
+<p>Então vamos começar de forma simples. Eu uso o google-code-prettify.
+Para quem sabe inglês pode simplesmente ler o arquivo README e começar
+usar. Mas para aqueles que precisam de mais detalhes, então vamos lá.</p>
+</section>
+
+<p>No seu blog vá em Design - Editar HTML e cole o seguinte código
+imediatamente acima da tag &lt;/head&gt;:</p>
+
+{% highlight html %}
+<link href='http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.css' rel='stylesheet' type='text/css'/>
+<script src='http://google-code-prettify.googlecode.com/svn/trunk/src/prettify.js' type='text/javascript'></script>
+{% endhighlight %}
+
+<p>Procure pela tag &lt;body&gt; e modifique da seguinte forma:
+&lt;body onload='prettyPrint()'&gt;.</p>
+
+<p>Pronto, agora você já pode usar &lt;pre class="prettyprint"&gt; ...
+&lt;/pre&gt; para colorir blocos de código, exatamente como está ali no
+parágrafo anterior. Ou então &lt;code class="prettyprint"&gt; ...
+&lt;/code&gt; para código no meio do texto, exatamente como estou fazendo
+aqui, neste parágrafo.</p>
+
+<p>Bom, mas ainda temos dois problemas: 1) códigos com linhas muito longas
+vão estragar o layout do seu blog; e 2) códigos com muitas linhas vão encher
+demais sua página e se você tem algo a escrever antes e depois dele vai
+ficar ruim para leitura.</p>
+
+<p>Para resolver isso, vamos definir uma altura máxima para os blocos de
+códigos. Bem como deixar com uma barra de rolagem, caso ultrapasse os
+limites. Novamente em vá em Design - Editar HTML e cole o seguinte código
+imediatamente acima da tag &lt;/head&gt;:
+
+{% highlight html %}
+<style type='text/css'>
+<!--
+  pre.prettyprint {
+    max-height: 350px;
+    overflow: auto;
+  }
+-->
+</style>
+{% endhighlight %}
+
+<p>Tudo resolvido, por enquanto é só. Mas fiquem ligados que ainda vou
+trazer mais dicas para esse mesmo assunto.</p>
+
+<p>
+- Mas porque não agora? - leitor.<br>
+- Hã... porque ainda não sei como fazer...</p>
+
+<p>br_lemes, o Elfo insano (Obsessivo)</p>
