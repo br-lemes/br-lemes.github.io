@@ -1,0 +1,97 @@
+---
+comments: true
+layout: post
+title: "BrazilFW"
+tags: [Linux]
+---
+
+<p>Finalmente larguei da preguiça e vim postar alguma coisa aqui no blog.
+E como eu havia falado no <a href="/2011/05/novidades.html">último artigo</a>,
+minha mudança de trabalho iria refletir em mudanças nos meus textos também,
+afinal estou aqui para falar sobre o que eu faço.</p>
+
+<p>Minhas novas funções no trabalho incluem manutenção em computadores, na
+rede, etc. O pessoal reclamava que a Internet estava lenta, queriam mudar
+o plano de acesso para ter mais velocidade. Bom, seria ótimo mesmo. Mas...
+tratando-se de órgão público de município pobre do interior com uma
+burocracia de arrepiar os cabelos até do pé, seria difícil conseguir
+algo assim. E eu queria também uma forma mais prática de atender todos
+os clientes, são em locais distantes (não muito), e às vezes eu ficava
+andando de um lado para outro só para instalar uma impressora, arrumar
+alguma configuração problemática, etc. Enfim, andava mais do que
+trabalhava.</p>
+
+<!-- more -->
+
+<section id="more">
+<p>Resolvi colocar então um servidor Linux para controlar e monitorar
+todo o tráfego da rede e também para ter acesso remoto aos computadores,
+para que eu pudesse resolver casos simples sem precisar levantar da minha
+cadeira. E não, não é por comodidade, é por necessidade mesmo - querem que
+tudo seja feito e nem se lembram que eu não tenho onipresença.</p>
+</section>
+
+<p>Então lá fui eu, pesquisa, pesquisa, pesquisa...
+<a href="http://www.ubuntu.com/business/server/overview">Ubuntu Server</a>,
+<a href="http://www.centos.org/">CentOS</a>, <a href="http://www.debian.org/">
+Debian</a> e outros menos tradicionais e alguns até extravagantes. Ainda
+tinha que lidar com coisas como, maquinas antigas para os servidores, falta
+de material para trabalho (CD-R para gravar a imagem que baixamos na
+Internet é um exemplo, ridículo, absurdo, mas real). Foi então que encontrei
+o <a href="http://www.brazilfw.com.br/">BrazilFW Firewall and Router</a>.
+Na verdade, foi o primeiro que eu procurei e logo descartei. Eu conhecia
+de um bom tempo atrás o <a href="http://www.coyotelinux.com/">Coyote
+Linux</a>, naquela época era um Linux em um só disquete com software para
+fazer compartilhamento da conexão de internet e firewall - o pessoal
+costumava usar em micros 486 antigos sem disco rígido nem monitor. O tal
+Coyote ficou muito tempo sem atualização e dele surgiu o BrazilFW.</p>
+
+<p>O problema com o BrazilFW era entender seu funcionamento. Não sei de
+onde aqueles benditos desenvolvedores tiraram aquelas ideias excêntricas,
+mas as configurações dele são completamente fora dos padrões comuns no
+Linux (visando a "facilidade" de uso, eu imagino). E a coisa não tinha
+documentação nenhuma, fiquei perdido e sem rumo. Então fui experimentando
+as distribuições comuns. Mas eram instalações grandes, longos tempos de
+instalação, configuração e também dificuldade em por tudo para funcionar
+(especialmente devido aos equipamentos que eu tinha disponível). Resolvi
+voltar ao BrazilFW só para conferir... e... então... Pois não é que o
+negócio funcionou com gosto. Demorei um pouco a pegar o jeito dele, mas
+agora foi que é uma beleza. Tudo que preciso está ali, agora posso
+monitorar todo o tráfego da rede e eliminar os roubadores de banda.
+Não que a Internet vai mudar da água para o vinho, mas será melhor
+aproveitada (não vai para o vinho mas quem sabe para o suco). O CD de
+instalação tem menos que 5MB (versão 2.32 estável, há uma versão 3 em
+desenvolvimento bem maior e claro com mais recursos).</p>
+
+<p>O melhor em uma instalação tão pequena, é que não haverá muitos
+processos rodando e consumindo a memória RAM que já é limitada, posso
+usar uma grande parte dela para o cache do
+<a href="http://www.squid-cache.org/">Squid</a>, o que melhora bastante
+a velocidade de navegação visto que se todos acessarem uma mesma página,
+o servidor vai buscar a informação na Internet uma única vez e os acessos
+seguintes receberão os dados direto da memória RAM do servidor. Mas isso
+não é tudo... O que mais gostei foi do acesso remoto ao servidor através
+do SSH. O pulo do gato, é que o SSH me permite criar túneis, me conectando
+de qualquer lugar externo na Internet dentro da rede interna. VPN nem
+sempre é fácil de configurar e nem sempre funciona com o equipamento
+que temos. Com os túneis SSH consigo acessar cada estação através da
+área de trabalho remota, configurar os pontos de acesso sem fio da rede
+interna, ou qualquer outro recurso da rede interna - seja lá onde eu
+estiver. Quer mais detalhes:
+<a href="http://www.brazilfw.com.br/forum/viewtopic.php?f=80&t=68496">
+Desktop Remoto do Windows via SSH</a>.
+
+<p>Enfim, encontrei uma solução barata (só baixar, aprender e usar) e
+adequada a minha situação. Se você ficou interessado em aprender mais
+sobre isso, sugiro procurar alguma documentação sobre o antigo
+<a href="http://www.hot.ee/coyotel/Down/Coyote%20Linux%20Documentation.doc">
+Coyote Linux</a> primeiro, como funcionava a velha instalação em disquete,
+para ter uma ideia dos princípios de funcionamento dele. E depois ler os
+<a href="http://www.brazilfw.com.br/forum/viewtopic.php?f=39&t=68899">
+tutoriais atuais</a>. O problema dos tutorias é que misturam informações
+desatualizadas, atuais e as da nova versão 3 (que por estar em
+desenvolvimento também já podem estar desatualizadas). E não há uma
+sequencia lógica descrevendo o funcionamento, vai precisar ir lendo e
+montando o quebra-cabeças.</p>
+
+<p>br_lemes, o Licantropo insano (Fantasia)</p>
