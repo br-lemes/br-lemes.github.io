@@ -1,0 +1,182 @@
+---
+comments: true
+layout: post
+title: "Premake: compilação sem complicação com linguagem C"
+tags: [Programação]
+---
+
+<p>Compilação sem complicação com linguagem C, parece impossível, parece
+loucura, mas existe. Não se preocupe, se não entender é porque você não
+precisa disso. Se um dia precisar, vai se lembrar. Se entender, faça bom
+proveito - não é algo que se encontra facilmente.</p>
+
+<h3>O problema</h3>
+
+<p>Odeio programar em C, mas é necessário. Porém o pior é distribuir o código
+fonte de forma que seu público possa compilar. Compilar programas em C é um
+inferno, cada compilador tem um método diferente. Os mais comuns são os
+arquivos de projeto e os makefiles. Não há compatibilidade nenhuma entre
+compiladores e até um mesmo compilador pode ser incompatível entre versões
+ou sistemas operacionais diferentes. Você consegue compilar seu programa,
+mas as chances de que seu público consiga são reduzidas.</p>
+
+<!-- more -->
+
+<section id="more">
+<h3>A solução</h3>
+</section>
+
+<p>Para solucionar isso, existe por ai diversas ferramentas que mais
+atrapalham do que ajudam. O GNU Build System (mais conhecido como GNU
+Autotools) apesar de ser o mais utilizado no meio do software livre, é
+de difícil aprendizado, é uma ferramenta enorme com pré-requisitos de
+arrepiar os cabelos. Existem outras alternativas (CMake, SCons, etc.), mas
+o balanço entre suas vantagens e desvantagem não são nada atrativos.</p>
+
+<p>Mas felizmente existe uma ferramenta que realmente ajuda: Premake. Não é
+uma ferramenta complicada. Não é uma ferramenta gigantesca. Um simples
+arquivo executável de cerca de 200K (pode ser reduzido usando UPX) que
+você pode até mesmo distribuir junto com o seu código fonte sem problema
+nenhum. Você cria uma arquivo simples descrevendo como seu programa deve
+ser compilado e o Premake cria para você um arquivo de projeto para MS
+Visual Studio, Apple Xcode, Code::Blocks, GNU Make (Windows, Linux ou
+outros Unixes).</p>
+
+<p>O grande diferencial do Premake é que além de simples e pequeno, os
+arquivos que descrevem como seu programa deve ser compilado é na realidade
+um programa em linguagem Lua. Em outras palavras, suas possibilidades são
+infinitas e se você já souber programar em Lua então não há muito que
+aprender. Não é exigido que você saiba programar em Lua, aprendendo os
+comandos básicos você já fará tudo que precisa. Mas se estiver interessado,
+Lua é uma linguagem bem fácil de aprender (foi projetada para isso).</p>
+
+<h3>Primeiro exemplo</h3>
+
+<p>Não sei de que buraco saiu essa mania de escrever “Hello World” como o
+primeiro exemplo em qualquer livro ou guia sobre programação. Mas não vou
+ser eu a quebrar essa tradição. Vamos ao primeiro exemplo, considere que
+temos os seguintes arquivos:</p>
+
+<p>hello.c:</p>
+
+{% highlight c %}
+#include <stdio.h>
+
+int main(int argc, char *argv[]) {
+  printf("Hello World!\n");
+  return 0;
+}
+{% endhighlight %}
+
+<p>premake4.lua:</p>
+
+{% highlight lua %}
+solution "hello"
+  configurations { "Debug", "Release" }
+  configuration "Debug"
+    defines { "DEBUG" }
+    flags { "Symbols" }
+  configuration "Release"
+    flags { "Optimize" }
+
+  project "hello"
+    kind "ConsoleApp"
+    language "C"
+    files { "hello.c" }
+{% endhighlight %}
+
+<p>Basta rodar o Premake e em seguida seu compilador. Eu uso GNU C com GNU
+Make, então os comandos seriam <code>premake4 gmake</code> e em seguida
+<code>make</code>. As opções para rodar o Premake são:</p>
+
+<table class="table table-striped table-hover">
+	<tr>
+		<th>Comando</th><th>Ação</th>
+	</tr>
+	<tr>
+		<td>premeke4 clean</td><td>Remove os binários e arquivos gerados</td>
+	</tr>
+	<tr>
+		<td>premake4 codeblocks</td><td>Gera arquivos de projeto para o Code::Blocks</td>
+	</tr>
+	<tr>
+		<td>premake4 codelite</td><td>Gera arquivos de projeto para o CodeLite</td>
+	</tr>
+	<tr>
+		<td>premake4 gmake</td><td>Gera makefiles para GNU Make (POSIX, MinGW e Cygwin)</td>
+	</tr>
+	<tr>
+		<td>premake4 vs2002</td><td>Gera arquivos de projeto para o Microsoft Visual Studio 2002</td>
+	</tr>
+	<tr>
+		<td>premake4 vs2003</td><td>Gera arquivos de projeto para o Microsoft Visual Studio 2003</td>
+	</tr>
+	<tr>
+		<td>premake4 vs2005</td><td>Gera arquivos de projeto para o Microsoft Visual Studio 2005</td>
+	</tr>
+	<tr>
+		<td>premake4 vs2008</td><td>Gera arquivos de projeto para o Microsoft Visual Studio 2008</td>
+	</tr>
+	<tr>
+		<td>premake4 vs2010</td><td>Gera arquivos de projeto para o Microsoft Visual Studio 2010</td>
+	</tr>
+	<tr>
+		<td>premake4 xcode3</td><td>Gera arquivos de projeto para o Apple Xcode 3</td>
+	</tr>
+</table>
+
+<h3>Segundo exemplo</h3>
+
+<p>Se os programas fossem escritos em um só arquivo, como o exemplo anterior,
+nós não precisaríamos do premake. O que torna as coisas complicadas são
+dezenas de arquivos que os projetos possuem. Porém programar tudo em um
+arquivo só para facilitar a compilação, acredite, seria muito pior. Então
+vamos a um exemplo com dois arquivos.</p>
+
+<p>file.c:</p>
+
+{% highlight c %}
+#include <stdio.h>
+
+void hello(void) {
+  printf("Hello World!\n");
+}
+{% endhighlight %}
+
+<p>hello.c:</p>
+
+{% highlight c %}
+void hello(void);
+
+int main(int argc, char *argv[]) {
+  hello();
+  return 0;
+}
+{% endhighlight %}
+
+<p>premake4.lua:</p>
+
+{% highlight lua %}
+solution "hello"
+  configurations { "Debug", "Release" }
+  configuration "Debug"
+    defines { "DEBUG" }
+    flags { "Symbols" }
+  configuration "Release"
+    flags { "Optimize" }
+
+  project "hello"
+    kind "ConsoleApp"
+    language "C"
+    files { "hello.c", "file.c" }
+{% endhighlight %}
+
+<p>Bem simples assim, você pode adicionar quantos arquivos forem necessário.
+Bom, mas nem tudo na vida é assim tão simples. Geralmente temos também
+bibliotecas estáticas, dinâmicas e outros arquivos não C no projeto. Mas
+isso ficará para a próxima. Você pode baixar os exemplos citados, o
+arquivo já inclui o Premake 4.3 em versões para Windows, Linux e MacOS X:</p>
+
+<p><strong>Exemplos <a href="/downloads/hellopre1.zip">hellopre1.zip</a></strong></p>
+
+<p>br_lemes, o Licantropo insano (Suicida)</p>
