@@ -1,0 +1,52 @@
+---
+comments: true
+layout: post
+title: "Restringir o compartilhamento de arquivos e impressoras com o Firewall do Windows"
+tags: [Aleatoriedades]
+---
+
+<p>É bem simples, mas creio que seja uma boa dica e útil. Levei um bom
+tempo para chegar nessa solução. O problema é o seguinte, numa rede sempre
+queremos compartilhar arquivos e impressora com os colegas de trabalho
+próximos, mas nem sempre queremos deixar aberto para qualquer um na rede.
+Alguém pode gastar suas folhas e toner ou tinta da impressora com coisas
+indesejadas, ou mesmo ter acesso ou comprometer seus arquivos. O que fazer
+para dar acesso apenas a quem deve ter acesso usando somente os recursos
+do próprio Windows XP?</p>
+
+<!-- more -->
+
+<section id="more">
+<p>Para redes com um domínio Active Directory uma solução ideal seria
+configurar permissões para cada usuário. Mas esse não é o caso. Andei
+pesquisando e só encontrei soluções complicadas. Usar switch com VLAN,
+mas comprar equipamento estava fora de questão. Usar sub-redes, mas não
+queria configurações complicadas nem interromper o serviço. Não é um
+serviço essencial, mas sempre que acontece alguma interrupção o pessoal
+fica reclamando e acabam querendo que eu vá trabalhar fora do meu horário
+de expediente.</p>
+</section>
+
+<p>Eu uso um servidor Linux (<a href="/2011/06/brazilfw.html">BrazilFW</a>)
+para compartilhar e monitorar os acessos à Internet. Uso o serviço DHCP
+com os endereços de IP reservados aos respectivos endereços MAC, ou seja,
+cada máquina na rede sempre tem o mesmo IP. Tentar configurar o servidor
+para restringir o acesso não daria certo, o servidor pode controlar o
+tráfego que entra e sai da rede, mas não a rede interna (192.168.5.2
+sempre vai poder comunicar com 192.168.5.3 independente da configuração
+do servidor).</p>
+
+<p>Mas foi ai que me veio a ideia. Configurar o firewall da máquina que
+está disponibilizando o serviço de compartilhamento. Bem simples assim,
+não precisei de mudar nada na rede. Só ir lá no Painel de Controle,
+Firewall do Windows, Exceções e alterar o escopo do serviço listando os
+IP permitidos separando por vírgula. Faça isso para todas as portas.</p>
+
+<img class="center-block img-responsive" src="/images/Firewall.png">
+
+<p>Claro que esse método pode ser burlado, o controle é por máquina não
+por usuário e também algum espertinho poderia mudar o IP para entrar nas
+exceções. Mas eu não tenho nenhuma destas situações na minha rede.
+Configurar o firewall era a solução perfeita para o meu caso.</p>
+
+<p>br_lemes, o Elfo insano (Histérico)</p>
