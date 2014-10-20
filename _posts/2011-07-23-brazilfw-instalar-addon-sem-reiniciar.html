@@ -1,0 +1,90 @@
+---
+comments: true
+layout: post
+title: "BrazilFW - Instalar addon sem reiniciar"
+tags: [Linux]
+---
+
+<p>Recentemente conheci o <a href="/2011/06/brazilfw.html">BrazilFW</a>,
+uma solução perfeita para minha necessidade de ter controle sobre o acesso
+à Internet da rede local. O ponto alto dele é a simplicidade. Se alguma
+coisa der errado, qualquer outro computador velho que estiver encostado
+pode substituir o servidor e tudo pode ser instalado em minutos.</p>
+
+<p>Estou usando a versão 2.32.2 e a única coisa que não gosto é de
+reiniciar a cada addon que preciso instalar. Para mim, falar no diabo
+e falar em reiniciar o computador é a mesma coisa. O Windows tem uma
+péssima reputação no mundo dos servidores por precisar reiniciar com
+certa frequência. No meu ponto de vista, nenhum software deve exigir
+reinicialização.
+<a href="http://www.brazilfw.com.br/forum/viewtopic.php?f=14&t=69985">
+Se mesmo alterações no kernel podem ser feitas sem reiniciar</a>, porque
+um simples addon precisa reiniciar?</p>
+
+<!-- more -->
+
+<section id="more">
+<p>Eu não costumo aceitar as coisas do jeito que são, sempre procuro
+pela melhor forma de resolver um problema. Revirei os arquivos e códigos
+do BrazilFW e encontrei. Instalar um addon sem reiniciar é possível
+e bem fácil.</p>
+</section>
+
+<p>Para os apressadinhos, vamos logo aos comandos. Comece pelo
+procedimento padrão para baixar o addon, mas depois temos alguns
+truques extras:</p>
+
+{% highlight sh %}
+mt
+wget -P /mnt http://www.brazilfw.com.br/users/juanillo/bmt/bmt.tgz
+tar xzf /mnt/bmt.tgz -C /
+umt
+echo bmt >> /var/lib/lrpkg/packages
+/etc/rc.d/pkgs/rc.bmt
+{% endhighlight %}
+
+<p>Feito isso, seu addon está instalado e funcionando. Dependendo do addon
+que você instalou ainda será necessário configurar ele pela interface
+Webadmin. Pronto? Não, eu nunca fico satisfeito em fazer funcionar até
+entender como funciona.</p>
+
+<p>O BrazilFW é um pouco diferente da maioria das distribuições. Quando
+instalamos, ele cria uma partição <code>vfat</code> e opcionalmente uma
+partição adicional <code>ext3</code>. A primeira partição, é onde está o
+<code>syslinux</code>, os arquivos de inicialização e todos os seus addons.
+O <code>syslinux</code> carrega o <code>kernel</code> com o parâmetro
+<code>initrd=root.tgz</code>. Então o sistema de arquivos em <code>/</code>
+que você vê fica todo armazenado na memória RAM (é um <code>tmpfs</code>),
+e qualquer alteração que você fizer será perdida ao reiniciar. Por isso
+a necessidade de sempre efetuar um <code>backup</code> ao modificar alguma
+configuração.</p>
+
+Quando o <code>syslinux</code> passa o controle para o <code>kernel</code>,
+ele monta o <code>root.tgz</code> e procura pelo <code>inittab</code>.
+O <code>inittab</code> por sua vez chama o shell script
+<code>/etc/rc.d/rc.sysinit</code> que, entre outros procedimentos, extrai os
+seus addons (o mesmo que eu faço em <code>tar rxzf /mnt/bmt.tgz -C /</code>)
+e registra ele numa lista de addons (o mesmo que eu faço em
+<code>echo bmt >> /var/lib/lrpkg/packages</code>).</p>
+
+<p>Em seguida, o <code>/etc/rc.d/rc.sysinit</code> passa a bola para o
+<code>/etc/rc.d/rc.S</code> que, entre outras funções, repassa ao
+<code>/etc/rc.d/rc.M</code>. Por sua vez o <code>/etc/rc.d/rc.M</code> faz
+uma série de procedimentos, entre eles executa todos os arquivos
+encontrados em <code>/etc/rc.d/pkgs/rc.*</code> (o mesmo que eu faço em
+<code>/etc/rc.d/pkgs/rc.bmt</code>) e por fim chama o
+<code>/etc/rc.d/rc.local</code> que encerra a história.<p>
+
+<p>Ou seja, os comandos ali em cima, além de baixarem o addon para a pasta
+correta, fazem o mesmo que os scripts de inicialização fazem. Se você ficou
+interessado em saber em mais detalhes sobre tudo o que acontece durante a
+inicialização recomendo que leia o
+<a href="/2010/09/de-quando-e-ligado-ate-o-bash.html">HOWTO De Quando é
+Ligado até o Bash</a>, só tenha em mente que lá mostra o que acontece em
+uma distribuição padrão, o <code>init</code> do BrazilFW não possui
+<code>run-levels</code>.
+
+<p>Então, gostou? E agora, também quer desinstalar addons sem precisar
+reiniciar? Aguarde que no próximo artigo mostro isso.</p>
+
+<p>br_lemes, o Elfo insano (Piromaníaco)</p>
