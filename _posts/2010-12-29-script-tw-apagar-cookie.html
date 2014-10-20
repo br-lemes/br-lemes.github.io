@@ -1,0 +1,53 @@
+---
+comments: true
+layout: post
+title: "[Script TW] Apagar cookie"
+tags: [Tribal Wars]
+---
+
+{% include autorizado.html topic="131258" %}
+
+<p>Quando o <a href="http://www.tribalwars.com.br/">Tribal Wars</a>
+ainda não tinha uma equipe para analisar e autorizar os scripts, a idéia
+de divulgar aqui era para que todos pudessem usar. E agora perdeu um
+pouco do sentido colocar aqui só para o pessoal usar, já que está lá
+autorizadão mesmo.</p>
+
+<!-- more -->
+
+<section id="more">
+<p>Então, já que estou tendo o trabalho de postar aqui, precisa ter
+algo mais. E o algo mais pode ser o que levou ao script e como cheguei
+lá.</p>
+<section>
+
+<p>Este aqui foi porque pediram. E o interessante dele é que encontrei
+um autorizado no servidor internacional com 38 linhas de código. E é
+ridículo para algo tão simples. Depois de pensar e pesquisar um pouquinho,
+criei um com funcionamento idêntico. Porém, como eu poderia dizer isso, é,
+hum, ele é um pouco menor. Vou mostrar primeiro o código completo:</p>
+
+{% highlight js %}
+javascript:$.cookie(prompt("Nome do cookie?", "farmeruk"), null);void(0);
+{% endhighlight %}
+
+<p>Agora o código para usar na barra de acesso rápido:</p>
+
+{% highlight js %}
+javascript:$.getScript('http://dl.dropbox.com/u/72485850/tribalwarsbrasil/apagar_cookies.js');void(0);
+{% endhighlight %}
+
+<p>Então..., código ali só é tão pequeno por causa da biblioteca jQuery e
+plugin jQuery-Cookie. Estas bibliotecas atualmente são usadas pelo Tribal
+Wars. Algumas pessoas parecem ter resistência em utilizar o que está
+disponível, preferindo usar JavaScript "puro". Outro incluem no código vários
+testes para situações hipotéticas que nunca vão ocorrer. Posso citar um
+exemplo no próprio link que estpa ali no
+<a href="http://dl.dropbox.com/u/72485850/tribalwarsbrasil/apagar_cookies.js">
+código para usar na barra de acesso rápido</a>, incluiram um teste se o
+jogador tem conta premium que é totalmente desnecessário.</p>
+
+<p>Eu prezo sempre pelo menor código, desde que legível, fácil de entender,
+limpo e sem complicações desnecessárias.</p>
+
+<p>br_lemes, o Gnomo insano (Catatônico)</p>
