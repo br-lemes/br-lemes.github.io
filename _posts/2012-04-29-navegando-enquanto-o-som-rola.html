@@ -1,0 +1,103 @@
+---
+comments: true
+layout: post
+title: "Navegando enquanto o som rola"
+tags: [Aleatoriedades, Linux]
+---
+
+<p>Gosto de ouvir música enquanto estou trabalhando, e meu trabalho sempre
+envolve usar Internet de uma forma ou de outra. Hoje em dia já usamos
+Internet para quase tudo. E é uma agonia quando ficamos sem acesso. E
+essa agonia pode ser ainda maior se a falta de conexão não for por um
+problema na rede em si, mas em seu software e você precisar digitar algum
+comando manualmente para restabelecer a conexão. Quando a Internet falta
+de verdade, você fica feito louco digitando o comando a cada 30 segundos
+para ver se volta. Já passou por algo parecido?</p>
+
+<!-- more -->
+
+<section id="more">
+<p>O fato é que uso um desses conhecidos provedores de Internet via rádio.
+Trocando em miúdos, é PPPoE sobre a interface wireless. Quando usava
+Windows, configurei para ele automaticamente tentar reconectar sempre
+que a Internet falhar. O problema era aquela irritante “janelinha” que
+fica “pulando” na nossa frente atrapalhando o que estiver fazendo. Mas
+agora que uso Linux tenho um outro problema. E uma solução eficaz que
+não me irrita como no sistema das janelinhas, pelo contrário, é bem
+agradável.</p>
+</section>
+
+<p>Estou usando Linux Mint, que é um derivado do Ubuntu, que usa
+NetworkManager para gerenciar a rede e consequentemente a Internet.
+Ele tem um tal de “nm-applet” para deixar a tarefa fácil. O problema é
+que não consigo fazer esse troço funcionar com minha PPPoE sobre wireless.
+Então parti para o pppoeconf e pon. Tudo seria maravilhoso, já que o
+pppoeconf te dá a chance de conectar junto com a inicialização do sistema,
+mas... sempre tem um mas... eu recebo IP por DHCP normalmente, mas não
+recebo o gateway padrão. Quer dizer, eu ligo o computador ele já vai estar
+conectado mas não vai saber o caminho do mundo. Eu outras palavras, para
+completar a conexão eu precisava digitar o comando route toda vez que
+ligava o computador.</p>
+
+<p>Mas isso não é o pior, de tempos em tempos o gateway padrão desaparecia
+da tabela de rotas me deixando na mão. Acredito que seja a conexão com o
+provedor instável, que o pppd automaticamente reconecta, mas voltamos a
+estaca inicial onde precisamos digitar route manualmente, além de descobrir
+qual é o gateway né. Então já entendeu o cenário, cada vez que minha Internet
+parava eu ficava digitando route, ifconfig, ping, etc., compulsivamente até
+a Internet voltar. Então, porque não unir o útil ao agradável?</p>
+
+<p>Roteadores geralmente possuem um script <code>keepalive</code> para se
+reconectar automaticamente sempre que a conexão cair. Então resolvi criar
+o meu keepalive que além de reconectar toca música enquanto a Internet
+estiver funcionando. Quando fico sem Internet a música para e eu vou
+fazer algo de útil, como tomar um banho, assistir TV, lavar minhas
+louças, porque quando a Internet estiver funcionando novamente a música
+vai recomeçar a tocar e eu posso correr para sentar a bunda na cadeira em
+frente ao PC e passar lá mais umas 10 horas ﻿barbiturizado... Tudo isso
+funcionando em segundo plano, gostou?</p>
+
+<p>Para ficar ainda melhor, o meu <code>keeplaying</code> (keepalive
+tocando música né) ainda me ajuda a fazer um ajuste no pppoeconf. Funciona
+assim, você conecta manualmente, ou com o NetworkManager, ou seja lá com
+o que for na sua rede wireless. Configura sua PPPoE com o pppoeconf, e
+não precisa deixar conectando ao iniciar o sistema pois o keeplaying
+vai conectar se não já estiver. Tudo configurado e funcionando né,
+legal. Mas eu tiro meu disco rígido de um computador e levo a outro,
+onde tem duas interfaces wireless então minha PPPoE precisa ser na wlan1
+e não na wlan0. Rodar pppoeconf de novo? Não, isso é muito chato, o
+keeplaying te permite escolher a interface para o PPPoE, que pode ser
+até uma rede com fio mesmo.</p>
+
+<p>Então vai lá: <code>keeplaying wlan0 &amp;</code>, ou <code>keeplaying
+wlan1 &amp;</code>, ou mesmo <code>keeplaying eth0 &amp;</code>, ou se você
+não usa PPPoE (sua conexão já chega pronta) simplesmente <code>keeplaying
+start &amp;</code> para música tocar quando tiver conexão (se você não
+precisa de um keepalive mas gostou da ideia de ser avisado com música
+quando a Internet voltar). Legal né? Mas para isso preciso de privilégios
+de root em duas ocasiões: se precisar trocar a interface do PPPoE (wlan0 por
+wlan1, por exemplo), e na hora do comando route. Se não estiver usando
+PPPoE (<code>keeplaying start &amp;</code>) não precisa. Eu usei o sudo no
+script para isso, então para não atrapalhar o funcionamento em segundo
+plano autentique-se primeiro com alguma coisa como “sudo ls”. Isso resolve
+para o sudo inicial que ajusta a interface (se necessário), o problema é que
+o comando route pode ser necessário a qualquer momento, então é melhor
+configurar para você ter o privilégio de rodar ele sem senha. Coloque
+no seu sudoers: <code>seuusuário ALL=NOPASSWD: /sbin/route</code>.
+
+<p>Em fim, tem muito mais para falar do keeplaying, mas ficaria muito
+extenso. O próprio script está bastante comentado. Então, se gostou dele,
+baixe e dê uma boa lida e vá experimentando:
+<a href="https://raw.github.com/br-lemes/stuff/master/keeplaying">
+https://raw.github.com/br-lemes/stuff/master/keeplaying</a>.
+
+<p>Para finalizar, o keeplaying usa o mplayer tocando controlado por um
+FIFO. Então você pode usar alguns truques para alterar a reprodução:
+<code>echo "volume 10 1" > ~/.mplayer/fifo</code> para colocar o volume
+em nível 10, <code>echo "pt_step 1" > ~/.mplayer/fifo</code> vai para
+a próxima música, se não estiver aleatório. Uma lista dos comandos do
+mplayer no modo escravo você encontra em:
+<a href="http://www.mplayerhq.hu/DOCS/tech/slave.txt">
+http://www.mplayerhq.hu/DOCS/tech/slave.txt</a>.
+
+<p>br_lemes, o Telepata insano (Mentiroso)</p>
