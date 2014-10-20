@@ -1,0 +1,335 @@
+---
+comments: true
+layout: post
+title: "[Script XP] Mais de 50 pictures"
+tags: [RPG Maker]
+---
+
+{% include aviso.html %}
+
+<h3>Introdução</h3>
+
+<p>No RPG Maker XP você não pode usar mais do que 50 pictures, esse script
+te possibilita adicionar quantas pictures quiser. Ótimo para menus por
+eventos, sistemas e outras coisas.</p>
+
+<!-- more -->
+
+<section id="more">
+<p>Este script cria um "deslocamento" no array de pictures para que você
+use mais que 50 pictures no RPG Maker XP. Você usa o comando de evento
+Mostrar Imagem normalmente, porém junto com uma variável que indica o
+deslocamento.</p>
+</section>
+
+<p>Esta é uma versão XP do Script para VX
+<a href="/2010/09/script-vx-mais-de-20-pictures_13.html">Mostrar mais de
+20 pictures</a>, quem pediu a conversão foi o kress/aniplex.</p>
+
+<h3>Screenshots</h3>
+<a href="/images/rpg-maker/picturesxp.png"><img src="/images/rpg-maker/picturesxp.png"
+	alt="Screenshot script mais de 50 pictures para RPG Maker XP"
+	class="img-responsive"></a>
+
+<h3>Como usar</h3>
+
+<p>Cole acima de Main. Configure o número máximo de pictures e a ID da
+variável de deslocamento. Crie o evento desta forma:</p>
+
+<p><a href="/images/rpg-maker/evento.png"><img src="/images/rpg-maker/evento.png"
+	alt="Exemplo de evento com mais de 50 pictures para RPG Maker XP"
+	class="img-responsive"></a></p>
+
+<h3>Demo</h3>
+
+<p><strong><a href="/downloads/rpg-maker/Pictures.rar">
+	Picturesxp.rar</a></strong></p>
+
+<h3>Script</h3>
+
+{% highlight ruby %}
+=begin
+  Mais de 50 pictures
+  por br_lemes e colaboração pedro(HCDO)
+
+  É permitido, livre de quaisquer ônus, usar, copiar, modificar e/ou
+  distribuir cópias deste script, desde que seja mantido este aviso.
+  NÃO HÁ QUALQUER GARANTIA, USE POR SUA PRÓPRIA CONTA E RISCO.
+=end
+
+# Este script cria um "deslocamento" no array de pictures para que você use
+# mais que 50 pictures no RPG Maker XP. Você usa o comando de evento Mostrar
+# Imagem normalmente, porém junto com uma variável que indica o deslocamento.
+
+$PICTURE_MAXNUM = 50 * 2 # Número máximo de pictures
+$PICTURE_OFFSET =      1 # ID da variável de deslocamento
+
+class Game_Screen
+  def initialize
+    @tone = Tone.new(0, 0, 0, 0)
+    @tone_target = Tone.new(0, 0, 0, 0)
+    @tone_duration = 0
+    @flash_color = Color.new(0, 0, 0, 0)
+    @flash_duration = 0
+    @shake_power = 0
+    @shake_speed = 0
+    @shake_duration = 0
+    @shake_direction = 1
+    @shake = 0
+    @pictures = [nil]
+    for i in 1..$PICTURE_MAXNUM*2
+      @pictures.push(Game_Picture.new(i))
+    end
+    @weather_type = 0
+    @weather_max = 0.0
+    @weather_type_target = 0
+    @weather_max_target = 0.0
+    @weather_duration = 0
+  end
+  #--------------------------------------------------------------------------
+  # Atualização do Frame
+  #--------------------------------------------------------------------------
+
+  def update
+    if @tone_duration >= 1
+      d = @tone_duration
+      @tone.red = (@tone.red * (d - 1) + @tone_target.red) / d
+      @tone.green = (@tone.green * (d - 1) + @tone_target.green) / d
+      @tone.blue = (@tone.blue * (d - 1) + @tone_target.blue) / d
+      @tone.gray = (@tone.gray * (d - 1) + @tone_target.gray) / d
+      @tone_duration -= 1
+    end
+    if @flash_duration >= 1
+      d = @flash_duration
+      @flash_color.alpha = @flash_color.alpha * (d - 1) / d
+      @flash_duration -= 1
+    end
+    if @shake_duration >= 1 or @shake != 0
+      delta = (@shake_power * @shake_speed * @shake_direction) / 10.0
+      if @shake_duration <= 1 and @shake * (@shake + delta) < 0
+        @shake = 0
+      else
+        @shake += delta
+      end
+      if @shake > @shake_power * 2
+        @shake_direction = -1
+      end
+      if @shake < - @shake_power * 2
+        @shake_direction = 1
+      end
+      if @shake_duration >= 1
+        @shake_duration -= 1
+      end
+    end
+    if @weather_duration >= 1
+      d = @weather_duration
+      @weather_max = (@weather_max * (d - 1) + @weather_max_target) / d
+      @weather_duration -= 1
+      if @weather_duration == 0
+        @weather_type = @weather_type_target
+      end
+    end
+    if $game_temp.in_battle
+      for i in $PICTURE_MAXNUM+1..$PICTURE_MAXNUM*2
+        @pictures[i].update
+      end
+    else
+      for i in 1..$PICTURE_MAXNUM*2
+        @pictures[i].update
+      end
+    end
+  end
+end
+
+class Spriteset_Map
+
+  #--------------------------------------------------------------------------
+  # Inicialização dos Objetos
+  #--------------------------------------------------------------------------
+
+  def initialize
+    # Criar pontos de vista
+    @viewport1 = Viewport.new(0, 0, 640, 480)
+    @viewport2 = Viewport.new(0, 0, 640, 480)
+    @viewport3 = Viewport.new(0, 0, 640, 480)
+    @viewport2.z = 200
+    @viewport3.z = 5000
+    # Aqui é criado um tilemap que comporta o tileset e seus autotiles
+    @tilemap = Tilemap.new(@viewport1)
+    @tilemap.tileset = RPG::Cache.tileset($game_map.tileset_name)
+    for i in 0..6
+      autotile_name = $game_map.autotile_names[i]
+      @tilemap.autotiles[i] = RPG::Cache.autotile(autotile_name)
+    end
+    @tilemap.map_data = $game_map.data
+    @tilemap.priorities = $game_map.priorities
+    # Aqui é criado um plano para o Panorama
+    @panorama = Plane.new(@viewport1)
+    @panorama.z = -1000
+    # Aqui é criado outro plano, para a Névoa
+    @fog = Plane.new(@viewport1)
+    @fog.z = 3000
+    # Aqui são criados os sprites dos Heróis
+    @character_sprites = []
+    for i in $game_map.events.keys.sort
+      sprite = Sprite_Character.new(@viewport1, $game_map.events[i])
+      @character_sprites.push(sprite)
+    end
+    @character_sprites.push(Sprite_Character.new(@viewport1, $game_player))
+    # Aqui é criado o Clima
+    @weather = RPG::Weather.new(@viewport1)
+    # Aqui são criados os sprites das Figuras
+    @picture_sprites = []
+    for i in 1..$PICTURE_MAXNUM
+      @picture_sprites.push(Sprite_Picture.new(@viewport2,
+        $game_screen.pictures[i]))
+    end
+    # Aqui é criado o sprite do Temporizador
+    @timer_sprite = Sprite_Timer.new
+    # E aqui o frame é atualizado
+    update
+  end
+end
+
+class Spriteset_Battle
+  def initialize
+    # Criação dos viewports
+    @viewport1 = Viewport.new(0, 0, 640, 320)
+    @viewport2 = Viewport.new(0, 0, 640, 480)
+    @viewport3 = Viewport.new(0, 0, 640, 480)
+    @viewport4 = Viewport.new(0, 0, 640, 480)
+    @viewport2.z = 101
+    @viewport3.z = 200
+    @viewport4.z = 5000
+    # Criação do sprite de Fundo de Batalha
+    @battleback_sprite = Sprite.new(@viewport1)
+    # Criação dos sprites dos Inimigos
+    @enemy_sprites = []
+    for enemy in $game_troop.enemies.reverse
+      @enemy_sprites.push(Sprite_Battler.new(@viewport1, enemy))
+    end
+    # Criação dos sprites dos heróis
+    @actor_sprites = []
+    @actor_sprites.push(Sprite_Battler.new(@viewport2))
+    @actor_sprites.push(Sprite_Battler.new(@viewport2))
+    @actor_sprites.push(Sprite_Battler.new(@viewport2))
+    @actor_sprites.push(Sprite_Battler.new(@viewport2))
+    # Criação do Clima
+    @weather = RPG::Weather.new(@viewport1)
+    # Criação das Imagens
+    @picture_sprites = []
+    for i in $PICTURE_MAXNUM+1..$PICTURE_MAXNUM*2
+      @picture_sprites.push(Sprite_Picture.new(@viewport3,
+        $game_screen.pictures[i]))
+    end
+    # Criação do sprite do Temporizador
+    @timer_sprite = Sprite_Timer.new
+    # Atualização do frame
+    update
+  end
+end
+
+class Interpreter
+  #--------------------------------------------------------------------------
+  # Mostrar Imagem
+  #--------------------------------------------------------------------------
+
+  def command_231
+    # Selecionar o número da imagem
+    number = @parameters[0] + $game_variables[$PICTURE_OFFSET]*50 +
+
+($game_temp.in_battle ? $PICTURE_MAXNUM : 0)
+    # Se o método de endereçamento for por apontamento
+    if @parameters[3] == 0
+      x = @parameters[4]
+      y = @parameters[5]
+    # Se o método de endereçamento for por variáveis
+    else
+      x = $game_variables[@parameters[4]]
+      y = $game_variables[@parameters[5]]
+    end
+    # Exibir imagem
+    $game_screen.pictures[number].show(@parameters[1], @parameters[2],
+      x, y, @parameters[6], @parameters[7], @parameters[8], @parameters[9])
+    # Continuar
+    return true
+  end
+
+  #--------------------------------------------------------------------------
+  # Mover Imagem
+  #--------------------------------------------------------------------------
+
+  def command_232
+    # Selecionar o número da imagem
+    number = @parameters[0] + $game_variables[$PICTURE_OFFSET]*50 +
+
+($game_temp.in_battle ? $PICTURE_MAXNUM : 0)
+    # Se o método de endereçamento for por apontamento
+    if @parameters[3] == 0
+      x = @parameters[4]
+      y = @parameters[5]
+    # Se o método de endereçamento for por variáveis
+    else
+      x = $game_variables[@parameters[4]]
+      y = $game_variables[@parameters[5]]
+    end
+    # Mover imagem
+    $game_screen.pictures[number].move(@parameters[1] * 2, @parameters[2],
+      x, y, @parameters[6], @parameters[7], @parameters[8], @parameters[9])
+    # Continuar
+    return true
+  end
+
+  #--------------------------------------------------------------------------
+  # Girar Imagem
+  #--------------------------------------------------------------------------
+
+  def command_233
+    # Selecionar o número da imagem
+    number = @parameters[0] + $game_variables[$PICTURE_OFFSET]*50 +
+
+($game_temp.in_battle ? $PICTURE_MAXNUM : 0)
+    # Selecionar a velocidade de rotação
+    $game_screen.pictures[number].rotate(@parameters[1])
+    # Continuar
+    return true
+  end
+
+  #--------------------------------------------------------------------------
+  # Tonalidade da Imagem
+  #--------------------------------------------------------------------------
+
+  def command_234
+    # Selecionar o número da imagem
+    number = @parameters[0] + $game_variables[$PICTURE_OFFSET]*50 +
+
+($game_temp.in_battle ? $PICTURE_MAXNUM : 0)
+    # Iniciar troca de tonalidade da imagem
+    $game_screen.pictures[number].start_tone_change(@parameters[1],
+      @parameters[2] * 2)
+    # Continuar
+    return true
+  end
+
+  #--------------------------------------------------------------------------
+  # Deletar Imagem
+  #--------------------------------------------------------------------------
+
+  def command_235
+    # Selecionar o número da imagem
+    number = @parameters[0] + $game_variables[$PICTURE_OFFSET]*50 +
+
+($game_temp.in_battle ? $PICTURE_MAXNUM : 0)
+    # Deletar imagem
+    $game_screen.pictures[number].erase
+    # Continuar
+    return true
+  end
+end
+{% endhighlight %}
+
+<h3>Créditos e Agradecimentos</h3>
+
+<ul><li>Colaboração do pedro (HCDO)</li></ul>
+
+<p>br_lemes, o Gnomo insano (Suicida)</p>
