@@ -1,0 +1,106 @@
+---
+comments: true
+layout: post
+title: "Lua: alternativa ao continue"
+tags: [Programação]
+---
+
+<p>Muita gente sabe que <a href="http://www.lua.org/">Lua</a> é minha
+linguagem de programação favorita. Vivo no mundo da Lua, ou melhor, estou
+sempre falando de Lua. Mas há uma coisa que nunca havia reparado em Lua:
+não existe o comando <strong>continue</strong> como parte das estruturas
+de controle.</p>
+
+<p>Vou explicar melhor. Eu tinha um programa com uma tabela contendo
+nomes de arquivos. Para cada nome na tabela eu abria o arquivo, verificava
+alguma coisa no conteúdo dele e fechava novamente. Por fim, passava para
+o próximo nome na tabela. Seria algo assim:</p>
+
+<!-- more -->
+
+<section id="more">
+{% highlight lua %}
+for i,v in ipairs(nomes) do
+  local arq = io.open(v, "r")
+  local url = string.match(arq:read("*l"), "url=(.*)")
+
+  -- outros comandos aqui
+
+  arq:close()
+end
+{% endhighlight %}
+</section>
+
+<p>Tudo bem até aqui, tem um laço <code>for</code> com uma função
+iteradora que vai abir e ler dados de todos os arquivos na tabela
+<code>nomes</code>. Tendo visto que meu programa estava funcionando
+corretamente, fui aperfeiçoando ele adicionando tratamento de erro:</p>
+
+{% highlight lua %}
+for i,v in ipairs(nomes) do
+  local arq, e = io.open(v, "r")
+  if (arq == nil) then
+    print(e)
+  else
+    local url = string.match(arq:read("*l"), "url=(.*)")
+    if (url == nil) then
+      print(v .. ": read error")
+    else
+        -- outros comandos aqui
+    end
+    arq:close()
+  end
+end
+{% endhighlight %}
+
+<p>Certo, agora com os condicionais <code>if</code> o programa iria
+continuar apenas se não acontecessem erros. No caso de erro ele voltava
+para o próximo laço do <code>for</code>. Mas... se eu tivesse ali 10,
+20 ou mais leituras ou outros comandos que pudessem gerar erro? Iria ficar
+um aninhamento de <code>if</code> descomunal - feio e fonte de erros e bugs.
+Usar <code>if</code> não era a solução.</p>
+
+<p>Temos o comando <code>break</code>, mas ele interrompe o laço e vai para
+o próximo comando depois do laço. Se usasse ele, dando erro no primeiro
+arquivo ele iria sair do laço ignorando todos os outros arquivos da tabela.
+Em outras linguagens de programação, temos o comando <code>continue</code>,
+que ignora o restante do bloco e vai para a próxima etapa do laço (seja
+<code>for</code>, <code>while</code>, ou o que for). Fui usar e... para
+minha surpresa, não tinha! E agora? Ficar no aninhamento insano de
+<code>if</code>? Claro que não, só tem espaço para um insano aqui e
+código insano não está incluído nisso.</p>
+
+<p>A solução encontrada foi adicionar um bloco <code>repeat until true</code>
+apenas para colocar o <code>break</code> dentro dele. De forma que o
+<code>break</code> vai encerrar o bloco que está dentro do laço <code>for
+</code>, de forma que a execução vai seguir para a próxima etapa do laço
+- o que é exatamente o que queremos. Veja como fica:</p>
+
+{% highlight lua %}
+for i,v in ipairs(nomes) do
+  repeat
+    local arq, e = io.open(v, "r")
+    if (arq == nil) then
+      print(e)
+      break
+    end
+    local url = string.match(arq:read("*l"), "url=(.*)")
+    if (url == nil) then
+      print(v .. ": read error")
+      arq:close()
+      break
+    end
+
+    -- outros comandos aqui
+
+    arq:close()
+  until true
+end
+{% endhighlight %}
+
+<p>Resolvido o problema. Note que <code>until true</code> vai fazer com
+que esse bloco extra seja executado somente uma vez caso não tenha
+ocorrido nenhum erro e a execução tenha chegado até o final do bloco.
+Sem <code>continue</code>, mas sem aninhamentos desnecessários no código.</p>
+
+<p>br_lemes, o Centauro insano (Fobia)</p>
