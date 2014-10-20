@@ -1,0 +1,74 @@
+---
+comments: true
+layout: post
+title: "BrazilFW - O desconhecido execpak"
+tags: [Linux]
+---
+
+<p>Depois do <a href="/2011/07/brazilfw-instalar-addon-sem-reiniciar.html">
+Instalar addon sem reiniciar</a>, meu próximo artigo seria sobre remover
+addon sem reiniciar. Mas eis que me veio o fabiosammy e me mostrou a
+existência do comando <code>execpak</code>, que serve justamente para
+extrair e iniciar o addon sem reiniciar. E pensei: agora pronto! Meu artigo
+ficou inútil! Resolvi emendar o texto para incluir essa nova informação.</p>
+
+<p>Nem ia testar, o <code>execpak</code> funciona e pronto. Mas... santo
+senso paranóico! O caso merece atenção, e resolvi até fazer um artigo extra
+só para expor isso. O procedimento foi realizado na versão 2.32.2.</p>
+
+<!-- more -->
+
+<section id="more">
+<p>Consultando o execpak pude perceber que um addon pode ter mais que um
+arquivo <code>/etc/rc.d/pkgs/rc.*</code> e esse arquivo nem precisa ter o
+mesmo nome do addon. Pude ver também, que alguns addons contém módulos do
+kernel que são iniciados chamando o <code>/etc/rc.d/pkgs/mod.*</code>,
+tarefa que durante a inicialização fica a cargo do <code>
+/etc/rc.d/rc.modules</code> que é um dos primeiros comandos executados
+pelo <code>/etc/rc.d/rc.S</code>.
+</section>
+
+<p>Para não confundir o que inicia o que, vamos revisar o que vimos
+antes. O computador liga e encontra o <code>syslinux</code> que passa o
+controle ao <code>kernel</code> e por sua vez monta o <code>root.tgz</code>
+e executa o <code>init</code>. O <code>init</code> consulta o <code>
+/etc/inittab</code> e vê que precisa chamar o <code>/etc/rc.d/rc.sysinit
+</code> que extrai os seus addons e chama o <code>/etc/rc.d/rc.S</code>.
+Primeiro o <code>/etc/rc.d/rc.S</code> chama o <code>/etc/rc.d/rc.modules
+</code> que executa todos os <code>/etc/rc.d/pkgs/mod.*</code>, e depois
+(voltando ao <code>rc.S</code>) ele chama o <code>/etc/rc.d/rc.M</code>
+que executa todos os <code>/etc/rc.d/pkgs/rc.*</code> e termina a história
+chamando o <code>/etc/rc.d/rc.local</code>. Entendido, ou confundiu mais?
+De qualquer jeito, deixa de lado essa história e passemos adiante.</p>
+
+<p>O caso é que o <code>execpak</code> extrai e inicia seu addon, mas não
+o coloca na lista <code>/var/lib/lrpkg/packages</code>. Essa lista é usada
+pelo <code>backup</code> para saber o que deve permanecer e o que deve ser
+descartado. Sem o seu pacote nessa lista, ao fazer backup seu addon vai
+para o espaço. Então, um método alternativo para instalar addon sem
+reiniciar é o seguinte:</p>
+
+{% highlight sh %}
+mt
+wget -P /mnt http://www.brazilfw.com.br/users/juanillo/bmt/bmt.tgz
+umt
+execpak bmt
+echo bmt >> /var/lib/lrpkg/packages
+{% endhighlight %}
+
+<p>Na verdade, não alternativo mas até preferível, por levar em
+consideração as questões dos addons que possam ter mais de um <code>rc.*
+</code> e/ou <code>mod.*</code>. Só me resta a dúvida de porque esse
+<code>execpak</code> está ai escondido no BrazilFW feito fantasma.</p>
+
+<hr>
+
+<p>O fabiosammy é um dos desenvolvedores do
+<a href="http://www.smartrouter.com.br/">SmartRouter PROJECT</a>, um fork
+do <a href="http://www.brazilfw.com.br/">BrazilFW</a>. O projeto é
+interessante. Eu não gostei da versão 3.x do BrazlFW que tem sido o
+centro das atenções, e o SmartRouter PROJECT traz atualizações e
+melhorias seguindo a partir da versão 2.32.2 do BrazilFW. Mas
+infelizmente o projeto carece de usuários.</p>
+
+<p>br_lemes, o Fantasma insano (Homicida)</p>
