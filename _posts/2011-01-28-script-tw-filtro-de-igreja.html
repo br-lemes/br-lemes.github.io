@@ -1,0 +1,58 @@
+---
+comments: true
+layout: post
+title: "[Script TW] Filtro de Igreja"
+tags: [Tribal Wars]
+---
+
+{% include autorizado.html topic="137808" %}
+
+<p>Mundos com igreja representam vários desafios extras. Um exemplo é defender
+a conquista de uma aldeia distante. Outro é o planejamento das conquistas,
+pois devido ao alto custo em população requer um bom aproveitamento da área
+religiosa. Devido ao alto custo, quando em regiões consolidadas pela tribo
+onde pretendo recrutar apenas tropa defensiva para enviar de apoio deixo
+aldeias sem igreja.</p>
+
+<!-- more -->
+
+<section id="more">
+<p>Mas regiões consolidadas não são algo estático. Acontecem invasões inimigas,
+divisões na tribo, mudanças na diplomacia, etc. De forma aquilo que você
+considerava região de baixo risco, pode vir a ser uma região de alto risco.
+E tomar cuidados com a muralha e influência religiosa é imprescindível na
+hora de defender suas aldeias.</p>
+</section>
+
+<p>Para ajudar nessa tarefa criei este Filtro de Igreja. Usando em
+Visualizações - Combinado, você terá apenas as aldeias que estão fora da
+influência da igreja assim necessitando de sua atenção, a fim de verificar
+se elas podem permanecer assim ou é necessário uma nova igreja naquela
+região.</p>
+
+<p>Versão curta, para barra de acesso rápido:</p>
+
+{% highlight js %}
+javascript:$.getScript('http://dl.dropbox.com/u/72485850/tribalwarsbrasil/filtro_de_igreja.js');void(0);
+{% endhighlight %}
+
+<p>Versão completa:</p>
+
+{% highlight js %}
+javascript:
+n = confirm('OK = Filtrar aldeias SEM influência religiosa;\nCancelar = Filtrar aldeias COM influência religiosa.');
+j = 0;
+e = $('#combined_table tr');
+a = $(e[0]).find('th');
+$(a).each(function(i,e){if($(e).html().match('church')) j = i;});
+if(j>0){
+  for(i=1;i<e.length;i++){
+    a = $(e[i]).find('td');
+    var k = $(a[j]).html().match('running');
+    if(!n) k = !k; if(k) e[i].parentNode.removeChild(e[i]);
+  }
+}
+void(0);
+{% endhighlight %}
+
+<p>br_lemes, o Saci insano (Paranóico)</p>
