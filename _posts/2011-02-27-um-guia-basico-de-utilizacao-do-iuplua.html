@@ -1,0 +1,65 @@
+---
+comments: true
+layout: post
+title: "Um guia básico de utilização do IupLua - parte 1"
+tags: [Programação, Traduções]
+---
+
+<p class="text-center">Por Steve Donovan - Tradução Breno Ramalho Lemes</p>
+
+<p class="text-center">Parte 1 |
+<a href="/2011/02/um-guia-basico-de-utilizacao-do-iuplua_28.html">
+Parte 2</a></p>
+
+<a href="http://www.tecgraf.puc-rio.br/iup/">IupLua</a> é um kit
+multi-plataforma para criar aplicações gráficas em
+<a href="http://www.lua.org/">Lua</a>. Existem recursos poderosos para
+obter entrada do usuário que não exigem códigos complicados, por isso é
+particularmente bom para scripts de utilitários.</p>
+
+<p>Os atributos são um conceito importante no IUP. Você os define ou obtém
+simplesmente como campos de uma tabela. Em primeiro lugar, não há
+diferenciação entre maiúsculas e minúsculas, <code>SIZE</code> funciona
+tanto quanto <code>size</code> (mas tente ser coerente). Em segundo lugar,
+escrevendo para um atributo inexistente não lhe dará um erro, então faça
+com atenção. Em terceiro lugar, escrever para um atributo pode provocar
+uma ação, como por exemplo o atributo visible dos controles pode ser usado
+para escondê-lo. Pense neles como um tipo especial de chamada de função.</p>
+
+<!-- more -->
+
+<section id="more">
+<p>Funções que criam objetos IupLua (construtores, por exemplo) recebem
+tabelas como argumentos. Lua lhe permite omitir os parênteses nesse caso,
+mas lembre-se que algo como <code>iup.fill{}</code> não é o mesmo que
+<code>iup.fill()</code>; é na verdade um atalho (açúcar sintático) para
+<code>iup.fill({})</code>.</p>
+</section>
+
+<p>Uma tabela Lua pode conter uma parte com elementos do tipo matriz
+(apenas os itens separados por vírgulas) e uma parte do tipo mapa (pares
+atributo-valor), a convenção é colocar primeiro a parte matriz, e depois
+a parte mapa separados por um ponto e vírgula . (Veja
+<a href="http://www.tecgraf.puc-rio.br/iup/en/attrib_guide.html#IupLua">
+Attributes/Guide/IupLua</a> no Manual para mais detalhes.)</p>
+
+<p>Todos os exemplos aqui apresentados e alguns utilitários podem ser
+encontrados na pasta
+"<a href="http://www.tecgraf.puc-rio.br/iup/examples/Lua/misc/">misc</a>"
+nos <a href="http://www.tecgraf.puc-rio.br/iup/examples/Lua/">exemplos</a>
+do IupLua.</p>
+
+<p class="text-center">Parte 1 |
+<a href="/2011/02/um-guia-basico-de-utilizacao-do-iuplua_28.html">
+Parte 2</a></p>
+
+<hr>
+
+<p><strong>NOTAS DA TRADUÇÃO</strong>: apesar do
+<a href="http://www.tecgraf.puc-rio.br/iup/en/basic/">documento original</a>
+ser bem curto, não tenho todo o tempo do mundo, então vou ir traduzindo aos
+poucos e postando as partes. Ao final vou disponibilizar para download em
+formatos alternativos (HTML e PDF, por exemplo). Comentários, sugestões e
+correções serão apreciados.</p>
+
+<p>br_lemes, o Licantropo insano (Histérico)</p>
