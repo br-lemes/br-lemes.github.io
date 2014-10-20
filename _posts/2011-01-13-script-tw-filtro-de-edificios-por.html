@@ -1,0 +1,66 @@
+---
+comments: true
+layout: post
+title: "[Script TW] Filtro de Edifícios (por configuração mínima)"
+tags: [Tribal Wars]
+---
+
+{% include autorizado.html topic="135082" %}
+
+<p>Talvez você tenha gostado do
+<a href="/2010/11/script-tw-filtro-de-edificios-por.html">
+Filtro de edifícios (por configurações)</a>, mas não seja tão maluco
+quanto eu para ficar padronizando edifícios, demolindo alguns e com
+configurações diferentes. Ou talvez tenha achado muito complicado. Mas
+você queria ter todas as suas aldeias com minas, armazéns e fazendas
+elevados ao máximo. Você não quer deixar aldeias improdutivas por falta
+de edifícios essenciais.</p>
+
+<!-- more -->
+
+<section id="more">
+<p>Nos últimos dias precisei de cuidar em modo de férias da conta de alguns
+amigos que estavam numa situação assim. Tinham aldeias que não recrutavam,
+por falta de níveis requeridos. Não dava para usar o meu filtro por
+configurações, porque não havia nenhum padrão. Então, resolvi criar esta
+modificação que requer apenas uma única e simples configuração com os
+níveis mínimos. Deixando assim só aquelas aldeias problemáticas para você
+resolver (e vão ser bastantes de início).</p>
+</section>
+
+<p>Tudo que precisa fazer é configurar a lista de edifícios mínimos em
+<strong>var config = [20, 25, 20, 2, 0, 0, 1, 20, 1, 1, 10, 30, 30, 30, 30,
+30, 0, 20];</strong> e executar em Visualizações - Edifícios. No caso de
+mundos sem igreja e/ou paladinos, retire da lista o número respectivo a eles.
+
+<p>Para colocar na barra de acesso rápido:</p>
+
+{% highlight js %}
+javascript:
+var config = [20,25,20,2,0,0,1,20,1,1,10,30,30,30,30,30,0,20];
+$.getScript('http://dl.dropbox.com/u/72485850/tribalwarsbrasil/filtro_de_edificios_min.js');
+void(0);
+{% endhighlight %}
+
+<p>E agora completo:</p>
+{% highlight js %}
+javascript:
+var config = [20,25,20,2,0,0,1,20,1,1,10,30,30,30,30,30,0,20];
+function bhide(config){
+  $('#buildings_table tr:not(:first)').each(function(i,e){
+    var h = true;
+    var a = $(e).find('td');
+    for(i=0;i<config.length;i++){
+      if(config[i]>$(a[i+4]).text()){
+        h = false;
+        break;
+      }
+    }
+    if(h) e.parentNode.removeChild(e);
+  });
+}
+bhide(config);
+void(0);
+{% endhighlight %}
+
+br_lemes, o Centauro insano (Megalomaníaco)
