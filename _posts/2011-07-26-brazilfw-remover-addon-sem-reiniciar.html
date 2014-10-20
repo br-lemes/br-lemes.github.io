@@ -1,0 +1,91 @@
+---
+comments: true
+layout: post
+title: "BrazilFW - Remover addon sem reiniciar"
+tags: [Linux]
+---
+
+<p>Reiniciar é coisa do mal. Pelo menos eu penso assim. Se você gostou
+de <a href="/2011/07/brazilfw-instalar-addon-sem-reiniciar.html">Instalar
+addon sem reiniciar</a>, então agora vamos fazer o caminho inverso:
+remover addon sem reiniciar.</p>
+
+<p>O procedimento para instalar um addon sem reiniciar é simples. Já para
+remover, precisamos lidar com um inconveniente: como parar os processos
+que pertencem ao addon. A versão 2.32.2 do BrazilFW tem um processo padrão
+para iniciar os serviços: executar os arquivos <code>/etc/rc.d/pkgs/rc.*
+</code>. Mas para parar os serviços, apesar de haver o procedimento padrão
+que é executar os arquivos <code>/etc/rc.d/pkgs/sd.*</code>, poucos addons
+o usam. A maioria deixa por conta do sistema encerrar os processos durante
+o desligamento ou reinicio.</p>
+
+<!-- more -->
+
+<section id="more">
+<p>Então, se o seu addon não tem um <code>/etc/rc.d/pkgs/sd.*</code>, não
+há fórmula fácil. Use o <code>ps</code> para ver os processos rodando e o
+<code>kill</code> ou <code>killall</code> para se livrar deles. Encerrando
+os processos, vamos remover os arquivos que pertencem ao addon. E quais
+são eles? Cada addon tem um arquivo com a lista de seus arquivos
+(incluindo a própria lista), este arquivo fica em <code>
+/var/lib/lrpkg/*.list</code>.
+</section>
+
+<p>Alguns addons listam seus arquivos um a um, mas outros usam coringas
+(*) e/ou diretórios. Então para remover vamos usar o <code>rm -ri</code>,
+a fim de remover também os diretórios (opção r) e rodar no modo interativo
+(opção i) confirmando cada arquivo a ser excluído a fim de não fazer
+alguma besteira, mas caso você esteja seguro do que está fazendo
+(e mantenha backup do seu sistema) pode usar somente <code>rm -r</code>.</p>
+
+<p>Em seguida, precisamos remover o addon da lista de pacotes (o contrário
+do que fizemos ao instalar). E por fim remover o addon da sua partição
+<code>vfat</code>. Vamos aos comandos:</p>
+
+{% highlight sh %}
+killall bwmon
+rm -ri $(cat /var/lib/lrpkg/bmt.list)
+sed -i '/bmt/d' /var/lib/lrpkg/packages
+mt
+rm /mnt/bmt.tgz
+umt
+{% endhighlight %}
+
+<p>Para instalar eu lhe dei os comandos e depois a explicação. Mas para
+remover, eu lhe dei primeiro a explicação para depois mostrar os comandos.
+A razão disso é que você deve estar bem mais atento e entender o que você
+está fazendo. Afinal, se você não quer reiniciar é porque não quer
+interromper o serviço do seu cliente. Então cuide para não fazer besteira
+e arruinar com todo o sistema. Ao encerrar os processos com <code>killall
+</code> você pode antes usar <code>ps | grep bwmon</code> para ver quais
+serão os processos encerrados, trocando é claro o <code>bwmon</code> pelo
+nome do processo que o seu addon roda.</p>
+
+<p>Por último, você pode refinar a desinstalação procurando se o seu addon
+não deixa arquivos na segunda partição (<code>/partition</code>) ou variáveis
+no arquivo de configuração (<code>/etc/coyote/coyote.conf</code>). Se você
+editar o arquivo de configuração, não esqueça de fazer backup. Alguns addons
+também deixam arquivos em <code>/tmp</code>, mas não se importe com eles.
+Se você quiser verificar se seu addon não deixou diretórios órfãos (vazios),
+pode listar os diretórios vazios usando <code>find / -type d -empty
+2>/dev/null | grep -v -E '(/proc|/partition)'</code>. Mas <strong>ATENÇÃO
+</strong>, não apague todos os diretórios vazios, apenas procure se entre
+os diretórios vazios do seu sistema tem algum que pertencia ao seu addon.</p>
+
+<p>Vai aqui no final uma observação a respeito de addons que possuam
+módulos do kernel, deixei para o final porque eles não são muito comuns
+e o que estou dizendo aqui é só uma ideia, não pude fazer nenhum experimento
+prático para verificar a validade disso. Depois de parar os processos, mas
+antes de remover os arquivos, remova também os módulos do kernel. Alguns
+addons trazem uma lista de seus módulos no arquivo <code>/etc/modules.*
+</code>, então você poderia fazer <code>rmmod $(cat /etc/modules.*)</code>.
+De qualquer forma os módulos também estão na lista de arquivos do addon,
+assim você pode saber quais são eles com <code>grep /lib/modules/
+/var/lib/lrpkg/*.list</code>.
+
+<p>Livre do addon, pode continuar rodando seu sistema. Pode inclusive
+reinstalar o addon agora, sem nenhum problema. Coisas ruins não acontecerão
+se você deixar de reiniciar, mas poderão acontecer se você não entender o
+que está fazendo. Não acha?</p>
+
+<p>br_lemes, o Lich insano (Hipocondríaco)</p>
