@@ -1,0 +1,86 @@
+---
+comments: true
+layout: post
+title: "[Script TW] Filtro de Nobres"
+tags: [Tribal Wars]
+---
+
+{% include autorizado.html topic="133405" %}
+
+<p>Este script foi um processo similar à
+<a href="/2010/12/script-tw-atualizacao-filtro-edificios.html">
+Atualização no Filtro de Edifícios</a>. Isso porque já existia um
+<a href="http://forum.tribalwars.com.br/showthread.php?t=118281">
+outro Filtro de Nobres</a>, mas tinha dois problemas com ele: 1) Ele
+deixava mostrar as aldeias sem academia e consequentemente sem nobre;
+2) Assim como no caso do Filtro de Edifícios era muito lento, apesar do
+impacto não ser tão grande.</p>
+
+<!-- more -->
+
+<section id="more">
+<p>Um belo dia o <a href="http://forum.tribalwars.com.br/member.php?u=54144">
+matheus4-1</a> enviou para autorização dois script diferentes
+para filtrar aldeias com nobres. Durante a fase de teste, eu descobri
+que apesar deles funcionarem para aldeias sem academia e sem nobre,
+nenhum deles funcionava caso existisse nobre em uma aldeia sem academia.
+Então, lá vai eu fazer um. O resultado foi esse, que além não ter
+problemas com aldeias com ou sem academia é mais rápido e funciona tanto
+na versão 6.5 (mundos antigos) quanto na versão 7.0
+(mundos novos - 33 e 34) do Tribal Wars. O resultado foi o seguinte:</p>
+</section>
+
+{% highlight js %}
+javascript:
+$.getScript('http://dl.dropbox.com/u/72485850/tribalwarsbrasil/filtro_de_nobres.js');
+void(0);
+{% endhighlight %}
+
+<p>Nunca mais perca de vista seus nobres!</p>
+
+<p>O script foi atualizado em 16/03/2011. Também como sugestão do
+<a href="http://forum.tribalwars.com.br/member.php?u=54144">
+matheus4-1</a>, foi acrescentada uma variável para a quantidade mínima
+de nobres a ser filtrada. Por exemplo, você quer apenas as aldeias que
+possuem um comboio de nobres completo (4 nobres):</p>
+
+{% highlight js %}
+javascript:
+var nmin = 4;
+$.getScript('http://dl.dropbox.com/u/72485850/tribalwarsbrasil/filtro_de_nobres.js');
+void(0);
+{% endhighlight %}
+
+<p>Se preferir, pode até mesmo fazer isso de forma interativa, no momento
+da utilização do script:</p>
+
+{% highlight js %}
+javascript:
+var nmin=prompt('Digite a quantidade mínima de nobres',4);
+$.getScript('http://dl.dropbox.com/u/72485850/tribalwarsbrasil/filtro_de_nobres.js');
+void(0);
+{% endhighlight %}
+
+<p>Só como observação, hoje não há mais nenhum mundo com a versão 6.5
+(mas não deixaria de funcionar, caso ainda houvesse). Como sempre,
+confira o script por completo:</p>
+
+{% highlight js %}
+javascript:
+if(typeof nmin === 'undefined' || nmin < 1)
+  var nmin=1;
+var j = 0;
+$('#combined_table tr').each(function (i, e) {
+  var a;
+  if(i==0){
+    a = $(e).find('th');
+    j=($(a[a.length-2]).html().search('snob')!=-1)?a.length-2:a.length-3;
+  } else {
+    a = $(e).find('td');
+    if(parseInt($(a[j]).text())<nmin)e.parentNode.removeChild(e);
+  }
+});
+void(0);
+{% endhighlight %}
+
+<p>br_lemes, o Saci insano (Homicida)</p>
