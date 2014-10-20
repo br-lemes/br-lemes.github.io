@@ -1,0 +1,89 @@
+---
+comments: true
+layout: post
+title: "Dicas do pinguim voador"
+tags: [Linux]
+---
+
+<p>É, eu sei, pinguins não voam. Mas eu coloquei um para voar. Calma ai,
+deixa eu explicar. Instalei Linux num disco rígido externo, de forma que
+posso usar em qualquer computador que eu tiver disponível. Tá bom, tá
+bom... já sei que isso não é novidade. Temos Live CD rodando ai há anos,
+recentemente também tem sido muito comum usar memórias flash de pendrives.
+Mas não vim para contar novidade, mas dividir experiência.</p>
+
+<!-- more -->
+
+<section id="more">
+<p>Primeiro na escolha da distribuição. Eu não queria um Live CD, mas uma
+distribuição completa para uso cotidiano, instalado num disco não numa
+memória flash (com direito a partição swap e tudo). Quero uma que tenha
+atualizações regularmente, boa variedade de software disponível e fácil
+de usar. Comecei com Ubuntu, mas as versões mais recentes são muito lentas.
+O objetivo é usar em qualquer computador que eu tiver a disposição, e as
+vezes isso significa um Celerom com 512MB de RAM, que é uma boa máquina
+mas para o Ubuntu é muito pouco. Fui experimentando uma e outra e acabei
+gostado do Linux Mint LXDE 12. É equivalente a um Ubuntu atualizado, mas
+sem lerdeza e sem frescura.</p>
+</section>
+
+<p>A dica hoje é para conexão de rede. Em primeiro lugar o servidor de DNS.
+Na minha cidade a única opção para Internet são os serviços da Oi. Não vou
+jogar pedras na empresa porque a infraestrutura aqui é péssima, mas
+preciso criticar: ela fornece um serviço de Internet sem um DNS decente.
+Quantas vezes estou conectado, pinga em qualquer IP do mundo, mas não
+resolve nomes. Então, se você também usa Oi, sua primeira obrigação é
+trocar o DNS por algo útil. Eu uso o DNS do Google, mas também pode ser
+usado o OpenDNS. Se você usa Windows, também pode fazer isso, mas estou
+falando em Linux então o arquivo a mudar é: <code>/etc/resolv.conf</code>.
+Se não tiver nenhuma outra necessidade, coloque apenas duas linhas:</p>
+
+{% highlight sh %}
+nameserver 8.8.8.8
+nameserver 8.8.4.4
+{% endhighlight %}
+
+<p>Depois precisa tornar o arquivo imutável, para o NetworkManager ou
+qualquer outro aplicativo que altere configurações de rede não mexer nele
+e bagunçar tudo: <code>chattr +i /etc/resolv.conf</code>.
+
+<p>Em seguida temos uma dor de cabeça com o nome das interfaces de rede.
+O <code>udev</code> tem um recurso muito útil para fixar o nome lógico da
+interface com uma placa específica. Isso resolve um problema comum em
+servidores com várias placas que trocam de nome ao reiniciar. Assim sua
+interface de Internet será sempre <code>eth0</code> (por exemplo) e seu
+script de firewall não vai ficar furado quando reiniciar, porque o
+sistema não vai dar outro nome qualquer a sua interface. Mas é muito
+chato se você conecta seu disco para usar em vários computadores, vai
+acabar tendo um computador com <code>eth8</code>, outro com <code>eth5
+</code> e por ai em diante. Sabe-se lá onde isso vai parar (se vai parar).
+Eu desativei essa função do udev com o mesmo truque acima, tornando o
+arquivo imutável: <code>chattr +i /etc/udev/rules.d/70-persistent-net.rules
+</code>.
+
+<p>Por último a conexão em si. Em alguns locais que uso é só conectar ou
+com cabo, ou wireless, que vou receber um IP por DHCP e vou estar conectado
+ao mundo. Mas em outros lugares vou precisar de fazer uma conexão PPPoE
+sobre a interface wireless. O Linux Mint usa um applet para o NetworkManager
+a fim de configurar a conexão, mas até hoje não consegui configurar PPPoE
+sobre wireless com ele (famosos provedores de Internet via rádio). Então
+tenho que rodar o <code>pppoeconf</code> e <code>pon</code> manualmente.
+Mas ainda tenho dois problemas, um é que nem sempre a interface para o
+PPPoE é a <code>wlan0</code>, pode ser <code>wlan1</code> ou outra coisa.
+Rodar o <code>pppoeconf</code> novamente resolve mas é chato. Outro problema
+é que meu provedor me entrega um IP por DHCP mas preciso configurar
+manualmente o gateway padrão. O pior é que de tempos em tempos o gateway
+padrão desaparece da tabela de rotas, não sei porque (talvez a conexão
+caia, o pppd refaz mas fica sem gateway novamente). Para resolver estas
+duas coisas, criei um script que faz tudo por mim. É o seguinte:
+<a href="https://raw.github.com/br-lemes/stuff/master/keeplaying">
+https://raw.github.com/br-lemes/stuff/master/keeplaying</a>.
+
+<p>Por enquanto a dica é só o script, mais detalhes sobre ele merecem
+uma postagem específica. Tem bastante comentário no script e se você
+estiver numa situação parecida com a minha, talvez possa aproveitar.</p>
+
+<p>E ai, você já usou Linux instalado em disco externo? Se sim e tiver
+alguma dica, comete.</p>
+
+<p>br_lemes, o Elfo-Negro insano (Obsessivo)</p>
