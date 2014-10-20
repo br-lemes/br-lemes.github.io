@@ -27,9 +27,11 @@ iup.Message('Seu Aplicativo','Concluído com sucesso!')
 <!-- more -->
 
 <section id="more">
+<img class="center-block img-responsive" src="/images/screenshot1.png">
+</section>
+
 <p>É claro que, muitas operações exigem a confirmação do usuário.
 <code>iup.Alarm</code> é projetado para isso:</p>
-</section>
 
 {% highlight lua %}
 require( "iuplua" )
@@ -43,6 +45,8 @@ elseif b == 3 then
 	iup.Message("Salvar arquivo", "Operação cancelada")
 end
 {% endhighlight %}
+
+<img class="center-block img-responsive" src="/images/screenshot2.png">
 
 <p>Assim como <code>iup.Message</code>, o primeiro parâmetro aparece na
 barra de título da caixa de diálogo, o segundo parâmetro aparece acima dos
@@ -69,6 +73,8 @@ elseif err == -1 then
 end
 {% endhighlight %}
 
+<img class="center-block img-responsive" src="/images/screenshot3.png">
+
 <p>Isto irá lhe apresentar a caixa de diálogo abrir arquivo padrão do Windows,
 e permitir que você escolha um nome de arquivo, ou cancele a operação. Note
 que esta função retorna dois valores, o nome e um código. O código irá dizer
@@ -87,6 +93,8 @@ if res ~= "" then
 end
 {% endhighlight %}
 
+<img class="center-block img-responsive" src="/images/screenshot4.png">
+
 <p>Se usar esta janela, você pode inserir quantas linhas quiser, e
 pressionar OK.</p>
 
@@ -102,6 +110,8 @@ require( "iupluacontrols" )
 res, name = iup.GetParam("Título", nil, "Dê o seu nome: %s\n","")
 iup.Message("Olá!",name)
 {% endhighlight %}
+
+<img class="center-block img-responsive" src="/images/screenshot5.png">
 
 <p>Há duas vantagens sobre a iup.GetText simples, você pode dar uma linha
 de comando, onde você pode pressionar enter depois de digitar o texto.</p>
@@ -123,6 +133,8 @@ res, prof = iup.GetParam("Título", nil,
 	"Dê sua profissão: %l|Professor|Explorador|Engenheiro|\n",0)
 {% endhighlight %}
 
+<img class="center-block img-responsive" src="/images/screenshot6.png">
+
 <p>Observe a lista <code>|item1|item2|...|</code> após o formato <code>l%
 </code>, estas são as opções apresentadas para o usuário. O valor inicial
 que você dá e o valor que você recebe, serão um índice para a lista de
@@ -143,6 +155,8 @@ if res ~= 0 then
 	iup.Message("Sério?", age)
 end
 {% endhighlight %}
+
+<img class="center-block img-responsive" src="/images/screenshot7.png">
 
 <p class="text-center">
 <a href="/2011/02/um-guia-basico-de-utilizacao-do-iuplua.html">Parte 1</a>
