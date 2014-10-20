@@ -1,0 +1,158 @@
+---
+comments: true
+layout: post
+title: "[Script TW] Selecionar tropas e atacar/apoiar"
+tags: [Tribal Wars]
+---
+
+{% include autorizado.html topic="133867" %}
+
+<p>O que você faz em um jogo de guerra? Guerra, é óbvio. Então isso quer
+dizer que atacar e defender-se de ataques deva ser a principal atividade.
+Então vamos facilitar isso, pois as vezes poucos segundos decidem entre
+conquistar ou perder uma aldeia.</p>
+
+<!-- more -->
+
+<section id="more">
+<p>Sempre queremos atacar ou apoiar de formas diferentes. Todas as tropas
+da aldeia, metade das tropas, divide em 3, 4, 5 ou sei lá. Então resolvi
+fazer este "genérico do ataque/apoio". Serve para muitas e diversas
+situações. Porém ele <strong>só seleciona tropas, as coordenadas deve
+colocar manualmente</strong>. Na verdade, é um script em duas partes.
+Um para selecionar tropas e outro para colocar coordenadas. Por enquanto
+apenas esta parte de selecionar tropas está pronto. Então aqui vai o
+script, quando ficar pronta a outra parte vai explicações mais detalhadas
+com exemplos. Só vou explicar as configurações, o que já é boa parte da
+explicação.</p>
+</section>
+
+<p>São três variáveis para configurar:</p>
+
+<ol>
+	<li>
+		<strong>var tropas = [0,0,2,0,0,0,0,0,0,0,0,0];</strong> -
+		Coloque quais as tropas enviar, o significado dos números depende
+		do método configurado abaixo. A configuração é similar ao de
+		recrutamento em massa, mas em mundos sem arqueiros e/ou paladino
+		deixe 0 no número referente a tropa em questão - não retire números
+		da lista;
+	</li>
+	<li>
+		<strong>var metodo = 'd';</strong> - Método de seleção, sendo um dos
+		seguintes:
+		<ul>
+			<li>
+				<strong>d</strong> - Divisão: o número de tropas presentes
+				na aldeia será dividido pelo número de tropas configurado;
+			</li>
+			<li>
+				<strong>t</strong> - Total: se o número de tropas configurado
+				for diferente de zero seleciona todas as tropas presentes na
+				aldeia;
+			</li>
+		</ul>
+	</li>
+	<li>
+		<strong>var acao = 'a';</strong> - Ação a realizar depois de
+		selecionadas as tropas, sendo uma das seguintes:
+		<ul>
+			<li><strong>a</strong> - Atacar;</li>
+			<li><strong>s</strong> - Suporte (apoiar); e</li>
+			<li>
+				<strong>n</strong> - Nenhuma ação (apenas seleciona as tropas).
+			</li>
+		</ul>
+	</li>
+</ol>
+
+<p><strong>Exemplo</strong>: A configuração de tropas <strong>var tropas
+= [0,0,2,0,0,0,0,0,0,0,0,0];</strong> vai ter o seguinte significado no
+caso de:</p>
+
+<ul>
+	<li>
+		<strong>Divisão</strong>
+		- Metade dos bárbaros na aldeia serão selecionados;
+	</li>
+	<li>
+		<strong>Total</strong>
+		- Todos os bárbaros na aldeia serão selecionados; e
+	</li>
+	<li>
+		<strong>Quantidade</strong>
+		- Apenas 2 bárbaros serão selecionados.
+	</li>
+</ul>
+
+{% highlight js %}
+javascript:
+var tropas = [0,0,2,0,0,0,0,0,0,0,0,0];
+var metodo = 'q';
+var acao = 'a';
+$.getScript('http://dl.dropbox.com/u/72485850/tribalwarsbrasil/selecionar_tropas.js');
+void(0);
+{% endhighlight %}
+
+<p>Caso prefira que o método de seleção seja interativo:</p>
+
+{% highlight js %}
+javascript:
+var tropas = [0,0,2,0,0,0,0,0,0,0,0,0];
+var metodo = prompt('Método de seleção:\n  d - Dividir;\n  t - Total;\n  q - Quantidade especificada.', 'd');
+var acao = 'a';
+$.getScript('http://dl.dropbox.com/u/72485850/tribalwarsbrasil/selecionar_tropas.js');
+void(0);
+{% endhighlight %}
+
+<p>Por servir para tantas situações diferentes, pode ser um pouco
+complicado e difícil de entender. Mas se aprender a usar, vai lhe servir
+muito bem para muitas e muitas coisas. Envio de fakes, nobres, saques e
+apoios (com intensão de bloquear nobres ou não) são alguns exemplos.
+Por fim, segue o script por inteiro:</p>
+
+{% highlight js %}
+javascript:
+if (typeof cookieName === 'undefined') var cookieName = "seltrop";
+if (typeof aviso === 'undefined') var aviso = false;
+if(game_data.screen=='place'){
+  if(document.URL.search(/try=confirm/)===-1){
+    if (typeof coords_ataque !== 'undefined') {
+      function i(o, v) {
+        $("input[name=" + o + "]").attr("value", v)
+      }
+      if ($("input[name=support]").length > 0) {
+        coords_ataque = coords_ataque.split(" ");
+        n = $.cookie(cookieName);
+        n == null ? n = 0 : n = parseInt(n);
+        if (n >= coords_ataque.length) n = aviso ? (confirm('último ataque já foi enviado, continuar?') ? 0 : -1) : 0;
+        if (n >= 0) {
+          coords_ataque = coords_ataque[n].split("|");
+          i("x", coords_ataque[0]);
+          i("y", coords_ataque[1]);
+          $.cookie(cookieName, n + 1, {
+            expires: 10
+          });
+        }
+      }
+    }
+    var i;
+    var nomes = ['spear','sword','axe','archer','spy','light','marcher','heavy','ram','catapult','knight','snob'];
+    for(i=0;i<tropas.length;i++){
+      if(tropas[i]>0){
+        var e = $('input#unit_input_'+nomes[i]);
+        if (e[0]) {
+          var n = metodo == 'q' ? tropas[i] : e.next().text().match(/\((\d+)\)/)[1];
+          if(metodo == 'd')n/=tropas[i];
+          insertUnit(document.forms[0][nomes[i]],n)
+        }
+      }
+    }
+    if(acao=='a')document.forms[0].attack.click();
+    if(acao=='s')document.forms[0].support.click();
+  } else if(acao!='n') document.forms[0].submit.click();
+} else alert('Para usar este script você precisa estar na Praça de Reunião!');
+void(0);
+{% endhighlight %}
+
+br_lemes, o Humano insano (Múltipla Personalidade)
