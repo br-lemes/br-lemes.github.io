@@ -1,0 +1,132 @@
+---
+comments: true
+layout: post
+title: "Como imitar a tag CODE do SMF no Blogger"
+tags: [Aleatoriedades, Programação]
+---
+
+<p>Continuando com minhas dicas aleatórias que ninguém sabe porque diabos
+estão misturadas nesse blog que não se sabe afinal qual o tema dele, vou
+retomar o assunto de como deixar os códigos dos scripts bem apresentável
+no blog.</p>
+
+<p>Primeiro deixamos ele colorido, coisa que você pode acompanhar em
+<a href="/2010/11/como-mostrar-codigo-colorido-blogger.html">
+Como mostrar código colorido no Blogger</a>. Uma dica que eu tenho a
+acrescentar, é que dependendo do layout do seu blog o espaçamento entre
+linhas pode ser diferente do padrão, você pode querer acrescentar
+<code>line-height: 100%;</code> ao seu estilo (confira um exemplo
+no final).</p>
+
+<!-- more -->
+
+<section id="more">
+<p>Mas, indo ao que interessa. Mais importante do que o código ficar
+bonito, é o leitor copiar e colar o código para usar. O que pode ser
+bem chato se o código for grande. Para facilitar, vou imitar a tag CODE
+dos fóruns <a href="http://www.simplemachines.org/">Simple Machines (SMF)</a>.
+Quem vem aqui pelo <a href="http://pt.wikipedia.org/wiki/Rpg_maker">
+RPG Maker</a> é a mesma tag do <a href="http://arenalivre.net/">
+Arena Livre</a> (antiga
+<a href="http://pt-br.makerpedia.wikia.com/wiki/Santu%C3%A1rio_RPG_Maker">
+Santuário RPG Maker</a>). Para quem vem aqui pelo
+<a href="http://www.tribalwars.com.br/">Tribal Wars</a> talvez não saiba do
+que estou falando, pois o fórum de lá não é SMF, mas vBulletin, então dê
+uma olhadinha na <a href="http://arenalivre.net/index.php?board=16.0">
+seção de scripts do Arena Livre</a> se quiser dar uma conferida.</p>
+</section>
+
+<p>Primeiro, coloque o seguinte script e estilo antes da tag <code>
+&lt;head&gt;</code>. E antes que você pergunte, sim eu copiei isso do SMF.</p>
+
+{% highlight html %}
+<script type='text/javascript'>//<![CDATA[
+function smfSelectText(oCurElement, bActOnElement) {
+  // The place we're looking for is one div up, and next door - if it's auto detect.
+  if (typeof(bActOnElement) == 'boolean' && bActOnElement) var oCodeArea = document.getElementById(oCurElement);
+  else var oCodeArea = oCurElement.parentNode.nextSibling;
+
+  if (typeof(oCodeArea) != 'object' || oCodeArea == null) return false;
+
+  // Start off with my favourite, internet explorer.
+  if ('createTextRange' in document.body) {
+    var oCurRange = document.body.createTextRange();
+    oCurRange.moveToElementText(oCodeArea);
+    oCurRange.select();
+  }
+  // Firefox at el.
+  else if (window.getSelection) {
+    var oCurSelection = window.getSelection();
+    // Safari is special!
+    if (oCurSelection.setBaseAndExtent) {
+      var oLastChild = oCodeArea.lastChild;
+      oCurSelection.setBaseAndExtent(oCodeArea, 0, oLastChild, 'innerText' in oLastChild ? oLastChild.innerText.length : oLastChild.textContent.length);
+    }
+    else {
+      var curRange = document.createRange();
+      curRange.selectNodeContents(oCodeArea);
+
+      oCurSelection.removeAllRanges();
+      oCurSelection.addRange(curRange);
+    }
+  }
+
+  return false;
+}//]]></script>
+{% endhighlight %}
+
+{% highlight html %}
+<style type='text/css'>
+<!--
+  div.codeheader {
+    padding: 2px;
+    border: 1px solid #888;
+    border-bottom: 0px;
+  }
+-->
+</style>
+{% endhighlight %}
+
+<p>E é só isso. Agora basta acrescentar, antes do <code>&lt;pre
+class="prettyprint"&gt;</code> o seguinte:</p>
+
+{% highlight html %}
+<div class="codeheader">Código: <a onclick="return smfSelectText(this);" href="javascript:void(0);">[Selecionar]</a></div>
+{% endhighlight %}
+
+<p>Mas é necessário que não haja nenhum espaço ou linha em branco entre o
+<code>&lt;/div&gt;</code> e o <code>&lt;pre class="prettyprint"&gt;</code>.
+E pronto, você conseguiu.... hã! Como assim não deu certo? Eu escrevo mal?
+Droga, bem que minha mãe mandou eu largar a Internet. Então pega essa
+página de exemplo ai e se vira:
+<a href="http://dl.dropbox.com/u/1903205/teste.html">
+http://dl.dropbox.com/u/1903205/teste.html</a>.
+
+<p>Você pode acrescentar suas preferências, eu coloquei fundo e cor diferente
+nas bordas para combinar com as cores do meu blog. O meu estilo é esse:</p>
+
+{% highlight html %}
+<style type='text/css'>
+<!--
+  pre.prettyprint {
+    max-height: 350px;
+    overflow: auto;
+    line-height: 100%;
+    margin: 0;
+    border: 1px solid #E8DEC4;
+  }
+  span.nocode { color: #800 }
+  div.codeheader {
+    padding: 2px;
+    border-bottom: 0px;
+    background: #E8DEC4;
+    border: 1px solid #E8DEC4;
+  }
+-->
+</style>
+{% endhighlight %}
+
+<p>Tudo pronto, agora chega. Faça bom (ou mau) uso. Até a próxima vez que
+eu bater a cabeça numa escada e der vontade de escrever alguma maluquice.</p>
+
+<p>br_lemes, o Elfo-do-Céu insano (Fantasia)</p>
