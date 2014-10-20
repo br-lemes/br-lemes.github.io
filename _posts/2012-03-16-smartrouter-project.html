@@ -1,0 +1,77 @@
+---
+comments: true
+layout: post
+title: "SmartRouter PROJECT"
+tags: [Linux]
+---
+
+<p>Em 2011 precisei de um servidor simples para firewall, cache e
+monitoramento de rede. Usei o <a href="/2011/06/brazilfw.html">BrazilFW,
+como já falei aqui</a>. Tudo corria bem até que, enquanto eu estava de
+férias, queimou o disco rígido e o servidor parou. Foram lá me chamar e,
+como eu estava de férias, não quis resolver, só religuei os cabos e
+coloquei para funcionar sem o servidor, direto no modem como era antes.</p>
+
+<p>Quando voltei de férias, decidi que ao invés de colocar para funcionar
+o mesmo servidor (algo que seria resolvido em meia hora) atualizar da
+versão 2.32.2 para 3.0.256 e acabei passando dias de dor de cabeça.
+Aparentemente tudo funcionava, mas eu tinha problemas bastante estranhos com
+o Squid. Então resolvi trocar pelo <a href="http://www.smartrouter.com.br/">
+SmartRouter PROJECT</a> e tudo deu certo! Bem... deixa eu contar mais
+detalhadamente, porque nem tudo são flores.</p>
+
+<!-- more -->
+
+<section id="more">
+<p>Primeiro, porque não resolver o problema em vez de simplesmente trocar?
+Primeira coisa que fiz foi pesquisar sobre o meu problema para tentar
+encontrar uma solução no <a href="http://www.brazilfw.com.br/forum/">Fórum
+do BrazilFW</a>. E resultou num monte de tópicos relatando o mesmo problema
+com respostas até mesmo mal educadas e nenhuma solução. Por coincidência
+outra pessoa estava com mesmo problema que eu e me perguntou por isso no
+MSN, e relatou a mesma experiência: tópicos sem solução e até mesmo
+trancados sem resolver.</p>
+</section>
+
+<p>Outro motivo que me levou a mudar é que gosto de fazer as coisas do
+meu jeito e também gosto de colaborar. Mas tive uma certa dificuldade com
+o BrazilFW. Sugestões não são bem aceitas e opiniões são tratadas como
+rebelião. Na intensão de colaborar, usei meu tempo para criar um
+<a href="http://www.brazilfw.com.br/forum/viewtopic.php?f=90&t=80131">
+Tutorial sobre o comando execpak</a>, que faz parte do funcionamento
+interno e que era praticamente oculto, e recebi uma resposta mal criada
+de alguém que na época fazia parte da equipe de desenvolvimento numa área
+do fórum em que não posso postar respostas (apenas
+moderadores/administradores).</p>
+
+<p>O <a href="http://www.smartrouter.com.br/">SmartRouter PROJECT</a> eu
+tinha conhecido pouco tempo depois do BrazilFW. É na verdade o mesmo
+BrazilFW, porém seguindo um caminho diferente (um fork, algo bem comum
+no mundo do Software Livre). Um projeto bem mais receptivo à sugestões,
+colaboração, crítica, ou seja lá o que for. Porém um projeto bem menos
+conhecido, com poucos usuários.</p>
+
+<p>Instalar o SRP (para encurtar o nome) foi fácil numa máquina virtual.
+Numa máquina real já foi um problema. Mas não é culpa exatamente do
+sistema e sim do hardware. Bom, o sistema tem uma parte da culpa, visto
+que o suporte ao hardware está no kernel que pode não ter sido compilado
+com todas as configurações de compatibilidade necessárias, mas esse não
+é necessariamente o ponto, como verá.</p>
+
+<p>Primeiramente a dificuldade para instalar, meu servidor não tem
+CD-ROM. O SRP tem suporte a instalação com CD-ROM SATA, mas funciona
+em algumas máquinas e não funciona em outras. Também pode ser instalado
+por dispositivos USB, mas também não funciona em todas as máquinas. Tive
+uma sequencia de problemas com mídia que não funciona, drive de CD-ROM
+que não funciona (não falo de compatibilidade, de defeito mesmo),
+configurações no setup, disco rígido com defeito, placa de rede com
+defeito, parecia uma tempestade de azar.</p>
+
+<p>Passada a tempestade, consegui instalar e tudo está funcionando
+corretamente. O desempenho é bem melhor que o BrazilFW 2.32.2, não posso
+comparar com a versão 3.0.256 porque não funcionou para mim, mas tem
+bastante gente lá dizendo que funciona. Conclusão: o
+<a href="http://www.smartrouter.com.br/">SmartRouter PROJECT</a> funcionou
+bem, acima das minhas expectativas. Uso e recomendo.</p>
+
+<p>br_lemes, o Paladino insano (Mentiroso)</p>
