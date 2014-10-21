@@ -1,0 +1,108 @@
+---
+comments: true
+layout: post
+title: "[Script TW] Filtro de Bônus"
+tags: [Tribal Wars]
+---
+
+{% include autorizado.html topic="133405" %}
+
+<p>Estou bastante preguiçoso ultimamente, né? Um mês atrasado para divulgar
+meu próprio script, vergonhoso não? É sim, mas não me jogue pedras ainda.
+Estou planejando me mudar de cidade, trabalho e coisas assim. O blog é
+pessoal mas não precisa entrar em tantos detalhes, vamos ao script.</p>
+
+<!-- more -->
+
+<section id="more">
+<p>Logo que fiz o <a href="/2011/10/script-tw-filtro-de-notas.html">
+Filtro de Notas</a> já tive a ideia: <em>Posso filtrar também as aldeias
+bônus</em>. Pode parecer bobagem, mas gosto de recrutar de forma diferente
+nas aldeias com bônus em quartel (já que vai ser mais rápido). Mais isso é
+detalhe de um maluco perfeccionista. Uma função bem mais útil e que serve
+para todos os jogadores normais é filtrar as aldeias com bônus em fazenda
+na tela de recrutamento em massa. Frequentemente, dependendo das
+configurações de tropas, essas aldeias ficam com espaço sobrando,
+desperdiçando a capacidade de tropas. Com este script você pode colocar
+elas para trabalharem fácil, fácil. É isso aqui:</p>
+</section>
+
+{% highlight js %}
+javascript:
+atualizar_numero_de_aldeias = 1;
+$.getScript('http://dl.dropbox.com/u/72485850/tribalwarsbrasil/filtro_de_bonus.js');
+void(0);
+{% endhighlight %}
+
+<p>Bem simples e usar: execute em Visualizações - Combinado, Produção,
+Edifícios, Pesquisa, Grupos ou Recrutamento em massa; depois escolha o
+bônus desejado e clique em Filtrar.</p>
+
+<p>Lembra que falei do estilo de codificação que aprendi com o
+<a href="http://forum.tribalwars.com.br/member.php?u=65894">Przyr?</a>
+Pois então, agora ele também está na equipe, como analista de script.
+Que bom, agora tem alguém que trabalha, porque eu já estava só nas
+desculpas esfarrapadas há um bom tempo (esse troço de mudança, telha
+quebrada, e outras baboseiras), acredita nisso tudo? Ou é só eu mesmo
+que acredito nelas...</p>
+
+<p>Agora confira o código completo do script:</p>
+
+{% highlight js %}
+javascript:
+atualizar_numero_de_aldeias = 1;
+/*
+	Script: Filtro de bônus.
+	Histórico:
+		Versão 1.0 (18/09/2011):
+					+) Versão inicial.
+	Desenvolvedor: brwar.
+*/
+
+	/* (Início) Funções */
+
+	function um_ou_zero(Variavel) {
+		if (Variavel == 1 || Variavel == 0) return true;
+		else return false;
+	}
+
+	/* (Fim) Funções */
+
+	/* (Início) Algorítmo */
+
+	var bonus = [
+		["Madeira",1],
+		["Argila",2],
+		["Ferro",3],
+		["Fazenda",4],
+		["Quartel",5],
+		["Estábulo",6],
+		["Oficina",7],
+		["Recursos",8],
+		["Mercadores",9]
+];
+
+if(!$("#filtro_bonus")[0]){
+		var out = "Filtrar por bônus em: <select id=\"filtro_bonus\">"
+	}
+	$.each(bonus, function(index, value) {
+		out += "<option value=\""+ value[1] +"\">"+ value[0] +"</option>";
+	});
+	out += "</select> <input type=\"button\" value=\"Filtrar\" />";
+	if (game_data.mode == "mass")
+		$("#mass_train_table").before(out);
+	else
+		$("#paged_view_content table:first").append(out);
+
+	$("head").append('<script>var eq=$(".note-icon")[0]?1:0;switch(game_data.mode){case"combined":var naldeias=parseInt(($("#combined_table tr th:eq("+eq+")").html()).split("Aldeia (")[1].split(")")[0],10);break;case"prod":var naldeias=parseInt(($("#production_table tr th:eq("+eq+")").html()).split("Aldeia (")[1].split(")")[0],10);break;case"buildings":var naldeias=parseInt(($("#buildings_table tr th:eq(2)").html()).split("Aldeia</a> (")[1].split(")")[0],10);break;case"tech":var naldeias=parseInt(($("#techs_table tr th:eq(0)").html()).split("Aldeia</a> (")[1].split(")")[0],10);break;case"groups":var naldeias=parseInt(($("#group_assign_table tr th:eq(0)").html()).split("Aldeia</a> (")[1].split(")")[0],10);break;case"mass":var naldeias=parseInt(($("#mass_train_table tr th:eq(0)").html()).split("Aldeia (")[1].split(")")[0],10);break;}$("[value=Filtrar]").click(function(){var aldeias=naldeias;var b=$("#filtro_bonus").val();switch(game_data.mode){case"combined":$("#combined_table tr").next().each(function(){if($(this).css("display")=="none")$(this).show();if(!$(".bonus_icon_"+b,this)[0]){$(this).hide();aldeias--}});if(atualizar_numero_de_aldeias==1)$("#combined_table tr th:eq("+eq+")").replaceWith("<th style=\'text-align:left;\'>Aldeia ("+aldeias+")</th>");break;case"prod":$("#production_table tr").next().each(function(){if($(this).css("display")=="none")$(this).show();if(!$(".bonus_icon_"+b,this)[0]){$(this).hide();aldeias--}});if(atualizar_numero_de_aldeias==1)$("#production_table tr th:eq("+eq+")").replaceWith("<th style=\'text-align:left;\'>Aldeia ("+aldeias+")</th>");break;case"buildings":$("#buildings_table tr").each(function(i,e){if(i>0){if($(this).css("display")=="none")$(this).show();if(!$(".bonus_icon_"+b,this)[0]){$(this).hide();aldeias--}}});if(atualizar_numero_de_aldeias==1){var link=($("#buildings_table tr th:eq(2)").html()).split("</a> (")[0];$("#buildings_table tr th:eq(2)").replaceWith("<th style=\'text-align:left;\'>"+link+"</a> ("+aldeias+")</th>");}break;case"tech":$("#techs_table tr").next().each(function(){if($(this).css("display")=="none")$(this).show();if(!$(".bonus_icon_"+b,this)[0]){$(this).hide();aldeias--}});if(atualizar_numero_de_aldeias==1){var link=($("#techs_table tr th:eq(0)").html()).split("</a> (")[0];$("#techs_table tr th:eq(0)").replaceWith("<th style=\'text-align:left;\'>"+link+"</a> ("+aldeias+")</th>");}break;case"groups":$("#group_assign_table tr[class*=row_]").each(function(){if($(this).css("display")=="none")$(this).show();if(!$(".bonus_icon_"+b,this)[0]){$(this).hide();aldeias--}});if(atualizar_numero_de_aldeias==1){var link=($("#group_assign_table tr th:eq(0)").html()).split("</a> (")[0];$("#group_assign_table tr th:eq(0)").replaceWith("<th style=\'text-align:left;\'>"+link+"</a> ("+aldeias+")</th>");}break;case"mass":$("#mass_train_table tbody").each(function(){if($(this).css("display")=="none")$(this).show();if(!$(".bonus_icon_"+b,this)[0]){$(this).hide();aldeias--}});if(atualizar_numero_de_aldeias==1)$("#mass_train_table tr th:eq(0)").replaceWith("<th style=\'text-align:left;\'>Aldeia ("+aldeias+")</th>");break;}});</script>');
+
+	/* (Fim) Algorítmo */
+
+});
+
+void(0);
+
+/* (Fim) Executar script após carregamento do DOM da página */
+{% endhighlight %}
+
+<p>br_lemes, o Meio-Orc insano (Compulsivo)</p>
