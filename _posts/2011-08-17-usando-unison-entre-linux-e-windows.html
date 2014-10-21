@@ -1,0 +1,168 @@
+---
+comments: true
+layout: post
+title: "Usando Unison entre Linux e Windows"
+tags: [Aleatoriedades, Linux]
+---
+
+<p>Recentemente compilei o Unison na forma de addon para ser usado no
+<a href="http://www.brazilfw.com.br/">BrazilFW</a>. Foi lançado como um
+<a href="http://www.brazilfw.com.br/forum/viewtopic.php?f=26&t=80365">
+addon oficial do sistema</a>. Unison é uma ferramenta de sincronização
+de arquivos para Unix e Windows. Ele permite que duas réplicas de uma
+coleção de arquivos e diretórios sejam armazenadas em diferentes máquinas
+(ou discos diferentes na mesma máquina), modificado separadamente, e, em
+seguida, atualizadas pela propagação das alterações em cada réplica para
+as outras.</p>
+
+<!-- more -->
+
+<section id="more">
+<p>Mas o uso do Unison, apesar de não ser muito difícil, apresenta
+algumas dificuldades e truque para ser usado corretamente entre Linux
+e Windows. E esse uso provavelmente será uma situação muito comum.
+Se você nunca usou o Unison, este documento pode ser um ponto de partida
+para aprender a usar, mas você certamente vai precisar do
+<a href="http://www.cis.upenn.edu/~bcpierce/unison/download/releases/stable/unison-manual.html">
+manual</a>.
+</section>
+
+<p>A primeira dificuldade ao usar o Unison entre Linux e Windows é a forma
+de fazer isso. Entre dois computadores o método mais comum e mais seguro
+para utilizar é o ssh. E é exatamente esse o problema: o Windows não vem
+com um servidor nem cliente ssh. E para piorar a situação, os clientes ssh
+para Windows são fora de padrão e não são adequados para o uso com o Unison.
+Foi necessário usar uma versão modificada do plink, que você pode fazer
+download no link disponível no final do artigo.</p>
+
+<h3>Método socket</h3>
+
+<p>O método socket é inseguro, não use ele. Mas, vou começar falando desse
+método pois é mais fácil e foi o primeiro meio que funcionou para mim entre
+Linux e Windows. O Unison é um único executável que funciona tanto como
+cliente quanto como servidor. Para o Unison não faz muita diferença quem é o
+cliente ou quem é o servidor, pois as modificações podem ser bidirecionais.
+Mas no caso do método socket, você precisa manter o processo rodando
+escutando uma determinada porta – este vai ser o servidor. Pela
+característica bidirecional, pode usar qualquer máquina como servidor mas
+acho mais fácil aquela que fica a maior parte do tempo ligada (o BrazilFW).
+Para iniciar o servidor faça o seguinte:</p>
+
+{% highlight sh %}
+unison -socket 7070
+{% endhighlight %}
+
+<p>A porta 7070 é só um número qualquer, você pode usar o que quiser aqui.
+Minha escolha foi por causa da piada: 7070, se não der 6060. Se você
+estiver usando com o BrazilFW, pode usar a interface Webadmin para
+configurar, pois desta forma o Unison vai sempre estar ativo na porta
+escolhida, mesmo se você reiniciar o sistema. No lado cliente, você usa
+digitando algo semelhante a isso:</p>
+
+{% highlight sh %}
+unison mnt socket://brazilfw:7070//mnt
+{% endhighlight %}
+
+<p>A porta escolhida, deve estar aberta no seu firewal e/ou roteador. E é
+justamente ai o problema. O método socket é inseguro: não apenas os textos
+de suas alterações são transmitidas pela rede de forma desprotegida, mas
+também é possível para qualquer pessoa no mundo se conectar ao servidor
+e ler o conteúdo de seu sistema de arquivos! O método de socket é
+fornecido apenas para usuários experientes com necessidades específicas;
+todo mundo deve usar o método ssh.</p>
+
+<p>Por um tempo eu usei o método socket por trás de um túnel ssh. Eu
+deixei aberta a porta 7070 somente para o próprio servidor (IP de origem
+o mesmo IP do servidor, que no meu exemplo é 192.168.5.1). Como eu não
+entendo de iptables, vou dar exemplo apenas da configuração do BrazilFW:</p>
+
+{% highlight sh %}
+admin Y deny tcp not:192.168.5.1 any 7070 all #Unison
+{% endhighlight %}
+
+<p>Se alguém que souber sobre iptables e puder me dizer o comando
+equivalente a esta configuração ficarei grato. Configurado desta forma,
+então eu conectava ao servidor usando o putty (ou outro cliente ssh)
+configurado para fazer um túnel na porta 7070 (-L 7070:192.168.5.1:7070).
+Desta forma eu não deixava o servidor exposto. Mas ainda assim não era
+a forma mais elegante de resolver o problema.</p>
+
+<h3>Método ssh</h3>
+
+<p>Pesquisei bastante uma forma de usar o Unison com o método ssh, para
+deixar as coisas mais limpas e sem portas extras abertas no servidor. Mas
+tudo o que eu encontrava envolvia usar um arquivo de lote (.bat) que
+chamava o plink com os argumentos certos e a senha. Esse era o problema,
+a senha do servidor ficava num arquivo de texto puro (o arquivo de lote).
+Para mim é inadmissível, pior que usar o método socket. Pelo menos com o
+método socket eu podia usar o truque do túnel ssh para não deixar nem
+servidor nem senha exposto.</p>
+
+<p>Continuei pesquisando e encontrei
+<a href="http://hasenj.wordpress.com/2008/12/19/modifying-plink-to-work-with-unison/">
+outra forma neste artigo.</a>
+
+<p>Tratava-se de modificar o código fonte do plink. Tinha instruções
+detalhadas e tudo, então tratei de recompilar por mim mesmo – o artigo
+é antigo e uma versão mais nova do plink estava disponível. No mais, eu
+também achei que pudesse haver algo de suspeito no executável – o arquivo
+era muito maior do que acredito que deveria ser. Mas nada de suspeito no
+código proposto, eu entendi perfeitamente o código, o que ele faria e os
+seus efeitos. Pelo artigo ser antigo, os locais e linhas exatos que ele
+cita, não correspondem com a versão atual – mas seguindo o princípio foi
+fácil encontrar os locais onde eu deveria modificar.</p>
+
+<p>Com o método ssh você precisa de ter o servidor ssh ativo e a porta
+dele aberta. Também precisa do executável do Unison em algum lugar no
+PATH. Mas apenas isso, não precisa de uma instância do Unison rodando
+como é no método socket. Então, tudo que você precisa é no cliente usar
+um comando similar ao seguinte:</p>
+
+{% highlight sh %}
+unison mnt ssh://root@brazilfw//mnt
+{% endhighlight %}
+
+<h3>Unicode</h3>
+
+<p>Unison e Unicode são duas coisas diferentes, apesar dos nomes
+semelhantes – dá quase um trava-línguas aqui. Estamos falando agora da
+codificação de caracteres nos nomes dos arquivos. O modo unicode é usado
+por padrão. O que dá tudo certo se você estiver usando entre dois Linux,
+ou entre dois Windows. Mas entre Linux e Windows por algum motivo os
+caracteres acentuados se estranham.</p>
+
+<p>Eu andei pesquisando e só encontrei um monte de informação
+desencontrada sobre como resolver isso. E algumas dessas informações
+já eram um pouco antigas e poderiam estar desatualizadas. Então, vou
+dizer o que funcionou para mim hoje. Não é necessariamente a forma
+correta ou que vá funcionar sempre (ou talvez seja). Desative o unicode
+adicionando ao seu comando (ou profile) a opção unicode definida como
+false. Em linha de comando é o seguinte:</p>
+
+{% highlight sh %}
+unison mnt ssh://root@brazilfw//mnt -unicode false
+{% endhighlight %}
+
+<h3>Download</h3>
+
+<p><a href="http://www.brazilfw.com.br/forum/viewtopic.php?f=70&t=80364">
+O addon para o BrazilFW pode ser encontrado aqui</a>.</p>
+
+<p>Eu compilei a versão 2.40.63 do Unison para Linux (distribuições
+normais, com glibc) e para Windows. Bem como a versão modificada do
+plink, que renomeei para ssh.exe por comodidade. Estas versões do
+Unison foram compiladas somente com a versão de linha de comandos. Você
+pode fazer <a href="/downloads/unison-linux-win32.tar.gz">download deles
+todos aqui</a>.</p>
+
+<p>O Unison tem uma interface gráfica mas, você sabe,
+<a href="/2011/02/o-problema-odeio-programar-em-c-mas-e.html">
+eu odeio compilar programas complicados em C</a>. E compilar programas
+junto com a GTK em Windows é chatíssimo. Eu encontrei o Unison versão
+6.40.61 já <a href="http://alan.petitepomme.net/unison/">compilado para
+Windows e com interface gráfica aqui</a>. Porém você precisa das DLLs
+da GTK, coisa que você pode copiar do GIMP, Pidgin ou algum outro. Você
+pode usar o meu plink modificado com esta versão do Unison também. Eu
+tenho usado desse jeito e está funcionando bem.</p>
+
+<p>br_lemes, o Andróide insano (Histérico)</p>
