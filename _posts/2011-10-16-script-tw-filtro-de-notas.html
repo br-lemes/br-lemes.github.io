@@ -1,0 +1,164 @@
+---
+comments: true
+layout: post
+title: "[Script TW] Filtro de Notas"
+tags: [Tribal Wars]
+---
+
+{% include autorizado.html topic="177861" %}
+
+<p>Primeiro de tudo, eu não morri, não fui abduzido, nem me perdi no meio
+da selva. A única coisa estranha que me aconteceu foi um vendaval que
+arrancou 14 telhas da minha casa (daquelas telhas onduladas de fibrocimento,
+tipo Eternit, Brasilit, etc.). O caso é que resolvi tomar vergonha na cara
+e trabalhar um pouco para variar, o que acaba sobrando pouco tempo para
+ficar escrevendo bobagens.</p>
+
+<!-- more -->
+
+<section id="more">
+<p>Mas... o espírito nerd é mesmo minha sina. Lá estou jogando
+<a href="http://www.tribalwars.com.br/">Tribal Wars</a> um pouco para
+relaxar e me vem na ideia: <em>Preciso saber quais aldeias tem notas
+e quais não tem, porque algumas aldeias devem ter notas com informações
+desatualizadas. Eu deveria fazer um script do tipo filtro para isso.</em>
+E lá se foi mais uma madrugada acordado. E resultou nisso:</p>
+</section>
+
+{% highlight js %}
+javascript:
+atualizar_numero_de_aldeias = 1;
+$.getScript('http://dl.dropbox.com/u/72485850/tribalwarsbrasil/filtro_de_notas.js');
+void(0);
+{% endhighlight %}
+
+<p>Não tem muito o que explicar sobre o script. Você precisa estar com
+as notas ativadas e usar em Visualizações: Combinado ou Produção. Então,
+se você não tem muito interesse em programação, javascript, e essa coisa
+toda, pode ir fazer outra coisa da vida porque já desperdiçou muito tempo
+aqui dando atenção às minhas nerdices (aka: vai trabalhar, vagabundo!).</p>
+
+<p>Se ainda estiver lendo isso, então dê uma olhada no código completo
+deste script:</p>
+
+{% highlight js %}
+javascript:
+atualizar_numero_de_aldeias = 1;
+/*
+	Script: Filtro de notas.
+	Histórico:
+		Versão 1.0 (17/09/2011):
+					+) Versão inicial.
+	Desenvolvedor: brwar.
+*/
+
+/* (Início) Executar script após carregamento do DOM da página */
+
+$(document).ready(function () {
+
+	/* (Início) Checagem de problemas de configuração e modo de uso */
+
+	if (!game_data.mode && game_data.screen == "overview_villages") {
+		game_data.mode = $("#overview_menu td[class=selected] a").attr("href");
+		game_data.mode = game_data.mode.split("mode=")[1];
+		game_data.mode = game_data.mode.split("&")[0];
+	}
+
+	if (!((game_data.screen == "overview_villages") && (game_data.mode == "combined" || game_data.mode == "prod"))) {
+		alert("O script funcionarÃ¡ somente nos seguintes locais:\n\n1Âº - VisualizaÃ§Ãµes -> Combinado;\n2Âº - VisualizaÃ§Ãµes -> ProduÃ§Ã£o.");
+
+		end();
+	}
+
+	if (um_ou_zero(atualizar_numero_de_aldeias) == false) {
+		alert("A opÃ§Ã£o \"atualizar_numero_de_aldeias\" sÃ³ pode ser configurada com o nÃºmero 1 ou 0.");
+		end();
+	}
+
+	/* (Fim) Checagem de problemas de configuração e modo de uso */
+
+	/* (Início) Funções */
+
+	function um_ou_zero(Variavel) {
+		if (Variavel == 1 || Variavel == 0) return true;
+		else return false;
+	}
+
+	/* (Fim) Funções */
+
+	/* (Início) Algorítmo */
+
+	var notas = confirm('OK = Filtrar aldeias COM notas;\nCancelar = Filtrar aldeias SEM notas.');
+
+	if (game_data.screen == "overview_villages" && game_data.mode == "combined") {
+
+		var aldeias = $("#combined_table tr[class*='row']");
+
+		for (i = 0; aldeias.length; i++) {
+
+			var aldeias = aldeias.length;
+
+			$("#combined_table tr[class*='row']").each(function () {
+				if (notas ? !$(".note-icon", this)[0] : $(".note-icon", this)[0]) {
+					this.parentNode.removeChild(this);
+					aldeias--;
+				}
+			});
+		}
+
+		if (atualizar_numero_de_aldeias == 1) {
+			$("#combined_table tr th:eq(1)").replaceWith("<th style='text-align:left;'>Aldeia (" + aldeias + ")</th>");
+		}
+	}
+
+	if (game_data.screen == "overview_villages" && game_data.mode == "prod") {
+
+		var aldeias = $("#production_table tr[class*='row']");
+
+		for (i = 0; aldeias.length; i++) {
+
+			var aldeias = aldeias.length;
+
+			$("#production_table tr[class*='row']").each(function () {
+				if (notas ? !$(".note-icon", this)[0] : $(".note-icon", this)[0]) {
+					this.parentNode.removeChild(this);
+					aldeias--;
+				}
+			});
+		}
+
+		if (atualizar_numero_de_aldeias == 1) {
+			$("#production_table tr th:eq(1)").replaceWith("<th>Aldeia (" + aldeias + ")</th>");
+		}
+	}
+
+	/* (Fim) Algorítmo */
+
+});
+
+void(0);
+
+/* (Fim) Executar script após carregamento do DOM da página */
+{% endhighlight %}
+
+<p>Notou como ele está cheio de comentários, espaço em branco, e essas
+frescuras todas desnecessárias? Diferente do que eu costumava fazer.
+Está até mesmo organizado! Tudo isso é culpa do
+<a href="http://forum.tribalwars.com.br/member.php?u=65894">Przyr</a>.
+Um sujeito que apareceu lá no <a href="http://forum.tribalwars.com.br/">
+Fórum do Tribal Wars</a> desenvolvendo scripts e até mesmo me roubando
+umas ideias (eu fico com elas na cabeça e não as coloco em prática, acaba
+nisso).</p>
+
+<p>Eu gostei do estilo dele, e resolvi copiar. É um padrão interessante,
+porque todo script para o Tribal Wars possui uma estrutura parecida. E
+porque eu me dei ao trabalho de ficar entrando nesses detalhes que nenhuma
+importância tem para quem quer apenas jogar? Porque o
+<a href="http://forum.tribalwars.com.br/member.php?u=54144">matheus4-1</a>
+também deve ter gostado, pois usou num novo script dele (não há um link
+para ele, porque ainda não está autorizado). Se a moda pega, teremos
+inventado o novo padrão brasileiro de scripts para Tribal Wars. Bobagem?
+Pode ser, mas mesmo assim é melhor que o novo padrão brasileiro de pluges
+e tomadas do Inmetro.</p>
+
+<p>br_lemes, o Fantasma insano (Sonâmbulo)</p>
