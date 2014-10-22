@@ -1,0 +1,199 @@
+---
+comments: true
+layout: post
+title: "MoneyLog para controlar as finanças"
+tags: [Aleatoriedades, Programação]
+---
+
+<p>Eu sempre tive algum método para controlar minhas finanças. O problema
+é que nem sempre os métodos eram satisfatórios e eu vivia trocando de um
+para outro. Já usei uma diversidade bem grande de programas. E alguns deles
+você passa mais tempo lendo o manual, configurando opções, definindo contas
+e olhando gráficos do que colocando suas finanças em dia. Coisa que acaba
+fazendo a gente desistir e perder o controle.</p>
+
+<p>Já conhecia o <a href="http://aurelio.net/moneylog/">MoneyLog</a> do
+Aurelio há algum tempo, mas não se adequava muito bem. No MoneyLog você
+só vai colocando o que recebeu e o que gastou, não importa se pagou com
+dinheiro, cheque ou cartão. Quer dizer, não há o conceito de contas.
+Isso é bom, porque quanto menos complicado, mais fácil, e mais provável
+que você continue fazendo o controle. Mas isso também é mal, porque você
+não tem controle do seu saldo e acaba não sabendo se lançou todas as suas
+despesas ou esqueceu alguma.</p>
+
+<p><strong>Mas agora há uma solução.</strong></p>
+
+<!-- more -->
+
+<section id="more">
+<p>Primeiro eu tentei uma outra versão do MoneyLog, o
+<a href="http://code.google.com/p/mymoneylog/">MyMoneyLog</a> do Ricardo
+Nishimura, que possui o conceito de contas. Funcionou por um tempo, mas
+eu queria controlar também meu orçamento, então queria uma "conta" Gastos
+com Lazer, por exemplo, com um "saldo" de 100 reais por mês. E acabava
+não dando certo. Cheguei a usar dois arquivos, um com as contas reais
+(dinheiro, banco, etc.) e outro com os orçamentos. Mas não deu certo
+porque acabava precisando duplicar os lançamentos e a preguiça me
+impedia de fazer isso. Tentei outras alternativas, mas acabavam ou
+sendo complicadas demais, ou tendo que atualizar dois arquivos
+diferentes.</p>
+</section>
+
+<p>Por fim, ultimamente, eu não estava mais controlando os gastos. Só
+os saldos e orçamentos numa tabelinha simples do Excel. Uma vez por
+semana eu atualizava os saldos (em dinheiro, banco, etc.) e o Excel
+me dava a soma, atualizava o que eu tinha para pagar ou receber, fazia
+uma previsão meio que inventada na hora das despesas até o restante do
+mês e o Excel me dava a soma. Então era só ver a diferença para ter uma
+previsão se a corda já estava no pescoço ou se dava para gastar um
+pouquinho mais. Funcionava bem, mas eu não tinha como saber quando ou
+se eu paguei aquela conta mês passado, qual a data que comprei isso
+ou aquilo, quanto gastei com gasolina mês passado, etc.</p>
+
+<p>Recentemente o Aurelio publicou a versão 5 do seu MoneyLog, com
+bastantes novidades. Uma delas a versão Cloud, que funciona como
+aplicativo do <a href="https://www.dropbox.com/referrals/NTE5MDMyMDU5">
+Dropbox</a>. Foi a primeira que fui lá testar, mas não gostei. Então
+reparei que agora podemos criar "Widgets". E foi ai que eu
+<a href="http://www.englishexperts.com.br/2007/01/06/o-discurso-de-steve-jobs-para-os-formandos-de-stanford/">
+"Conectei os pontos"</a>.</p>
+
+<p>Eu não preciso do conceito de contas, nem orçamento ou qualquer
+coisa assim. Só preciso de um conjunto de valores e a soma deles para
+me orientar. Do jeito que eu fazia no Excel, sem fórmula complicada
+nem nada, só uma lista de valores e sua soma. Eu faço um Widget que
+fica ali do lado me mostrando os valores que eu tenho no banco, em
+dinheiro, etc., e ele já faz a soma. Depois coloco outro ali para
+me listar as contas a pagar e qual a soma delas, e assim por diante.
+E esses valores podem ser editados manualmente, não é para automatizar
+isso. Porque na vida fazemos planos, mas de repente mudamos de ideia,
+ou a vida muda o nosso caminho, etc. Não preciso de algo com precisão
+contábil, só alguns valores ali para ter noção de como está o andar
+da carroça (porque carruagem não é pro meu bico).</p>
+
+<p>Enfim, surgiu para ser usado no MoneyLog Beta ou Cloud o seguinte:</p>
+
+{% highlight js %}
+function generic_populate() {
+  s = '<table>';
+  n = 0;
+  for (i in this.values) {
+    if ( ! this.hidden)
+      s += '<tr><td>' + i + '</td><td class="number">'
+        +  prettyFloat(this.values[i]) + '</td></tr>';
+    n += this.values[i];
+  }
+  s += '<tr><td>TOTAL</td><td class="number">'
+    +  prettyFloat(n) + '</td></tr>';
+  this.content.innerHTML = s + '</table>';
+}
+{% endhighlight %}
+
+<p>Então eu crio várias instâncias do Widget com esse mesmo "populate",
+como Saldo, Contas a Pagar, a Receber, etc. Desse jeito:</p>
+
+{% highlight js %}
+var Saldos = new Widget('saldos', 'Saldos', 'Saldos');
+Saldos.populate = generic_populate;
+var Pagar = new Widget('pagar', 'Pagar', 'Pagar');
+Pagar.populate = generic_populate;
+var Receber = new Widget('receber', 'Receber', 'Receber');
+Receber.populate = generic_populate;
+{% endhighlight %}
+
+<p>Você pode criar quantos você quiser, mas se fizer muitos a coisa vai
+ficar confusa, porque o espaço ali é pequeno. Por último, providencie
+valores:</p>
+
+{% highlight js %}
+Saldos.values = {
+  banco     :   100.00,
+  dinheiro  :    50.00,
+};
+
+Pagar.values = {
+  agua       :  -10.00,
+  luz        :  -45.00,
+};
+
+Receber.values = {
+  joao       :   50.00,
+  jose       :   25.00,
+  geraldo    :   30.00,
+};
+{% endhighlight %}
+
+<p>Prontinho. No caso dos Saldos, eu mantenho os valores atualizados e
+confiro com a coluna Acumulado, para verificar se não esqueci de algum
+lançamento. Mas o restante é só um conjunto de anotações, estão ali só
+para te servir, não para você servir a elas. Você pode usar o <code>"//"
+</code> para fazer um comentário ali e anotar alguma outra coisa mais
+extensa. Por exemplo:
+
+{% highlight js %}
+Receber.values = {
+  joao       :   50.00,
+  jose       :   25.00,
+  // geraldo    :   30.00, Ele disse que não vai ter dinheiro para me
+  // pagar esse mês deixar anotado para não esquecer mês que vem.
+};
+{% endhighlight %}
+
+<p>Legal né? Nem tanto. Acaba precisando editar dois arquivos. O arquivo
+dos lançamentos e o arquivo <code>config.js</code>, que é onde vai esses
+Widgets. Mas eu ainda vou dar um jeito de editar eles no browser da mesma
+forma que a versão Cloud, tanto os lançamentos quanto os valores dos
+Widgets. E separar os valores do Widget em si, porque atualmente fica
+tudo junto. Por falar nisso, vai aqui uma listagem completa do
+<code>config.js</code>:
+
+{% highlight js %}
+initViewWidgetOpen = N; // Fechado para sobrar mais espaço aos meus Widgets
+initTagCloudOpen = N;   // Fechado para... já sabe
+
+function generic_populate() {
+  s = '<table>';
+  n = 0;
+  for (i in this.values) {
+    if ( ! this.hidden)
+      s += '<tr><td>' + i + '</td><td class="number">'
+        +  prettyFloat(this.values[i]) + '</td></tr>';
+    n += this.values[i];
+  }
+  s += '<tr><td>TOTAL</td><td class="number">'
+    +  prettyFloat(n) + '</td></tr>';
+  this.content.innerHTML = s + '</table>';
+}
+var Saldos = new Widget('saldos', 'Saldos', 'Saldos');
+Saldos.populate = generic_populate;
+var Pagar = new Widget('pagar', 'Pagar', 'Pagar');
+Pagar.populate = generic_populate;
+var Receber = new Widget('receber', 'Receber', 'Receber');
+Receber.populate = generic_populate;
+
+Saldos.values = {
+  banco     :   100.00,
+  dinheiro  :    50.00,
+};
+
+Pagar.values = {
+  agua       :  -10.00,
+  luz        :  -45.00,
+};
+
+Receber.values = {
+  joao       :   50.00,
+  jose       :   25.00,
+  geraldo    :   30.00,
+};
+{% endhighlight %}
+
+<p>Ufa!! Terminou. Ainda não, uma screenshot porque uma imagem fala mais
+que mil palavras (e um clichê fala mais que tudo isso junto):</p>
+
+<img class="center-block img-responsive" src="/images/moneylog.png">
+
+<p>Repetindo, é só uma maneira de anotar alguns valores importantes e ter
+eles logo ali ao lado. E então, gostaram da ideia?</p>
+
+<p>br_lemes, o Homem-Anfíbio insano (Múltipla Personalidade)</p>
