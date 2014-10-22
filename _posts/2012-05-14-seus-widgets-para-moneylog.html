@@ -1,0 +1,170 @@
+---
+comments: true
+layout: post
+title: "Seus widgets para MoneyLog"
+tags: [Aleatoriedades, Programação]
+---
+
+<p>Já falei aqui no blog que sempre gostei do
+<a href="http://aurelio.net/moneylog/">MoneyLog</a>, mas a coisa só ficou
+boa mesmo recentemente com a nova versão com suporte a widgets. Isso, é
+claro, porque agora eu poderia fazer as coisas do meu jeito (e para mim
+as coisas só são boas quando posso fazer alguma nerdice com elas).
+<a href="/2012/04/moneylog-para-controlar-as-financas.html">Já contei
+como fiz widgets</a> para anotar valores e a soma desses valores. Mas não
+estava satisfeito, porque toda vez eu precisava editar dois arquivos:
+<code>config.js</code> e o arquivo de lançamentos (no meu caso,
+<code>moneylog.txt</code>).
+
+<p>Tarefas repetitivas tendem a serem enfadonhas e acabamos desistindo
+delas (quando isso é possível). Então, quanto mais simples, melhor. E foi
+o que fiz, agora tudo é feito no arquivo de lançamentos (o meu
+<code>moneylog.txt</code>), e você só precisa editar o <code>config.js</code>
+uma única vez. É claro que não vou simplesmente colocar o código aqui para
+você copiar e colar, mas também contar como essa ideia insana surgiu no
+meu emaranhado de neurônios (dizem que tenho).</p>
+
+<!-- more -->
+
+<section id="more">
+<p>Comecei bisbilhotando o <code>moneylog.js</code> para descobrir como o
+Aurelio fazia para ler o arquivo de lançamentos (o arquivo
+<code>.txt</code>). E não foi fácil encontrar, não tinha um open nem
+nada parecido e, para complicar, devido às diversas versões com métodos
+diferentes para ler os lançamentos, tinham tantos ifs que dificultava
+entender a lógica do negócio todo. Pois bem, fui insistindo até que
+percebi que, no caso dos lançamentos em arquivo de texto, os dados
+eram inseridos no html dentro de um frame.</p>
+</section>
+
+<p>Entendido isso, não importava muito saber exatamente como isso
+funcionava, só precisei dar uma olhada na função <code>parseData</code>
+e dar uma plagiada básica. Então o esquema é um parse que considera
+apenas as linhas iniciadas por <code>#=</code> (comentário mais um
+caractere arbitrário). Essas linhas deve ter três campos separados
+por espaços em branco ou tabulação, sendo o primeiro o nome do
+widget, o segundo o nome do valor, e por último o valor. Por exemplo:</p>
+
+{% highlight sh %}
+#= saldos banco    100,00
+#= saldos dinheiro  50,00
+{% endhighlight %}
+
+<p>Então o parse verifica se já existe um widget com esse nome (primeiro
+campo), se não existir cria ele. Depois é só colocar o valor no widget
+(segundo e terceiro campo). Fácil né? Nem tanto, precisei dar outra
+plagiada no código do Aurélio para interpretar a pontuação dos números
+do mesmo jeito que ele faz no restante do arquivo de lançamentos.</p>
+
+<p>Para que eu possa ler os dados do arquivo de lançamentos, preciso
+fazer isso depois da função <code>init()</code> do <code>moneylog.js</code>.
+Mas é no <code>init()</code> que os widgets são inseridos no html, então
+preciso fazer isso novamente no meu código. Então meu widget dá uma
+mexida no código de inicialização do MoneyLog. Só não entendi ainda como
+funciona aquele botãozinho de recarregar os dados, então se você clicar
+lá os widgets não serão atualizados, só dando F5 mesmo. Isso é tudo,
+lá vai código:</p>
+
+{% highlight js %}
+vwlist = { };
+
+function vpopulate() {
+ s = '<table>';
+ n = 0;
+ for (i in this.values) {
+  s += '<tr><td>' + i + '</td><td class="number">'
+    +  prettyFloat(this.values[i]) + '</td></tr>';
+  n += this.values[i];
+ }
+ s += '<tr class="vtotals"><td>TOTAL</td><td class="number">'
+   +  prettyFloat(n) + '</span></td></tr>';
+ this.content.innerHTML = s + '</table>';
+}
+
+function vfloat(strfloat) {
+ // Validade the amount value
+ amount = strfloat.match(dataPatterns.amountNumber);
+ if (amount) {
+  amount = amount[1].replace(/\s+/g, ''); // group 1, no blanks
+
+  // Normalize Value
+  // Force '.' as internal cents separator, remove other punctuation
+  // Ex.: 1.234,56 > 1.234@56 > 1234@56 > 1234.56
+  amount = amount.replace(
+   dataPatterns.amountCents, '@$1').replace(
+   /[.,]/g, '').replace(
+   '@', '.');
+
+  // Now we can validate the number (str2float)
+  amount = parseFloat(amount);
+
+  // Ops, we don't have a valid number
+  if (isNaN(amount)) return 0;
+ } else return 0;
+ return amount;
+}
+
+function vparse(row) {
+ fields = row.match(/^#=[ \t]+([a-z]+)[ \t]+([a-z]+)[ \t]+([+\-]?[0-9.,]+)$/)
+ if (!fields) return; // ignore invalid data
+ fields.shift();
+ fields[2] = vfloat(fields[2]);
+ if (!vwlist[fields[0]]) {
+  w = new Widget(fields[0], fields[0], fields[0]);
+  w.populate = vpopulate;
+  w.values = { };
+  vwlist[fields[0]] = w;
+ }
+ vwlist[fields[0]].values[fields[1]] = parseFloat(fields[2]);
+}
+
+function vtables() {
+ init();
+ readData();
+ for (i = 0; i < Widget.instances.length; i++)
+  vwlist[Widget.instances[i].id] = Widget.instances[i];
+
+ // Split lines
+ rows = rawData.split(dataRecordSeparator);
+
+ // Scan data rows
+ for (i = 0; i < rows.length; i++) {
+  thisRow = rows[i].lstrip();  // Ignore left spacing
+  if (thisRow.indexOf(commentChar) === 0 &&
+      thisRow.indexOf('=') === 1) {
+   vparse(thisRow);
+  }
+ }
+
+ for (i in vwlist) vwlist[i].init();
+}
+
+window.onload = vtables;
+{% endhighlight %}
+
+<p>Então, para dar o mesmo exemplo da
+<a href="/2012/04/moneylog-para-controlar-as-financas.html">outra
+postagem</a>. Depois de ter o código acima no seu <code>config.js</code>,
+coloque o seguinte no seu arquivo de lançamentos:</p>
+
+{% highlight sh %}
+#= saldos banco    100,00
+#= saldos dinheiro  50,00
+
+#= pagar  agua     -10,00
+#= pagar  luz      -45,00
+
+#= receber  joao    50,00
+#= receber  jose    25,00
+#  pagar  geraldo   30,00 não vai me pagar esse mês
+#  Repare na falta do ‘=’, então isso é só um comentário comum
+{% endhighlight %}
+
+<p>E ai, legal né? Qualquer dado inválido nas linhas começadas por
+<code>#=</code> será silenciosamente ignorado, então se fizer caca podem
+aparecer resultados inesperados. O código não é maduro nem livre de bugs.
+Como pode ver, o código não é um Widget em si, mas funções que geram o
+Widget que você precisa. Por isso afirmei que são seus widgets para
+MoneyLog.</p>
+
+﻿<p>br_lemes, o Elfo insano (Hipossônia)</p>
