@@ -1,0 +1,90 @@
+---
+comments: true
+layout: post
+title: "Ressuscitando um projeto antigo: L-Bia"
+tags: [Programação]
+---
+
+<p>Graças a uma ideia idiota, que tive num momento idiota, achei a solução
+para os meus problemas (exceto os financeiros)... Ficou confuso? Vou
+explicar. Eu tenho um projeto chamado <a href="http://l-bia.sourceforge.net/">
+L-Bia</a> que abandonei há alguns anos devido a umas dificuldades técnicas.
+Um dia desses, estava desperdiçando meu tempo lendo blogs de curiosidades
+(o momento idiota), quando me veio a ideia idiota: escrever, como item de
+curiosidade mesmo, sobre as
+<a href="/2013/11/linguagens-de-programacao-que-aprendi.html">linguagens
+de programação que aprendi</a>. E pelo meio do artigo, citei meu projeto
+abandonado.</p>
+
+<p>Foi então que me caiu de brinde a solução para os problemas que me
+levaram a abandonar o projeto. Estava programando na linguagem errada,
+<a href="/2011/02/o-problema-odeio-programar-em-c-mas-e.html">eu odeio
+C</a>. Era só reescrever em Pascal. O <a href="http://www.freepascal.org/">
+Free Pascal</a> pode compilar para todas as plataformas relevantes, e é
+uma linguagem bem mais fácil de programar. Mas, do que mesmo estou
+falando? O que é L-Bia?</p>
+
+<!-- more -->
+
+<section id="more">
+<p>Minha linguagem de programação favorita e a que realmente utilizo é
+Lua. Mas Lua é uma linguagem interpretada, então ao distribuir um software
+que faço em Lua precisa ir o meu código fonte e o interpretador da
+linguagem mais umas quantas dlls (bibliotecas dinâmicas). E para rodar o
+software, precisa chamar o interpretador passando o código Lua como
+parâmetro. Não muito interessante para quem só está acostumado a clicar
+num ícone na área de trabalho ou menu. Porque então não criar um
+"super-interpretador", que traz dentro de si Lua, o código que queremos
+rodar e as bibliotecas necessárias? O problema é que daria trabalho fazer
+isso para cada software escrito. Então, que tal um software gerador de
+"super-interpretador"? Esse é L-Bia.</p>
+</section>
+
+<p>Então, qual o problema? Apesar que não sou bom em programar em C, na
+época eu queria fazer o tamanho do executável ficar mínimo a todo custo,
+por isso escolhi C, pois é a mesma linguagem que Lua foi escrita. E as
+bibliotecas C já estão presentes em qualquer sistema operacional. E
+também, na época eu achava que poderia escrever bem em C só me
+dedicando um pouco mais. Mas não posso. Não me ocorreu que o tamanho
+do executável não seria tão relevante. Na verdade, por fazer muito
+tempo que já não usava Pascal, também nunca me ocorreu que era uma opção.</p>
+
+<p>As versões 0.2.x do projeto são uma tentativa de um gerador de
+"super-interpretador". Mas como estava tendo muitos problemas no código,
+e eu usava o L-Bia para alguns propósitos particulares, então reescrevi
+uma versão simplificada, as versões 0.3.x. Essas versões somente rodam
+um código Lua com o mesmo nome do executável do L-Bia. Por exemplo, se
+for l-bia.exe vai rodar o arquivo l-bia.lua. Se renomear para hello.exe
+vai rodar o arquivo hello.lua. Isso já resolvia meu problema em particular,
+e eu poderia a partir daí continuar desenvolvendo o projeto. E foi nesse
+ponto que eu desisti.</p>
+
+<p>Aprendi minha lição, mas como eu ainda sou um cara minimalista,
+vamos fazer uma comparação com os tamanhos. A versão 0.3.1 não é um
+gerador de "super-interpretador" como também não o é a versão 0.3.2,
+de forma que são equivalentes. Mas enquanto a primeira foi escrita em
+C com a biblioteca Lua compilada estaticamente, a segunda foi escrita
+em Pascal com a biblioteca Lua ligada dinamicamente. A primeira são
+212KB, e a segunda 37KB (L-Bia) + 160KB (Lua) = 197KB (Total). A
+segunda versão tem código de duas linguagens (Pascal e C para ligar-se
+à Lua), possui suporte a carregamento dinâmico, e funciona com Lua 5.1
+e 5.2, além de alguns detalhes melhorados. Ainda assim ela ficou, ao
+contrário do esperado, menor.</p>
+
+<p>Está ai, programar em Pascal para este caso é muito mais eficiente,
+tanto do ponto de vista humano quanto da máquina. Só para esclarecer
+essa minha obsessão com o tamanho, é que o L-Bia é só um código extra
+que vai somar ao software que realmente será executado, seria inaceitável
+se ocupasse vários megabytes. E por final, a título de curiosidade,
+apesar que eu dou o pretexto que L-Bia significa Lua Built-in program,
+na verdade é um prefixo (L de Lua) com o nome da minha esposa: Fabiana
+(Bia para encurtar). O difícil foi arranjar esse pretexto, algum nome
+em inglês que tivesse alguma semelhança com Bia. Se acha o nome do
+programa ruim, então ai está o motivo.</p>
+
+<p>Agora só falta continuar o desenvolvimento, no sentido de fazer
+L-Bia voltar a ser um gerador de "super-interpretador". E por fim,
+para terminar, é uma pena que isso tudo não resolve em nada minha
+vida financeira...</p>
+
+<p>br_lemes, o Zumbi insano (Depressivo)</p>
