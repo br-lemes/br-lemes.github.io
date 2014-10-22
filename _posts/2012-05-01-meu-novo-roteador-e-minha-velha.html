@@ -1,0 +1,105 @@
+---
+comments: true
+layout: post
+title: "Meu novo roteador e minha velha ansiedade"
+tags: [Aleatoriedades, Linux]
+---
+
+<p>Já falei sobre minha necessidade compulsiva de ficar verificando se
+minha conexão com a Internet está funcionando e minha
+<a href="/2012/04/navegando-enquanto-o-som-rola.html">criativa solução
+com música</a>. Pouco depois do keeplaying nascer eu comprei um roteador
+wireless que funciona em modo AP cliente. Em outras palavras, recebo a
+conexão do meu “provedor via rádio” já pronta na minha <code>eth0</code>
+sem necessidade mais de ficar lidando com PPPoE: o roteador faz isso.</p>
+
+<p class="text-center">Os leds indicativos não são coloridos, mas azuis.
+<img class="center-block img-responsive" src="/images/smartlan.jpg"></p>
+
+<!-- more -->
+
+<section id="more">
+<p>Mas além de saber que a Internet não está funcionando porque a música
+parou de tocar, eu ainda fico querendo saber o que não está funcionando.
+Se não estou conectado ao provedor, ou se é o provedor que não está
+conectado ao mundo (quer dizer, estou conectado ao provedor mas a
+Internet não funciona mesmo assim). Quanta curiosidade né? Para isso
+acessava a página de administração do roteador que lá me dizia tudo.
+Mas isso era chato, tinha que ficar indo no navegador e digitando senha.
+Então... lá vem eu com outro shell script para resolver isso direto
+na linha de comandos rapidinho.</p>
+</section>
+
+<p>O roteador é um <a href="http://www.smartlan.us/Index.asp?dep=9994&marca=4&pdcat=&nomec=&idProd=447">
+Smart Lan ﻿APRIO150</a>, e <a href="https://raw.github.com/br-lemes/stuff/master/smartlan">
+o script é este aqui</a>. Apesar de específico para este modelo de
+roteador, talvez funcione para modelos semelhantes (da própria Smart
+Lan ou outros, já vi um Zinwell que tem uma interface bastante parecida).
+É bem simples, acessa a página de status do roteador e extrai algumas
+informações. O interessante é que essas informações são conseguidas sem
+usar a senha. O que me deixa em dúvida sobre a segurança desse modelo
+de roteador. Mas, não preciso ficar paranoico no momento, pois é só um
+roteador de uso doméstico em modo cliente que ninguém vai mexer com ele.
+O resultado do script é o seguinte:</p>
+
+<pre>
+PPPoE Connected
+172.16.250.27
+0 dia(s) 1 hora(s) 41 minuto(s) 34 segundo(s)
+
+PPPoE Disconnected
+0.0.0.0
+0 dia(s) 0 hora(s) 0 minuto(s) 0 segundo(s)
+</pre>
+
+<p>Legal, né? Informa se está conectado, como está conectado (PPPoE ou
+outra coisa se for o caso), o IP com o qual ele se comunica com o outro
+lado do provedor ou Internet, e até mesmo o tempo da conexão. O que me
+deixa muito feliz saber o tempo da conexão, porque me diz sobre a
+estabilidade dela. Se toda hora que eu consultar estiver conectado
+somente há uns poucos minutos ou segundos, então a coisa está feia.
+O código para interpretar o tempo de conexão eu adaptei do javascript
+presente na própria página do roteador.</p>
+
+<p>Gostei muito desse roteador, então vou falar um pouco dele. Não vou
+citar todas as características porque isso aqui ia virar uma sopa de
+letrinhas e siglas que nem entendo todas. O que mais gostei foi
+o seguinte:</p>
+
+<p><strong>Pró</strong>: Fácil de usar e configurar (tem alguns modelos de
+modem que são desesperadores); suporta POE (Power Over Ethernet) que não
+uso, mas é muito legal porque o cabo de rede já leva energia, facilitando
+muito quando precisamos colocar o roteador em locais onde fica difícil
+colocar uma tomada; funciona em modo bridge e AP cliente, o que me
+permitiu simular PPPoE sobre uma conexão normal com fios; permite
+amarrar IP ao MAC para o DHCP dele, distribuindo IP fixo - é uma função
+muito legal que normalmente não está presente na maioria dos roteadores;
+quando no modo AP cliente, a porta WAN se transforma em LAN5 me dando
+uma conexão a mais; suporte a DDNS; firewall com muitas, mas muitas
+opções mesmo, nunca tinha usado um roteador com tantas opções de
+firewall, apesar de que até agora não estou usando nenhuma (só o padrão
+de fábrica mesmo); relatórios de acesso, apesar de simples, ele pode
+lhe mandar por e-mail periodicamente todos os sites que andam acessando
+através dele; e também muito simples, mas inclui filtro de acesso, para
+bloquear sites indesejados (que não estou usando né, porque desejo
+acessar justamente os sites indesejados...).</p>
+
+<p><strong>Contra</strong>: Não sou especialista em segurança nem em
+roteadores, mas fiquei cismado com esse negócio dele me dar tantas
+informações sem nem precisar de senha - sei lá mais o que ele faz
+sem precisar de senha; e não permite acesso via telnet ou ssh, eu
+gosto de conectar a esses equipamentos para ficar bisbilhotando
+os arquivos e verificar os detalhes do funcionamento, é muito chato
+não poder se conectar nele.</p>
+
+<p>Por último quero manifestar minha insatisfação com os fabricantes
+desses equipamentos. Nem todos fornecem informações sobre as
+especificações e funcionalidades do equipamento. Tem modelos e marcas
+que eu nem conseguia saber se suporta ou não o modo cliente, que é o
+que eu precisava. É difícil escolher um sem saber o que ele tem. É
+comum os vendedores da loja nem saberem o que é um roteador, ou qual
+a diferença do modo AP para AP cliente, etc. Eu costumo comprar pela
+Internet, então fica pior a situação se o fabricante não der as
+informações necessárias.</p>
+
+<p>br_lemes, o Paladino insano (Catatônico)</p>
