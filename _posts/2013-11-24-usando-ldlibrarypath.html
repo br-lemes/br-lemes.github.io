@@ -1,0 +1,129 @@
+---
+comments: true
+layout: post
+title: "Usando LD_LIBRARY_PATH"
+tags: [Linux, Programação]
+---
+
+<p>Estou criando uma
+<a href="/2013/11/ressuscitando-um-projeto-antigo-l-bia.html">ferramenta</a>
+que carrega bibliotecas dinâmicas. No Windows o carregamento das bibliotecas
+dinâmicas (as dll) inclui o diretório atual (ou pasta corrente). No Linux
+não, o carregamento ocorre somente nos caminhos padrão do sistema. Há uma
+variável de ambiente que ajuda nisso, a <code>LD_LIBRARY_PATH</code>.
+Porém seu uso pode ser inconveniente por algumas razões, vou citar três:</p>
+
+<ol>
+	<li>
+		<strong>Segurança</strong>: o carregamento das bibliotecas
+		ocorre primeiro no <code>LD_LIBRARY_PATH</code>, o que afeta
+		todo o sistema trazendo o risco de bibliotecas com código
+		malicioso;
+	</li>
+	<li>
+		<strong>Performance</strong>: para cada biblioteca que um
+		aplicativo usa serão consultados todos os locais em
+		<code>LD_LIBRARY_PATH</code>, que se tiver uma lista extensa
+		ou locais na rede pode levar a uma situação caótica;
+	</li>
+	<li>
+		<strong>Inconsistência</strong>: os programas podem acabar
+		carregando versões erradas das bibliotecas, levando a
+		resultados imprevisíveis.
+	</li>
+</ol>
+
+<!-- more -->
+
+<section id="more">
+<p>A lista de problemas poderia ser bem mais extensa, mas vamos nos ater
+ao meu caso. A ferramenta tem por objetivo simplificar as coisas, e
+precisar configurar uma variável de ambiente previamente não facilita
+em nada. A solução seria a própria ferramenta definir a variável de
+ambiente e carregar as bibliotecas. Mas esta é outra coisa que não
+funciona. O sistema verifica a <code>LD_LIBRARY_PATH</code> uma vez ao
+iniciar o programa e modificar a variável de ambiente não mudará
+nada a partir dai.</p>
+</section>
+
+<p>Mas relaxe, porque tem solução. Modificar a variável de ambiente,
+reiniciar o programa e carregar a biblioteca com <code>dlopen</code>.
+Vamos para a prática:</p>
+
+<p>libhello.c:</p>
+
+{% highlight c %}
+#include <stdio.h>
+
+void hello() {
+	printf("Hello World!\n");
+}
+{% endhighlight %}
+
+<p>Para compilar: <code>gcc -shared -fPIC libhello.c -o libhello.so</code></p>
+
+<p>hello.c:</p>
+
+{% highlight c %}
+#include <string.h>
+#include <stdlib.h>
+#include <dlfcn.h>
+
+typedef void (*type_hello)();
+
+int main(int argc, char *argv[]) {
+	char *s = getenv("LD_LIBRARY_PATH");
+	if (s != NULL && strcmp(s, ".") != 0) {
+		setenv("LD_LIBRARY_PATH", ".", 1);
+		execv(argv[0], argv);
+	}
+	void *lib = dlopen("./libhello.so", RTLD_NOW);
+	if (lib == NULL) return 1;
+	type_hello hello = (type_hello)dlsym(lib, "hello");
+	if (hello != NULL) hello();
+	dlclose(lib);
+	return 0;
+}
+{% endhighlight %}
+
+<p>Para compilar: <code>gcc -o hello hello.c -ldl</code></p>
+
+<p>Um exemplo também com Free Pascal:</p>
+
+<p>hello.pas:</p>
+
+{% highlight pascal %}
+uses dynlibs;
+
+type
+	thello = procedure;
+
+var
+	hello: pointer;
+	handle: thandle = 0;
+
+function execv(const path: pchar; const argv: ppchar): integer; cdecl; external;
+function getenv(const name: pchar): pchar; cdecl; external;
+function setenv(const name, value: pchar; overwrite: boolean): integer; cdecl; external;
+
+begin
+	if getenv('LD_LIBRARY_PATH') <> '.' then
+	begin
+		setenv('LD_LIBRARY_PATH', '.', true);
+		execv(argv[0], argv);
+	end;
+	handle := loadlibrary('./libhello.so');
+	if handle = 0 then halt(1);
+	hello := getprocaddress(handle, 'hello');
+	if hello <> nil then thello(hello)();
+	freelibrary(handle);
+end.
+{% endhighlight %}
+
+<p>Para compilar: <code>fpc hello</code></p>
+
+<p>E enfim, é isso. Para saber mais sobre:
+<a href="http://www.cc.dtu.dk/?page_id=304">
+LD_LIBRARY_PATH</a>.</p>
+
+<p>br_lemes, o Meio-Elfo insano (Múltipla Personalidade)</p>
