@@ -1,0 +1,51 @@
+---
+comments: true
+layout: post
+title: "[Script TW] Atualizar Link"
+tags: [Tribal Wars]
+---
+
+{% include autorizado.html topic="214972" %}
+
+<p>Quem joga <a href="http://www.tribalwars.com.br/">Tribal Wars</a> no
+servidor brasileiro já sabe do rolo, o domínio <code>equipetribalwars.com
+</code> que hospedava todos os scripts autorizados teve algum problema e
+está fora do ar. A administração substituiu a hospedagem pelo
+<a href="https://www.dropbox.com/referrals/NTE5MDMyMDU5">Dropbox</a>.
+Portanto todos os scripts precisam ser editados para trocar
+<code>$.getScript( 'http://equipetribalwars.com/scripts/*.js' );</code> por
+<code>$.getScript( 'http://dl.dropbox.com/u/72485850/tribalwarsbrasil/*.js' );
+</code>. Eu ainda não atualizei os que estão aqui no blog.</p>
+
+<!-- more -->
+
+<section id="more">
+<p>Sou preguiçoso demais para editar um por um os links da minha barra de
+acesso rápido, então criei este script que troca somente o link sem correr
+o risco de bagunçar suas configurações. Você ainda vai precisar editar um
+por um os links, mas é só clicar no script para o texto ser substituído sem
+risco quebrar as coisas. Então se algum script aqui do blog estiver ainda
+desatualizado e você também for preguiçoso, só usar isso ai que atualiza
+fácil. Confira o script e imagens par deixar mais claro cono funciona:</p>
+</section>
+
+{% highlight js %}
+javascript:$.getScript('http://dl.dropbox.com/u/72485850/tribalwarsbrasil/atualiza_link.js');void(0);
+{% endhighlight %}
+
+<p class="text-center">Antes:</p>
+<img class="center-block img-responsive" src="/images/tribal-wars/antes.jpg">
+
+<p class="text-center">Depois:</p>
+<img class="center-block img-responsive" src="/images/tribal-wars/depois.jpg">
+
+<p>Agora o script por completo:</p>
+
+{% highlight js %}
+$('textarea.ar_url').val(
+	$('textarea.ar_url').val().replace(
+		/'http:\/\/equipetribalwars.com\/scripts\/(.*)js'/,
+		'\'http://dl.dropbox.com\/u\/72485850\/tribalwarsbrasil\/$1js\''));
+{% endhighlight %}
+
+<p>br_lemes, o Imortal insano (Catatônico)</p>
