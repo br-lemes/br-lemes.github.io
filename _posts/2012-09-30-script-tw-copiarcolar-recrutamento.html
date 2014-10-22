@@ -1,0 +1,75 @@
+---
+comments: true
+layout: post
+title: "[Script TW] Copiar/Colar recrutamento"
+tags: [Tribal Wars]
+---
+
+<p>Ressurgi do nada para jogar Tribal Wars. Que decepção né? Um sujeito
+que não tem nada o que fazer desperdiçando o tempo com jogos online.
+Mas... seja o que for, resolvi escrever mais um script para Tribal Wars.
+Este copia e cola as tropas do recrutamento em massa.</p>
+
+<p>Funciona assim: a primeira vez que você clica nele vai pegar os dados
+que estiverem lá (se tiver alguma coisa) e armazenar num cookie, a
+segunda vez vai pegar os dados do cookie e inserir no formulário apagando
+o cookie em seguida. Se você for usar novamente ele não ai encontrar o
+cookie e agir como da primeira vez. Só isso, nenhuma configuração nem
+nada.</p>
+
+<!-- more -->
+
+<section id="more">
+<p>E para que afinal eu fiz isso? Para copiar os dados do recrutamento
+para a finalização. Finalização em massa é um recurso bem legal que eu já
+tinha visto lá mas nunca tinha usado. Deixei minha conta em modo de férias
+e recrutaram todo tipo de tropa, bagunçando completamente minhas aldeias.
+Tinha infantaria nas aldeias de cavalaria. Lanceiros e espadachins nas
+aldeias de arqueiros. Até mesmo defesa em aldeia de ataque e ataque em
+aldeia de defesa eu encontrei. Uma completa desordem.</p>
+</section>
+
+<p>O que a finalização em massa faz é o serviço inverso do recrutamento.
+Vê o que tem de tropa sobrando ali e acaba com elas. Claro que leva tempo,
+do mesmo jeito que recrutar, mas é uma maravilha para colocar ordem na
+casa. Bom, deixa de enrolação e vamos ao código:</p>
+
+{% highlight js %}
+javascript:
+var tropas = ['spear', 'sword', 'axe', 'archer', 'spy', 'light', 'marcher', 'heavy', 'ram', 'catapult' ];
+var string = $.cookie('copiar_recrutamento');
+if (string == null) {
+	string = '';
+	$.each(tropas, function(i) {
+		string += $($('input#unit_input_' + tropas[i])[0]).attr('value') + ',';
+	});
+	$.cookie('copiar_recrutamento', string, {expires: 10});
+	alert('Tropas copiadas.');
+} else {
+	string = string.split(',');
+	$.each(tropas, function(i) {
+		$($('input#unit_input_' + tropas[i])[0]).attr('value', string[i]);
+	});
+	$.cookie('copiar_recrutamento', null);
+	alert('Tropas coladas.');
+}
+void(0);
+{% endhighlight %}
+
+<p>Notou que o script está diferente do usual né? Muito mais comprido.
+Bom, agora os scripts do servidor brasileiro não precisam necessariamente
+estar na lista dos autorizados. Você pode usar qualquer um, por sua conta
+e risco. <a href="http://www.tribalwars.com.br/rules.php">A regra diz
+o seguinte</a>:
+
+<div class="alert alert-danger"><strong>Aconselhamos que somente utilizem
+os scripts que estão autorizados em nossa aba, porém, isso não quer dizer
+que qualquer outro script esteja proibido, somente os scripts que
+automatizam comandos e/ou simulam benefícios Premium, serão considerados
+ilegais e passíveis de punição.</strong></div>
+
+<p>Como eu já tenho experiência em autorizar scripts, já tenho um
+conhecimento do que é ou não considerado ilegal. Mas, se nem a equipe
+quer garantir eu é que não vou garantir por ninguém, só por mim mesmo.</p>
+
+<p>br_lemes, o Gnomo insano (Paranóico)</p>
