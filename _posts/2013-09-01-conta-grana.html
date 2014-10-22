@@ -1,0 +1,49 @@
+---
+comments: true
+layout: post
+title: "Conta Grana"
+tags: [Aleatoriedades, Programação, Conta Grana]
+---
+
+<p>Vou ser bastante sucinto, pois como pode notar não tenho tido tempo
+de escrever aqui no blog. Eu lido bem com fórmulas matemáticas, códigos
+de programação e esse tipo de coisa. Mas na hora de efetuar os cálculos
+mentalmente, a coisa complica. Uma simples soma ou subtração me deixa
+pensando por mais tempo que a maioria das pessoas. Meu atual emprego
+envolve trabalho como caixa, recebendo valores e dando troco. Receita
+de prejuízo. Para evitar prejuízo, elaborei este pequeno software.</p>
+
+<!-- more -->
+
+<section id="more">
+<p>Na tela principal há uma caixa de texto para entrar os valores dos
+produtos ou serviços vendidos. É só uma calculadora. Tendo os valores,
+vamos a pagamento, onde temos duas abas para inserir os valores de
+entrada (dinheiro que o cliente te dá) e saída (troco). O método de
+entrada é meio enigmático, usando somente o teclado (para mais
+agilidade). Como: 2*50 (duas notas de 50), -1*50 (ops, era só uma),
+=0,50 (50 centavos em moedas), * (somente na saída, seleciona todas as
+notas disponíveis no caixa), *50 (todas as notas de 50 disponíveis),
+- (limpa). Em todas as telas use F1 para ajuda sobre as teclas de atalho,
+pois algumas coisas são meio ocultas.</p>
+</section>
+
+<p>Ao iniciar o dia você deve suprir o caixa, ao final do dia você pode
+recolher os valores. A qualquer momento você pode conferir, ou reservar.
+Reservar separa o estoque de notas em dois, servindo para organizar os
+valores a fim de recolher ao decorrer do dia. Ao iniciar, o programa pede
+uma senha. Você pode fornecer uma qualquer, ou cancelar para usar sem
+senha. A senha é usada para criptografar o arquivo de dados (estoque
+de notas) e histórico de transações (log) que normalmente são armazenados
+como texto simples. Na próxima vez que usar o programa, ele não vai
+conferir se a senha está errada. No caso da senha não ser a mesma, você
+não conseguirá acessar o log e seu estoque de notas será zerado. Se você
+definitivamente não quer usar senha, pode abrir o arquivo caixa.lua com
+o Notepad do Windows e remover a linha: require(“senha.lua”).</p>
+
+<p><strong>
+<a href="/downloads/contagrana.zip">contagrana.zip</a><br>
+<a href="https://github.com/br-lemes/contagrana">
+https://github.com/br-lemes/contagrana</a></strong></p>
+
+<p>br_lemes, o Paladino insano (Histérico)</p>
