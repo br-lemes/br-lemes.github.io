@@ -1,0 +1,62 @@
+---
+comments: true
+layout: post
+title: "Mouse USB sumiu?"
+tags: [Aleatoriedades, Linux]
+---
+
+<p>Muita coisa aconteceu durante todo esse tempo que fiquei sem postar
+aqui no blog. Mudei de emprego e de cidade, comprei um notebook e o
+servidor brasileiro de <a href="http://www.tribalwars.com.br/">Tribal Wars
+</a> deixou de ter analista de scripts. O pessoal só pode usar com
+segurança os scripts que já estão autorizados. Scripts novos podem ser
+usados, mas por conta e risco de cada um, se for considerado ilegal
+segundo as regras que ninguém sabe exatamente quais são, é banido
+sem dó nem piedade.</p>
+
+<p>Mas isso é só enrolação, o assunto mesmo é outro. E tem haver com
+o notebook que comprei. Agora deixei de levar meu Linux num HD externo
+para conectar em qualquer computador que eu possa usar e passei a levar
+o notebook para onde possa precisar. Mas... bem que acho que vou precisar
+voltar na técnica do HD externo, já que minha mulher sempre quer usar o
+notebook e eu fico a ver navios.</p>
+
+<!-- more -->
+
+<section id="more">
+<p>O caso é que de um dia para outro, o mouse e teclado USB que eu
+conectava no notebook deixou de funcionar. Conectei em outro computador
+e tudo normal. Então, como resolver...</p>
+</section>
+
+<p>Perguntando ao oráculo moderno (Google):</p>
+
+<p><em>
+	- O que há que essa joça não funciona?<br>
+	- Tenta <code>lsusb</code> - responde o oráculo de todos.<br>
+	- Tudo bem, meu mouse está ali, mas continua não funcionando.<br>
+	E o sabe-tudo responde:<br>
+	- Roda ai: <code>sudo dpkg-reconfigure -plow udev</code><br>
+	- E bingo! Funcionou!<br>
+</em></p>
+
+<p>Só não confunda bingo com com Bing, que lhe diria: compre um novo.</p>
+
+<p>Pronto, problema resolvido. Simples né? Então para que fazer um post
+desse tamanho todo com tanta enrolação só para dizer isso? Bom... é que
+se acontecer de novo não vou me lembrar como era. Se eu deixar na Internet
+vai ser bem mais fácil de achar com o Tio Google do que se ficar perdido
+anotado em algum lugar do meu HD. Deviam inventar um Google para arquivos
+locais, seria o fim dos meus problemas (quem sabe as
+<a href="http://pt.wikipedia.org/wiki/Organiza%C3%A7%C3%B5es_Tabajara">
+Organizações Tabajara</a> o faça).</p>
+
+<p>Só para concluir, onde eu encontrei a dica do <code>dpkg-reconfigure
+</code> falava alguma coisa sobre remover uma linha conflitante do
+<code>/etc/udev/udev.conf</code>, mas meu <code>udev.conf</code> não
+tinha nada além de uma configuração de log. E por último, a dica é para
+Ubuntu, Linux Mint (que eu uso na versão 13), e outros derivados do
+Ubuntu. Debian tem o mesmo sistema de pacotes mas são um pouco
+diferentes, não sei se também funciona.</p>
+
+<p>br_lemes, o Licantropo insano (Piromaníaco)</p>
