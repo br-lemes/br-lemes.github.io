@@ -6,14 +6,16 @@
 		</h1>
 	</div>
 	<div class="panel-body">
-		<div class="btn-group">
-			<a class="btn btn-success btn-xs btn-tag fa fa-calendar"
-				href="/archive/{{ include.post.date | date: '%Y' }}.html"></a>
-			<a class="btn btn-success btn-xs"
-				href="/archive/{{ include.post.date | date: '%Y' }}.html">
-				{{ include.post.date | date: '%d/%m/%Y' }}
-			</a>
-		</div>
+		{% if include.post.date %}
+			<div class="btn-group">
+				<a class="btn btn-success btn-xs btn-tag fa fa-calendar"
+					href="/archive/{{ include.post.date | date: '%Y' }}.html"></a>
+				<a class="btn btn-success btn-xs"
+					href="/archive/{{ include.post.date | date: '%Y' }}.html">
+					{{ include.post.date | date: '%d/%m/%Y' }}
+				</a>
+			</div>
+		{% endif %}
 		{% for tag in include.post.tags %}
 			<div class="btn-group">
 				<a class="btn btn-success btn-xs btn-tag fa fa-tag"
