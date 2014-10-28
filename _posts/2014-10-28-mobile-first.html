@@ -1,0 +1,96 @@
+---
+comments: true
+layout: post
+title: Refiz o site usando mobile first
+tags: [Aleatoriedades]
+---
+
+<p>Admiro muito o trabalho do <a href="http://aurelio.net/">Aurelio
+Jargas</a>, seus livros, artigos no blog, softwares, etc. Até mesmo copio
+algumas de suas ideias, incluindo o nome do domínio .net que não é só
+coincidência. Desta vez copiei o título do artigo:
+<a href="http://aurelio.net/blog/2014/10/02/mobile-first/">Refiz o site
+usando mobile first</a>. No entanto, os caminhos foram diferentes. Para ele
+a técnica <a href="http://bradfrostweb.com/blog/web/mobile-first-responsive-web-design/#page">
+mobile first</a> foi o objetivo: tornar o site mais legível para quem usa
+celular ou tablet. Para mim foi uma desejável consequência.</p>
+
+<p><strong>O meu objetivo era me livrar do Blogger</strong>. Os principais
+motivos foram <strong>o design</strong>, <strong>a tecnologia</strong>,
+<strong>o controle de revisões</strong> e <strong>a simplicidade</strong>.
+Note que eu não postava nada no blog há quase um ano completo: desde
+24/11/2013. E o motivo era a minha frustração com estas deficiências do
+Blogger alinhadas ao pouco tempo disponível e o meu, até agora, total
+desconhecimento de como resolver estes problemas sem gastar muito dinheiro.
+Vou falar sobre eles um a um, talvez ajude a outros com problemas
+semelhantes ou por mera curiosidade mesmo.</p>
+
+<!-- more -->
+
+<section id="more"></section>
+<p><strong>O design</strong> era minha principal frustração com o Blogger.
+É impossível personalizar o Blogger o tanto quanto eu queria. Existe um
+incontável número de temas para Blogger espalhados pela Internet. Porque um
+não serviria? Nenhum deles funcionava. Um tema quebrava o esquema de
+<em>widget</em> do Blogger, outro era o sistema de comentários que não
+funcionava, tentei um em que os ícones e outros elementos da página apareciam
+todos tortos. Finalmente fiquei com um tema que não me agradava mas pelo menos
+não tinha o aspecto de tema padrão. Tenho a impressão que as pessoas que criam
+esses temas contam com o amadorismo do público alvo do Blogger para simplesmente
+ignorar a lentidão, incompatibilidade, recursos incompletos, etc. Pagar por um
+não me parecia boa ideia, partindo dos gratuitos como exemplo. Tentei criar um
+tema eu mesmo do zero, ou partindo de um bem simples. Mas também não funciona,
+pois o Blogger é mais complexo que o necessário e não há boa documentação para
+saber o que fazer. E por fim o Blogger não respeita o nosso código, aplica
+alterações próprias de forma automática, da mesma forma que outras ferramentas
+<a href="http://pt.wikipedia.org/wiki/WYSIWYG">WYSIWYG</a>.</p>
+
+<p><strong>A tecnologia</strong> usada no Blogger era outro problema. Os
+artigos ficam armazenados num banco de dados e tudo o que você pode fazer é
+baixar um backup num formato XML ilegível para humanos, completamente
+inútil. Eu ansiava por um formato que eu poderia manter uma cópia em meu
+computador. Tentei servidores de hospedagem gratuitos ou baratos, mas nenhum
+fornecia um método prático para sincronizar minha cópia local com o servidor,
+como <a href="http://pt.wikipedia.org/wiki/Rsync">rsync</a> ou acesso
+<a href="http://pt.wikipedia.org/wiki/SSH">ssh</a> para utilizar o
+<a href="/2011/08/usando-unison-entre-linux-e-windows.html">unison</a>.
+Somente os serviços pagos e bem mais caros ofereciam essas opções. Nessa
+tentativa experimentei o <a href="http://blaze.blackened.cz/">BlazeBlogger</a>,
+que gostei mas sem poder sincronizar não me satisfez.</p>
+
+<p><strong>O controle de revisões</strong> era outro problema. Quando falei
+sobre a tecnologia e manter uma cópia local do blog no parágrafo anterior,
+é porque gostaria de ter alguma forma de controlar as revisões e alterações
+no blog. Meu assunto principal é programação, que é uma tarefa em constante
+aperfeiçoamento. Não é algo que vamos colocar lá e deixar o resto da vida.
+Por exemplo, como trocar os links de todas as postagens? Com o Blogger eu
+preciso ir de página em página e editar, com minha Internet lenta era um
+suplício. Se eu tenho uma cópia local posso simplesmente usar o
+<a href="http://pt.wikipedia.org/wiki/Grep">grep</a> para encontrar todas as
+postagens que possuem o link que precisa ser trocado e o
+<a href="http://pt.wikipedia.org/wiki/Sed">sed</a> para realizar esta ação
+em lote. Com uma cópia local poderia usar ferramentas de controle de revisões
+tais como <a href="http://pt.wikipedia.org/wiki/CVS">CVS</a>,
+<a href="http://pt.wikipedia.org/wiki/Subversion">SVN</a> ou
+<a href="http://pt.wikipedia.org/wiki/Git">Git</a>. Outra opção seria usar o
+<a href="https://www.dropbox.com/referrals/NTE5MDMyMDU5">Dropbox</a>.</p>
+
+<p>"<strong>A simplicidade</strong> é a sofisticação máxima" (Leonardo da
+Vinci). E foi buscando essa simplicidade que encontrei a ferramenta ideal:
+as <a href="https://pages.github.com/">páginas do GitHub</a>. Isso sim é
+unir o útil ao agradável. Você tem um repositório Git com os fontes do blog
+usando <a href="http://jekyllrb.com/">Jekyll</a> e o GitHub gera e hospeda
+o site para você gratuitamente. É a solução perfeita, sem nenhum esquema
+complicado. Mesmo que tivesse encontrado uma hospedagem barata com rsync
+ou ssh, a simplicidade do GitHub supera grandemente.</p>
+
+<p>Coloquei mãos à obra e baseado no
+<a href="https://github.com/scotte/jekyll-clean">jekyll-clean</a> que encontrei
+no <a href="http://jekyllthemes.org/">Jekyll Themes</a> criei o design atual.
+Foi pesquisando um tema para Jekyll que descobri o que era
+<em>mobile first</em> e decidi que queria isso para meu blog. E por
+coincidência o Aurelio também refez o site dele dias antes também com o Jekyll
+(porém não é hospedado no GitHub Pages). Fizemos a mesma coisa,
+porém por motivos diferentes.</p>
+
+<p>br_lemes, o Elfo-do-Céu insano (Mentiroso)</p>
