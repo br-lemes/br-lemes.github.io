@@ -1,0 +1,44 @@
+---
+comments: true
+layout: post
+title: "[Script TW] Coletar coordenadas no assistente de saque"
+tags: [Tribal Wars]
+---
+
+<p>Voltei a jogar <a href="http://www.tribalwars.com.br/">Tribal Wars</a>.
+E, como de costume sempre quero criar uma função nova, melhorar alguma coisa,
+enfim... Desta vez estou criando uma ferramenta para coletar coordenadas de
+aldeias bárbaras a fim de explorar e usar no assistente de saque. Mas para
+isso preciso de outra coisa primeiro...</p>
+
+<!-- more -->
+<p>A ferramenta vai baixar o arquivo de aldeias do mundo. E então coltar todas
+as aldeias bárbaras num raio determinado de uma determinada aldeia. Mas
+primeiro, preciso de uma lista de coordenadas que já estão no assistente de
+saque, para a ferramenta descartar, pois não é necessário explorar o que já
+está esplorado. Então fiz isso aqui:</p>
+
+{% highlight js %}
+javascript:
+var j = 0;
+var s = ""
+$('#plunder_list tr th').each(function (i, e) {
+	if ($(e).text().match('Aldeia')) { j = i; }
+});
+$('#plunder_list tr').each(function (i, e) {
+	if (i > 0) {
+		var a = $(e).find('td');
+		s = s + ' ' + $(a[j]).text().match(/[0-9][0-9]?[0-9]?\|[0-9][0-9]?[0-9]?/)[0];
+	}
+});
+alert(s);
+void(0);
+{% endhighlight %}
+
+<p>Bem simples. Não está formalmente autorizado, mas no servidor brasileiro
+(e alguns outros) não é realmente necessário. E com minha experiência como
+analista de script da equipe do Tribal Wars brasileiro, posso dizer que não
+quebra qualquer norma do servidor brasileiro. No entanto, é por sua conta e
+risco (se é que esta insanidade for mesmo útil para alguém além de mim).</p>
+
+<p>br_lemes, o Gnomo insano (Suicida)</p>
