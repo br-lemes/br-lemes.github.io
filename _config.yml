@@ -37,3 +37,6 @@ exclude: ['README.md', 'LICENSE']
 excerpt_separator: '<!-- more -->'
 
 default_paneltype: success
+
+gems:
+  - jekyll-sitemap
