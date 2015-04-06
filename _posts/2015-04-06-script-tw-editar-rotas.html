@@ -1,0 +1,63 @@
+---
+comments: true
+layout: post
+title: "[Script TW] Editar rotas"
+tags: [Tribal Wars]
+---
+
+<p>O <a href="http://www.tribalwars.com.br/">Tribal Wars</a> possui uma
+interessante ferramenta que permite programar o envio de recursos entre
+aldeias. Isso está disponível para quem além da conta premium também possui
+o gerente de conta. Se você for esperto, pode conseguir tudo isso de graça
+trocando recursos por pontos premium. No entanto essa ferramenta só permite
+o cadastro de 50 rotas com um único horário. Se eu quiser enviar recursos
+de 6 em 6 horas, preciso criar 4 rotas com os 4 horários do dia. Mas, vou
+ocupar 4 rotas com uma só aldeia. Então se você realmente precisar de muitas
+rotas, terá de fazer uma rota só e editar o horário periodicamente. É para
+ajudar nisso que criei o script seguinte:</p>
+
+<!-- more -->
+{% highlight js %}
+javascript:
+/* variáveis */
+var rota_hora = "10:30";
+var rota_chegada = false;
+
+/* validar variáveis */
+if (typeof rota_hora === "undefined") var rota_hora = 0;
+if (typeof rota_chegada === "undefined") var rota_chegada = false;
+
+/* código */
+if (game_data.screen != "am_market") {
+	$(location).attr("href", game_data.link_base_pure + "am_market");
+	end();
+}
+
+if (game_data.mode != "edit") {
+	$(location).attr("href", $("form table:eq(2) tr:eq(1) td a:eq(2)").attr("href"));
+	end();
+}
+
+$("input[name=time]").val(rota_hora);
+$("input[name=is_arrival_time]").prop("checked", rota_chegada);
+$("form").submit();
+void(0);
+{% endhighlight %}
+
+<p>Se você estiver em qualquer tela, redireciona para o gerente de entrega.
+Se você estiver no gerente de entrega, redireciona para a edição da primeira
+rota de entrega que existir (precisa já existir). Se você estiver na página
+de edição, ele altera a hora e se necessário marca ou desmarca o horário de
+chegada conforme você definir nas variáveis <code>rota_hora</code> (string) e
+<code>rota_chegada</code> (boolean). Agora é só ir fazendo repetidamente
+até editar todas as rotas. Ainda é meio desgastante, mas se for necessário é
+possível fazer. O gerente de estoque não tem exatamente essa finalidade de
+suprir aldeias, então deixar só o gerente de estoque não ajuda num caso de
+suprir aldeias que precisam evoluir ou recrutar. Pode ser interessante para
+aldeias que não possuem tropas para saquear.</p>
+
+<p>O script <strong>não</strong> está formalmente autorizado, mas no servidor
+brasileiro (e alguns outros) não é realmente necessário. E com minha
+experiência como analista de script da equipe do Tribal Wars brasileiro,
+posso dizer que não quebra qualquer norma do servidor brasileiro. No entanto,
+é por sua conta e risco.</p>
