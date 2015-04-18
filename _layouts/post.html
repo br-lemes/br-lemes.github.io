@@ -10,12 +10,12 @@ layout: default
 <ul class="pager">
 	{% if page.next %}
 		<li class="previous">
-			<a href="{{ page.next.url }}">&laquo; {{ site.data[page.lang].newerPost }}</a>
+			<a href="{{ site.baseurl }}{{ page.next.url }}">&laquo; {{ site.data[page.lang].newerPost }}</a>
 		</li>
 	{% endif %}
 	{% if page.previous %}
 		<li class="next">
-			<a href="{{ page.previous.url }}">{{ site.data[page.lang].olderPost }} &raquo;</a>
+			<a href="{{ site.baseurl }}{{ page.previous.url }}">{{ site.data[page.lang].olderPost }} &raquo;</a>
 		</li>
 	{% endif %}
 </ul>
