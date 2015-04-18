@@ -1,6 +1,6 @@
 {% include open-panel.html %}
 	<h1 class="panel-title">
-			<a href="{{ include.post.url }}">
+			<a href="{{ site.baseurl }}{{ include.post.url }}">
 				{{ include.post.title }}
 			</a>
 		</h1>
@@ -20,7 +20,7 @@
 		{% endfor %}
 		{% if site.comments == true and include.post.comments == true and site.disqus != '' %}
 		<a class="label label-success"
-			href="{{ include.post.url }}#disqus_thread">
+			href="{{ site.baseurl }}{{ include.post.url }}#disqus_thread">
 			Comentários
 		</a>
 		{% endif %}

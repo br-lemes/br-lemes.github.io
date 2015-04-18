@@ -3,7 +3,7 @@
 	</div>
 	<div class="list-group">
 		{% for post in site.posts limit:5 %}
-		<a class="list-group-item" href="{{ post.url }}">
+		<a class="list-group-item" href="{{ site.baseurl }}{{ post.url }}">
 			{{ post.title }}
 		</a>
 		{% endfor %}
