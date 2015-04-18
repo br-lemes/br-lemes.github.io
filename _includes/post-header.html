@@ -1,0 +1,26 @@
+{% include open-panel.html %}
+	<h1 class="panel-title">
+			<a href="{{ include.post.url }}">
+				{{ include.post.title }}
+			</a>
+		</h1>
+	</div>
+	<div class="panel-body">
+		{% if include.post.date %}
+		<a class="label label-success"
+			href="{{ site.baseurl }}/archive/{{ include.post.date | date: '%Y' }}{% if site.permaext %}.html{% else %}/{% endif %}">
+			{{ include.post.date | date: '%d/%m/%Y' }}
+		</a>&nbsp;
+		{% endif %}
+		{% for tag in include.post.tags %}
+		<a class="label label-success"
+			href="{{ site.baseurl }}/tags/{{ tag | downcase | replace: ' ', '-' }}{% if site.permaext %}.html{% else %}/{% endif %}">
+			{{ tag }}
+		</a>&nbsp;
+		{% endfor %}
+		{% if site.comments == true and include.post.comments == true and site.disqus != '' %}
+		<a class="label label-success"
+			href="{{ include.post.url }}#disqus_thread">
+			Comentários
+		</a>
+		{% endif %}
