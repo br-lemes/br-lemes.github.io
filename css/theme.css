@@ -1,0 +1,14 @@
+---
+---
+
+body {
+	padding-top: 70px;
+	padding-bottom: 70px;
+	background-attachment: fixed;
+	background-image: url('{{ site.baseurl }}/images/stripe.png');
+}
+
+section {
+	padding-top: 70px;
+	margin-top: -70px;
+}
