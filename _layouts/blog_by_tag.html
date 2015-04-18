@@ -1,0 +1,17 @@
+---
+layout: default
+---
+
+{% include open-panel.html %}
+		<h1 class="panel-title">
+			<a href="{{ site.baseurl }}/tags/{{ page.title | downcase | replace: ' ', '-' }}{% if site.permaext %}.html{% else %}/{% endif %}">
+				{{ page.title }}
+			</a>
+			<a class="pull-right" href="{{ site.baseurl }}/tags/">{{ site.data[page.lang].allTags }}</a>
+		</h1>
+	</div>
+</div>
+
+{% if site.tags[page.title] %} {% for post in site.tags[page.title] %}
+	{% include excerpt.html post=post %}
+{% endfor %}{% endif %}

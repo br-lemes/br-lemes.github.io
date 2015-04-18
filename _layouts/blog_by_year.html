@@ -1,0 +1,25 @@
+---
+layout: default
+---
+
+{% include open-panel.html %}
+		<h1 class="panel-title">
+			<a href="{{ site.baseurl }}/archive/{{ page.title }}{% if site.permaext %}.html{% else %}/{% endif %}">
+				{{ page.title }}
+			</a>
+			<a class="pull-right" href="{{ site.baseurl }}/archive/">{{ site.data[page.lang].allArchives }}</a>
+		</h1>
+	</div>
+</div>
+
+{% for post in site.posts %}
+	{% capture postyear %}
+		{{ post.date | date: '%Y' }}
+	{% endcapture %}
+	{% capture pageyear %}
+		{{ page.title }}
+	{% endcapture %}
+	{% if postyear == pageyear %}
+		{% include excerpt.html post=post %}
+	{% endif %}
+{% endfor %}

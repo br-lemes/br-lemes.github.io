@@ -1,0 +1,28 @@
+---
+layout: default
+title: All Tags
+---
+
+{% include open-panel.html %}
+	<h1 class="panel-title">
+		<a href="{{ site.baseurl }}/tags/">{{ site.data[page.lang].allTags }}</a>
+	</h1>
+</div></div>
+
+{% capture tags %}{% for tag in site.tags %}{{ tag[0] }}!{% endfor %}{% endcapture %}
+{% assign sortedtags = tags | split:'!' | sort %}
+
+{% for tag in sortedtags %}
+	{% include open-panel.html %}
+	<h2 class="panel-title">
+		<a href="{{ site.baseurl }}/tags/{{ tag | downcase | replace: ' ', '-' }}{% if site.permaext %}.html{% else %}/{% endif %}">
+			{{ tag }}
+		</a>
+	</h2></div>
+	{% for post in site.tags[tag] %}
+		<a class="list-group-item" href="{{ post.url}}">
+			{{ post.title }}
+		</a>
+	{% endfor %}
+	</div>
+{% endfor %}
