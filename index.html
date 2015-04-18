@@ -1,0 +1,41 @@
+---
+layout: default
+---
+
+{% for post in paginator.posts %}
+	{% include excerpt.html post=post %}
+{% endfor %}
+
+<div class="panel panel-default">
+	<div class="panel-body">
+		<div class="text-center">{{ site.data[page.lang].page }}:
+		{{ paginator.page }} {{ site.data[page.lang].of }}
+		{{ paginator.total_pages }}</div>
+		{% if paginator.next_page or paginator.previous_page %}
+		<ul class="pager">
+			{% if paginator.previous_page %}
+				{% if paginator.previous_page == 1 %}
+					<li class="previous">
+						<a href="{{ site.baseurl }}/index.html">
+							&laquo; {{ site.data[page.lang].newerPost }}
+						</a>
+					</li>
+				{% else %}
+					<li class="previous">
+						<a href="{{ site.baseurl }}/page{{ paginator.previous_page }}">
+							&laquo; {{ site.data[page.lang].newerPost }}
+						</a>
+					</li>
+				{% endif %}
+			{% endif %}
+			{% if paginator.next_page %}
+				<li class="next">
+					<a href="{{ site.baseurl }}/page{{ paginator.next_page }}">
+						{{ site.data[page.lang].olderPost }} &raquo;
+					</a>
+				</li>
+			{% endif %}
+		</ul>
+		{% endif %}
+	</div>
+</div>
