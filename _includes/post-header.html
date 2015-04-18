@@ -18,7 +18,7 @@
 			{{ tag }}
 		</a>&nbsp;
 		{% endfor %}
-		{% if site.comments == true and include.post.comments == true and site.disqus != '' %}
+		{% if site.disqus and site.disqus != '' and include.post.comments %}
 		<a class="label label-success"
 			href="{{ site.baseurl }}{{ include.post.url }}#disqus_thread">
 			Comentários

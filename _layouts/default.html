@@ -39,7 +39,7 @@
 						<li><a href="{{ site.baseurl }}/tags{% if site.permaext %}.html{% else %}/{% endif %}"> {{ site.data[page.lang].tags }}</a></li>
 						<li><a href="{{ site.baseurl }}/about{% if site.permaext %}.html{% else %}/{% endif %}"> {{ site.data[page.lang].about }}</a></li>
 						<li><a href="{{ site.baseurl }}/feed.xml"> {{ site.data[page.lang].rss }}</a></li>
-						{% if site.github != '' %}
+						{% if site.github and site.github != '' %}
 							<li><a href="https://github.com/{{ site.github }}"> {{ site.data[page.lang].github }}</a></li>
 						{% endif %}
 					</ul>
@@ -58,6 +58,9 @@
 			</div>
 		</div>
 	</div>
+
+{% include disqus-counts.html %}
+{% include analytics.html %}
 
 </body>
 </html>

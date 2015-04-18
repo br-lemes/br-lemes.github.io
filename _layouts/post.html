@@ -20,7 +20,7 @@ layout: default
 	{% endif %}
 </ul>
 
-{% if page.comments %}
+{% if site.disqus and site.disqus != '' and page.comments %}
 <div id="disqus_thread">
 	<noscript>Please enable JavaScript to view the
 		<a href="http://disqus.com/?ref_noscript">
@@ -36,3 +36,4 @@ layout: default
 
 </div></div>
 
+{% include disqus-comments.html %}
