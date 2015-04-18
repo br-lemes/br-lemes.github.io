@@ -1,0 +1,38 @@
+---
+layout: default
+---
+
+{% include post-header.html post=page %}
+{{ content }}
+
+<hr>
+
+<ul class="pager">
+	{% if page.next %}
+		<li class="previous">
+			<a href="{{ page.next.url }}">&laquo; {{ site.data[page.lang].newerPost }}</a>
+		</li>
+	{% endif %}
+	{% if page.previous %}
+		<li class="next">
+			<a href="{{ page.previous.url }}">{{ site.data[page.lang].olderPost }} &raquo;</a>
+		</li>
+	{% endif %}
+</ul>
+
+{% if page.comments %}
+<div id="disqus_thread">
+	<noscript>Please enable JavaScript to view the
+		<a href="http://disqus.com/?ref_noscript">
+			comments powered by Disqus.
+		</a>
+	</noscript>
+	<a href="http://disqus.com" class="dsq-brlink">
+		comments powered by
+		<span class="logo-disqus">Disqus</span>
+	</a>
+</div>
+{% endif %}
+
+</div></div>
+
