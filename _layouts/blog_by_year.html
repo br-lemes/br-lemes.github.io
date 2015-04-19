@@ -5,9 +5,13 @@ layout: default
 {% include open-panel.html %}
 		<h1 class="panel-title">
 			<a href="{{ site.baseurl }}/archive/{{ page.title }}{% if site.permaext %}.html{% else %}/{% endif %}">
+				<img src="{{ site.baseurl }}/images/calendar.png" width="16" height="16">
 				{{ page.title }}
 			</a>
-			<a class="pull-right" href="{{ site.baseurl }}/archive/">{{ site.data[page.lang].allArchives }}</a>
+			<a class="pull-right" href="{{ site.baseurl }}/archive/">
+				{{ site.data[page.lang].allArchives }}
+				<img src="{{ site.baseurl }}/images/archive.png" width="16" height="16">
+			</a>
 		</h1>
 	</div>
 </div>

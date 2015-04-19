@@ -5,7 +5,10 @@ title: All Tags
 
 {% include open-panel.html %}
 	<h1 class="panel-title">
-		<a href="{{ site.baseurl }}/tags/">{{ site.data[page.lang].allTags }}</a>
+		<a href="{{ site.baseurl }}/tags/">
+			<img src="{{ site.baseurl }}/images/tags.png" width="16" height="16">
+			{{ site.data[page.lang].allTags }}
+		</a>
 	</h1>
 </div></div>
 
@@ -16,11 +19,13 @@ title: All Tags
 	{% include open-panel.html %}
 	<h2 class="panel-title">
 		<a href="{{ site.baseurl }}/tags/{{ tag | downcase | replace: ' ', '-' }}{% if site.permaext %}.html{% else %}/{% endif %}">
+			<img src="{{ site.baseurl }}/images/tag.png" width="16" height="16">
 			{{ tag }}
 		</a>
 	</h2></div>
 	{% for post in site.tags[tag] %}
 		<a class="list-group-item" href="{{ site.baseurl }}{{ post.url}}">
+			<img src="{{ site.baseurl }}/images/post.png" width="16" height="16">
 			{{ post.title }}
 		</a>
 	{% endfor %}

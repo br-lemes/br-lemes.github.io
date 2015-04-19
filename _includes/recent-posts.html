@@ -4,6 +4,7 @@
 	<div class="list-group">
 		{% for post in site.posts limit:5 %}
 		<a class="list-group-item" href="{{ site.baseurl }}{{ post.url }}">
+			<img src="{{ site.baseurl }}/images/post.png" width="16" height="16">
 			{{ post.title }}
 		</a>
 		{% endfor %}

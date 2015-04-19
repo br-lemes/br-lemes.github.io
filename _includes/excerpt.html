@@ -1,6 +1,9 @@
 {% include post-header.html post=include.post %}
 		{{ include.post.excerpt }}
 		<p class="text-center"><a href="{{ site.baseurl }}{{ post.url }}#more"
-			class="btn btn-success btn-sm">{{ site.data[page.lang].readMore }}</a></p>
+			class="btn btn-success btn-sm">
+			{{ site.data[page.lang].readMore }}
+			<img src="{{ site.baseurl }}/images/next.png" width="16" height="16">
+		</a></p>
 	</div>
 </div>

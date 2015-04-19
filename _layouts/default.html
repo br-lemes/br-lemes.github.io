@@ -15,7 +15,6 @@
 </head>
 
 <body>
-
 	<div class="container-fluid">
 		<div class="row-fluid">
 			<div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -27,20 +26,33 @@
 						<span class="icon-bar"></span>
 					</button>
 					<a class="navbar-brand" href="{{ site.baseurl }}/">
-						{% if site.logo %}
-							<img src="{{ site.baseurl }}/{{ site.logo }}" alt="Logo" width="24" height="24">
-						{% endif %}
+						<img src="{{ site.baseurl }}/images/logo.png" width="24" height="24">
 						{{ site.data[page.lang].blogName }}
 					</a>
 				</div>
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
-						<li><a href="{{ site.baseurl }}/archive{% if site.permaext %}.html{% else %}/{% endif %}"> {{ site.data[page.lang].archive }}</a></li>
-						<li><a href="{{ site.baseurl }}/tags{% if site.permaext %}.html{% else %}/{% endif %}"> {{ site.data[page.lang].tags }}</a></li>
-						<li><a href="{{ site.baseurl }}/about{% if site.permaext %}.html{% else %}/{% endif %}"> {{ site.data[page.lang].about }}</a></li>
-						<li><a href="{{ site.baseurl }}/feed.xml"> {{ site.data[page.lang].rss }}</a></li>
+						<li><a href="{{ site.baseurl }}/archive{% if site.permaext %}.html{% else %}/{% endif %}">
+							<img src="{{ site.baseurl }}/images/archive.png" width="16" height="16">
+							{{ site.data[page.lang].archive }}
+						</a></li>
+						<li><a href="{{ site.baseurl }}/tags{% if site.permaext %}.html{% else %}/{% endif %}">
+							<img src="{{ site.baseurl }}/images/tags.png" width="16" height="16">
+							{{ site.data[page.lang].tags }}
+						</a></li>
+						<li><a href="{{ site.baseurl }}/about{% if site.permaext %}.html{% else %}/{% endif %}">
+							<img src="{{ site.baseurl }}/images/about.png" width="16" height="16">
+							{{ site.data[page.lang].about }}
+						</a></li>
+						<li><a href="{{ site.baseurl }}/feed.xml">
+							<img src="{{ site.baseurl }}/images/feed.png" width="16" height="16">
+							{{ site.data[page.lang].rss }}
+						</a></li>
 						{% if site.github and site.github != '' %}
-							<li><a href="https://github.com/{{ site.github }}"> {{ site.data[page.lang].github }}</a></li>
+							<li><a href="https://github.com/{{ site.github }}">
+								<img src="{{ site.baseurl }}/images/github.png" width="16" height="16">
+								{{ site.data[page.lang].github }}
+							</a></li>
 						{% endif %}
 					</ul>
 				</div>
