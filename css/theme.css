@@ -16,3 +16,10 @@ section {
 .btn {
 	margin-bottom: 5px;
 }
+
+@media (max-width: 480px) {
+	.container {
+		padding-left: 0px;
+		padding-right: 0px;
+	}
+}
