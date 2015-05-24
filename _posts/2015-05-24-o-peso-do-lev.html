@@ -1,0 +1,103 @@
+---
+comments: true
+layout: post
+title: "O peso do Lev"
+tags: [Aleatoriedades]
+---
+
+<p>Agora que os trabalhadores brasileiros tem direito ao
+<a href="http://www.cultura.gov.br/valecultura">Vale Cultura</a>, e no meu
+caso recebi um valor retroativo de vários meses, resolvi comprar um
+<strong><a href="http://www.saraiva.com.br/lev-com-luz-7437676.html">Lev
+com luz</a> da Saraiva</strong>. Não leve isso como um elogio aos programas
+sociais do governo. Não sou necessariamente contra, mas para mim isso tudo
+não passa de uma forma moderna da
+<a href="http://pt.wikipedia.org/wiki/Panem_et_circenses">política do pão
+e circo</a>.</p>
+
+<p>A escolha não foi muito difícil, era o item mais interessante no único
+lugar onde eu poderia gastar o benefício. Onde eu moro, assim como na
+maioria das cidades brasileiras, não existe nenhum lugar onde usar. Então
+o jeito é encomendar alguma coisa pela Internet e ainda não conheço outro
+site onde eu possa pagar com o meu vale. Eu poderia comprar algum livro,
+mas fiquei empolgado em poder ter uma vasta quantidade de livros num único
+volume (o Lev). Mas foi decepcionante descobrir que os livros digitais
+vendidos pela editora não podem ser pagos com o Vale Cultura, mas tão
+somente com Cartão de Crédito.</p>
+
+<!-- more -->
+<section id="more">
+<p>Mas o equipamento em si não decepcionou. Como o próprio nome diz, é bem
+leve. A leitura é bem mais confortável nele do que em livros de papel e o
+peso é um dos dois motivos principais. Quando pegamos um livro para ler, o
+peso dele não é a primeira coisa que nos vem a mente mas depois de algumas
+horas lendo começa ficar desconfortável. O segundo motivo é o tamanho e
+formato. É muito mais fácil segurar o Lev na mão do que um livro de papel
+que precisa ser aberto, e manter ele aberto ou dobrado fica bastante incômodo
+após algumas horas. Eu em particular, nunca achei desconfortável ler na tela
+do computador, então a tela do Lev que muitos alegam ser mais confortável
+não é lá muito significativa para mim. Mas de qualquer forma eu gosto muito
+da telinha dele.</p>
+
+<p>Rapidamente o Lev passou a ter certo peso em minha vida. Comecei a copiar
+nele manuais de softwares e linguagens de programação, e até mesmo partituras
+de músicas. Como já disse, nunca me incomodei em ler no computador. Mas ter
+outra tela para ler e não precisar ficar alternando entre janelas é bem mais
+satisfatório do que eu poderia ter imaginado. Eu já o levo até na igreja, para
+ler a Bíblia e outros livros religiosos.</p>
+
+<p>Para aqueles que chegaram aqui esperando encontrar especificações do
+equipamento, ele possui uma tela de 6 polegadas com resolução de 758 x 1024 e
+pesa 190 grama. A memória interna é de 4 GB e possui entrada para cartão
+miroSD. Os formatos de texto suportados são: ePub, PDF (Adobe DRM), HTML, TXT
+e FB2. E os formatos de imagem são: JPEG, PNG, GIF, BMP, ICO, TIF e PSD. Não
+possui suporte a qualquer tipo de áudio ou vídeo. Os formatos de texto ePub e
+PDF são os únicos que suportam índice, então podemos descartar o uso dos
+outros formatos pois num formato sem papel onde não podemos folhear o índice
+é indispensável. E o formato PDF, com poucas exceções, é bastante
+desconfortável para ler. Mas isso não é um problema com o Lev, mas com o
+formato. Na verdade, o Lev possui muitas ferramentas que tornam possíveis
+a leitura de arquivos PDF como zoom, text reflow, cortar margens. Mas nada
+disso é suficiente para um formato que foi feito para impressão e telas
+grandes. Posso resumir dizendo que ePub é o único formato adequado para
+o Lev.</p>
+
+<p>Há pessoas que argumentam não haver coisa melhor que ler em um livro de
+papel. Poder folhear, fazer anotações a caneta, etc. Mas eu não sou uma delas.
+Eu nunca anoto nada nos livros, acho uma agressivo riscar, amassar ou sujar um
+livro. Para mim um livro é algo a ser tratado com respeito e cuidado para o
+preservar. Com o Lev posso fazer quantas anotações quiser sem agredir a
+integridade do livro, as anotações são gravadas em um arquivo separado e o
+arquivo do livro vai continuar intocado com o mesmo md5sum. Mesmo as
+propriedades de data e hora de criação ou modificação do arquivo permanecerão
+intocadas. E folhear nunca vai ser tão eficiente quanto o recurso de busca,
+especialmente útil em caso de manuais de referência.</p>
+
+<p>Para não terminar sem nenhuma crítica, preciso dizer que ao contrário de
+todas as resenhas que já li é bem incomodo usar a tela touch dele. Na
+verdade, na maior parte do tempo não é tão incomodo assim pois vamos somente
+passar páginas numa leitura contínua. Mas no caso de uma pesquisa a um
+manual de referência, onde vamos interagir bastante com a tela até chegar
+onde queremos é bastante frustrante. Nunca usei outro leitor digital, de
+forma que a minha opinião não está baseada em comparação com outros do
+gênero. Pelos elogios que já li sobre a tela do Lev só existe uma explicação:
+os outros leitores digitais devem ser um inferno. Porque a tela do Lev
+algumas vezes não responde aos toques e outras vezes dispara vários toques
+de uma única vez. Até mesmo passar páginas às vezes pode frustrar disparando
+vários toques, tanto para frente quanto para traz. Isso geralmente ocorre ao
+navegar uma pasta com imagens, é raro acontecer com documentos de texto
+(talvez seja um problema com alguns formatos específicos). Mas o problema não
+é tão grande a ponto de comprometer meu gosto pelo equipamento.</p>
+
+<p>Por fim, não poderia finalizar o artigo sem uma nerdice típica. O software
+do Lev gera automaticamente alguns arquivos para cada livro presente no Lev.
+No entanto com o passar do tempo, conforme você guarda mais e mais livros,
+apaga alguns, renomeia, move de pastas, vão ficando armazenados arquivos
+inúteis. E isso me incomoda muito, pois ocupa espaço na memória e talvez
+também porque eu seja doido de pedra (o nome do blog já é uma dica). Então
+criei o <em>shell script</em> abaixo para remover arquivos órfãos:</p>
+
+{% highlight sh %}
+{% include sh/levcheck %}
+{% endhighlight %}
+</section>

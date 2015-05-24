@@ -1,0 +1,15 @@
+#!/bin/sh
+
+mkdir -p /tmp/levcheck
+find "$HOME/Documents/Lev com luz/Digital Editions/Manifest" -type f > /tmp/levcheck/manifest
+while read line; do
+	if [ ! -f "$(echo "$line" | sed 's-/Digital Editions/Manifest--;s-\.xml$--')" ]; then
+		rm -v "$line"
+	fi
+done < /tmp/levcheck/manifest
+find "$HOME/Documents/Lev com luz/Digital Editions/Thumbnails" -type f > /tmp/levcheck/thumbnails
+while read line; do
+	if [ ! -f "$(echo "$line" | sed 's-/Digital Editions/Thumbnails--;s-\.hd\.png$--')" ]; then
+		rm -v "$line"
+	fi
+done < /tmp/levcheck/thumbnails
