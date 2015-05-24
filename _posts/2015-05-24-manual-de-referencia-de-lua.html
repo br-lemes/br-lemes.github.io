@@ -1,0 +1,52 @@
+---
+comments: true
+layout: post
+title: "Manual de Referência de Lua em ePub"
+tags: [Lua,eBook]
+---
+
+<p>Contei que comprei um leitor digital
+<a href="{% post_url 2015-05-23-o-peso-do-lev %}">Lev</a> recentemente.
+De forma que agora um de meus assuntos de interesse são
+<a href="{{ site.baseurl }}/tags/ebook.html">eBooks</a>. Não me satisfaz
+simplesmente colocar um arquivo HTML no leitor e ler do jeito que ficar.
+Quero algo bem feito, que seja prático de consultar. Então não poderia
+deixar de ter os manuais de referência da minha
+<a href="{% post_url 2013-11-09-linguagens-de-programacao-que-aprendi %}">
+linguagem de programação favorita</a>: Lua. Converti para formato ePub o 
+<a href="{{ site.baseurl }}/downloads/Manual de Referência de Lua 5.1.epub">
+Manual de Referência de Lua 5.1</a> bem como o
+<a href="{{ site.baseurl }}/downloads/Manual de Referência de Lua 5.2.epub">
+Manual de Referência de Lua 5.2</a> ambos em português.</p>
+
+<!-- more -->
+<section id="more">
+<p>Baixei os <a href="http://www.lua.org/manual/">manuais no site oficial
+de Lua</a>. Então usei o <a href="http://pandoc.org/">Pandoc</a> para
+converter o arquivo <code>manual.html</code> para o formato ePub. Não
+converti o arquivo <code>index.html</code> com o índice, pois o formato ePub
+possui um recurso de índice bem mais interessante. Na verdade, cheguei a
+experimentar converter o índice e o resultado não ficou muito bom por isso
+decidi por conservar somente o índice interno do ePub.</p>
+
+<p>Naturalmente, não fiquei satisfeito com o resultado da simples conversão
+automática. Utilizei o <a href="http://sigil-ebook.com/">Sigil</a> para
+editar alguns detalhes, como a capa, o css e retirar algumas seções vazias
+que o Pandoc gerou. Por fim, usei o Sigil também para recriar o índice (TOC),
+agora omitindo as seções vazias que retirei. O resultado ficou bastante
+satisfatório. A única coisa que não gosto é dos exemplos de código em fonte
+mono-espaçada que ultrapassam o limite da tela. A minha solução foi forçar
+quebra de linha com o CSS: <code>pre { white-space: pre-wrap; }</code>. No
+entanto ainda acho que ficaria melhor se pudesse haver uma barra de rolagem.
+</p>
+
+<p>O mantenedor do Sigil parece fazer birrinha e não gostar de Linux, então não
+existe uma versão oficial para Linux. Poderia compilar os fontes mas encontrei
+os <a href="http://www.mobileread.com/forums/showthread.php?t=211754">
+binários do Sigil em formato deb</a> sem muita dificuldade. Lidar com uma
+infinidade de distribuições Linux não é bom, mas eu gosto de como o
+<a href="http://sourceforge.net/projects/iup/files/3.14/Linux Libraries/">
+IUP Lua</a> distribui seus binários de forma não específica a uma
+distribuição. Possuir os binários para Linux, não implica em suporte no
+sentido de resolver todos os problemas que os usuários possam ter.</p>
+</section>
