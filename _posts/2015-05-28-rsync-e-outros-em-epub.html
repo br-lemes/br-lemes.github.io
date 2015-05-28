@@ -1,0 +1,56 @@
+---
+comments: true
+layout: post
+title: "Rsync e outros manuais em ePub"
+tags: [eBook]
+---
+
+<p>Primeiro descrevi o meu novo leitor digital
+<a href="{% post_url 2015-05-23-o-peso-do-lev %}">Lev</a>. Em seguida converti
+os <a href="{% post_url 2015-05-24-manual-de-referencia-de-lua %}">
+Manuais de Referência de Lua em ePub</a>. Mas agora quero dizer que estes não
+foram os primeiros documentos que fiz a conversão. Primeiro foi o manual do
+<a href="https://rsync.samba.org/">Rsync</a>. O interessante é que se trata
+de uma das <a href="http://pt.wikipedia.org/wiki/Man_%28Unix%29">páginas de
+manual do Unix (man pages)</a>. Portanto, aplicando o mesmo procedimento
+você pode ter qualquer página de manual no formato ePub.</p>
+
+<!-- more -->
+<section id="more">
+<p>Experimentei diversas formas, até encontrar uma que me agradasse. Finalmente,
+o procedimento ficou da seguinte forma. Primeiro converto o manual desejado
+para o formato HTML utilizando o
+<a href="http://users.actrix.gen.nz/michael/vhman2html.html">man2html</a>.
+Apesar de existirem outros softwares para a tarefa, este foi o que mais me
+agradou. Na realidade, não me agradou muito. As listas de ítens, por exemplo,
+ao invés de utilizarem o elemento <code>&lt;ul&gt;</code> é utilizado
+<code>&lt;dl&gt;</code> usando a letra <code>&ldquo;o&rdquo;</code> como
+marcador. Bastante desagradável, mas melhor que as outras alterativas que
+experimentei.</p>
+
+<p>Depois uso o <a href="http://pandoc.org/">Pandoc</a> para converter o
+HTML em ePub. Assim como descrevi no outro tópico sobre o manual de Lua.
+E por fim uso o <a href="http://sigil-ebook.com/">Sigil</a> para editar os
+detalhes. E aproveitando o tema, também converti este
+<a href="http://everythinglinux.org/rsync/rsync_content.html">Tutorial do
+Rsync</a> que já é em HTML mesmo. Foi depois disso que converti os manuais
+de Lua.</p>
+
+<p>Por fim resolvi converter as traduções
+<a href="{% post_url 2010-09-12-de-quando-e-ligado-ate-o-bash %}">
+De Quando é Ligado até o Bash</a> e
+<a href="{% post_url 2010-09-12-como-construir-um-sistema-linux-minimo %}">
+Como Construir um Sistema Linux Mínimo do Código Fonte</a>. Usei o pandoc com
+o formato HTML. Talvez pudesse ter usado o original SGML. No entanto a
+conversão ficou tão boa que me dei por satisfeito e concluí o trabalho.
+Fiquei surpreso em quão boa ficou a conversão a partir destes arquivos. Foi
+a melhor que já realizei até o momento. Segue os arquivos para download:</p>
+
+<ul>
+<li><a href="/downloads/rsync.epub">Página de manual do rsync</a></li>
+<li><a href="/downloads/rsyncd.conf.epub">Página de manual do rsyncd.conf</a></li>
+<li><a href="/downloads/rsync-tutorial.epub">Tutorial do rsync</a></li>
+<li><a href="/downloads/power2bash.pt_BR.epub">De Quando é Ligado até o Bash</a></li>
+<li><a href="/downloads/buildMin.pt_BR.epub">Como Construir um Sistema Linux Mínimo do Código Fonte</a></li>
+</ul>
+</section>
