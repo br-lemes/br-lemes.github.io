@@ -5,12 +5,16 @@ title: "[Script TW] Filtro simples de pesquisa"
 tags: [Tribal Wars]
 ---
 
-{% include autorizado.html topic="118282" %}
+{% include autorizado.html topic="118282" teste="23/06/2015" version="8.34.2" %}
 
 <p>Se você gosta de deixar todas as suas aldeias com tudo pesquisado, quando
 tiver muitas aldeias vai dar um trabalhinho encontrar aldeias que ainda
 possuem pesquisas faltando. Este script vai lhe facilitar a vida, use em
 <strong>Visualizações - Pesquisa</strong>.</p>
+
+{% highlight js %}
+javascript:$.getScript('http://dl.dropbox.com/u/72485850/tribalwarsbrasil/filtro_de_pesquisa_simples.js');void(0);
+{% endhighlight %}
 
 <!-- more -->
 
@@ -18,10 +22,6 @@ possuem pesquisas faltando. Este script vai lhe facilitar a vida, use em
 <p>Ao clicar nele você vai ver apenas as aldeias que tem alguma pesquisa
 faltando, qualquer uma que seja.</p>
 </section>
-
-{% highlight js %}
-javascript:$.getScript('http://dl.dropbox.com/u/72485850/tribalwarsbrasil/filtro_de_pesquisa_simples.js');void(0);
-{% endhighlight %}
 
 <p>A diferença entre este e o
 <a href="http://forum.tribalwars.com.br/showthread.php?t=118568">
@@ -35,15 +35,7 @@ com ou sem arqueiro, não sei como são mundos com ferreiro por níveis.</p>
 <p>Para completar, confira o código completo do script:</p>
 
 {% highlight js %}
-javascript:
-$('#techs_table tr:not(:first)').each(function(i,e){
-  var h = true;
-  $(e).find('[class^=rtt]').each(function(i,e){
-    if (!$(e).attr('class').match('green')) h = false;
-  });
-  if (h) e.parentNode.removeChild(e);
-});
-void(0);
+{% include scripts-tw/filtro_de_pesquisa_simples.js %}
 {% endhighlight %}
 
 <p>Este é bem simples né? É o primeiro que aprendi fazer com
