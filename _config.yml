@@ -1,8 +1,3 @@
-# Jekyll configuration
-
-name: Insanidade Aleatória
-description: br_lemes, o %s insano (%s)
-
 # url is currently only used only for the RSS feed in feed.xml
 url: http://www.br-lemes.net
 
@@ -18,13 +13,11 @@ github: 'br-lemes'
 # Set this to your UA-# value, or '' to disable the block completely
 gaaccount: 'UA-56084241-1'
 
-# Set this to your disqus shortname to enable comments. Note that the 'comments'
-# setting below must also be true. Individual posts can override 'comments' to
-# disable on a post-by-post basis
+# Set this to your disqus shortname to enable comments.
 disqus: 'br-lemes'
-comments: true
 
 permalink: /:year/:month/:title.html
+permaext: true
 paginate: 5
 
 highlighter: pygments
@@ -37,6 +30,12 @@ exclude: ['README.md', 'LICENSE']
 excerpt_separator: '<!-- more -->'
 
 default_paneltype: success
+
+defaults:
+  -
+    values:
+      comments: true
+      lang: pt-BR
 
 gems:
   - jekyll-sitemap
