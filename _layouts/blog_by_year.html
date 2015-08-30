@@ -4,12 +4,14 @@ layout: default
 
 {% include open-panel.html %}
 		<h1 class="panel-title">
-			<i class="fa fa-calendar"></i>
-			<a href="/archive/{{ page.title }}.html">
+			<a href="{{ site.baseurl }}/archive/{{ page.title }}{% if site.permaext %}.html{% else %}/{% endif %}">
+				<img src="{{ site.baseurl }}/images/calendar.png" width="16" height="16">
 				{{ page.title }}
 			</a>
-			<i class="fa fa-archive pull-right"></i>
-			<a class="pull-right" href="/archive/">Arquivo geral</a>
+			<a class="pull-right" href="{{ site.baseurl }}/archive/">
+				{{ site.data[page.lang].allArchives }}
+				<img src="{{ site.baseurl }}/images/archive.png" width="16" height="16">
+			</a>
 		</h1>
 	</div>
 </div>

@@ -4,12 +4,14 @@ layout: default
 
 {% include open-panel.html %}
 		<h1 class="panel-title">
-			<i class="fa fa-tag"></i>
-			<a href="/tags/{{ page.title | downcase | replace: ' ', '-' }}.html">
+			<a href="{{ site.baseurl }}/tags/{{ page.title | downcase | replace: ' ', '-' }}{% if site.permaext %}.html{% else %}/{% endif %}">
+				<img src="{{ site.baseurl }}/images/tag.png" width="16" height="16">
 				{{ page.title }}
 			</a>
-			<i class="fa fa-tags pull-right"></i>
-			<a class="pull-right" href="/tags/">Todas as tags</a>
+			<a class="pull-right" href="{{ site.baseurl }}/tags/">
+				{{ site.data[page.lang].allTags }}
+				<img src="{{ site.baseurl }}/images/tags.png" width="16" height="16">
+			</a>
 		</h1>
 	</div>
 </div>

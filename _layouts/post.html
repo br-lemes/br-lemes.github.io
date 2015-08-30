@@ -8,25 +8,25 @@ layout: default
 <hr>
 
 <ul class="pager">
-	{% if page.previous %}
+	{% if page.next %}
 		<li class="previous">
-			<a href="{{ page.previous.url }}">
-				<i class="fa fa-chevron-circle-left fa-lg"></i>
-				Postagem mais antiga
+			<a href="{{ site.baseurl }}{{ page.next.url }}">
+				<img src="{{ site.baseurl }}/images/previous.png" width="16" height="16">
+				{{ site.data[page.lang].newerPost }}
 			</a>
 		</li>
 	{% endif %}
-	{% if page.next %}
+	{% if page.previous %}
 		<li class="next">
-			<a href="{{ page.next.url }}">
-				Postagem mais recente
-				<i class="fa fa-chevron-circle-right fa-lg"></i>
+			<a href="{{ site.baseurl }}{{ page.previous.url }}">
+				{{ site.data[page.lang].olderPost }}
+				<img src="{{ site.baseurl }}/images/next.png" width="16" height="16">
 			</a>
 		</li>
 	{% endif %}
 </ul>
 
-{% if page.comments %}
+{% if site.disqus and site.disqus != '' and page.comments %}
 <div id="disqus_thread">
 	<noscript>Please enable JavaScript to view the
 		<a href="http://disqus.com/?ref_noscript">
