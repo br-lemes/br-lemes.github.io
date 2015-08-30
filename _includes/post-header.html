@@ -1,36 +1,33 @@
 {% include open-panel.html %}
 	<h1 class="panel-title">
-			<a href="{{ include.post.url }}">
+			<a href="{{ site.baseurl }}{{ include.post.url }}">
+				<img src="{{ site.baseurl }}/images/post.png" width="16" height="16">
 				{{ include.post.title }}
 			</a>
 		</h1>
 	</div>
 	<div class="panel-body">
 		{% if include.post.date %}
-			<div class="btn-group">
-				<a class="btn btn-success btn-xs btn-tag fa fa-calendar"
-					href="/archive/{{ include.post.date | date: '%Y' }}.html"></a>
-				<a class="btn btn-success btn-xs"
-					href="/archive/{{ include.post.date | date: '%Y' }}.html">
-					{{ include.post.date | date: '%d/%m/%Y' }}
-				</a>
-			</div>
+		<a class="btn btn-success btn-xs"
+			href="{{ site.baseurl }}/archive/{{ include.post.date | date: '%Y' }}{% if site.permaext %}.html{% else %}/{% endif %}">
+			<img src="{{ site.baseurl }}/images/calendar.png" width="16" height="16">
+			{{ include.post.date | date: '%d/%m/%Y' }}
+		</a>
 		{% endif %}
 		{% for tag in include.post.tags %}
-			<div class="btn-group">
-				<a class="btn btn-success btn-xs btn-tag fa fa-tag"
-					href="/tags/{{ tag | downcase | replace: ' ', '-' }}.html"></a>
-				<a class="btn btn-success btn-xs"
-					href="/tags/{{ tag | downcase | replace: ' ', '-' }}.html">
-						{{ tag }}
-				</a>
-			</div>
+		<a class="btn btn-success btn-xs"
+			href="{{ site.baseurl }}/tags/{{ tag | downcase | replace: ' ', '-' }}{% if site.permaext %}.html{% else %}/{% endif %}">
+			<img src="{{ site.baseurl }}/images/tag.png" width="16" height="16">
+			{{ tag }}
+		</a>
 		{% endfor %}
-		{% if site.comments == true and include.post.comments == true and site.disqus != '' %}
+		{% if site.disqus and site.disqus != '' and include.post.comments %}
 		<div class="btn-group">
-			<i class="btn btn-success btn-xs btn-tag fa fa-comments"></i>
-			<a class="btn btn-success btn-xs post-btn"
-				href="{{ include.post.url }}#disqus_thread">
+			<div class="btn btn-success btn-xs">
+				<img src="{{ site.baseurl }}/images/comments.png" width="16" height="16">
+			</div>
+			<a class="btn btn-success btn-xs"
+				href="{{ site.baseurl }}{{ include.post.url }}#disqus_thread">
 				Comentários
 			</a>
 		</div>

@@ -1,6 +1,11 @@
 {% include post-header.html post=include.post %}
 		{{ include.post.excerpt }}
-		<p class="text-center"><a href="{{ post.url }}#more"
-			class="btn btn-success btn-sm">Continuar Lendo</a></p>
+		{% if post.content contains site.excerpt_separator %}
+		<p class="text-center"><a href="{{ site.baseurl }}{{ post.url }}#more"
+			class="btn btn-success btn-sm">
+			{{ site.data[page.lang].readMore }}
+			<img src="{{ site.baseurl }}/images/next.png" width="16" height="16">
+		</a></p>
+		{% endif %}
 	</div>
 </div>

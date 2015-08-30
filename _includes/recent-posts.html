@@ -1,9 +1,10 @@
 {% include open-panel.html %}
-		<h3 class="panel-title">Postagens recentes</h3>
+		<h3 class="panel-title">{{ site.data[page.lang].recentPosts }}</h3>
 	</div>
 	<div class="list-group">
 		{% for post in site.posts limit:5 %}
-		<a class="list-group-item" href="{{ post.url }}">
+		<a class="list-group-item" href="{{ site.baseurl }}{{ post.url }}">
+			<img src="{{ site.baseurl }}/images/post.png" width="16" height="16">
 			{{ post.title }}
 		</a>
 		{% endfor %}
