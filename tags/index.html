@@ -4,11 +4,11 @@ title: Todas as tags
 ---
 
 {% include open-panel.html %}
-	<div class="panel-title">
-		<i class="fa fa-tags pull-left "></i>
-	</div>
 	<h1 class="panel-title">
-		<a href="/tags/">{{ page.title }}</a>
+		<a href="{{ site.baseurl }}/tags/">
+			<img src="{{ site.baseurl }}/images/tags.png" width="16" height="16">
+			{{ site.data[page.lang].allTags }}
+		</a>
 	</h1>
 </div></div>
 
@@ -18,13 +18,14 @@ title: Todas as tags
 {% for tag in sortedtags %}
 	{% include open-panel.html %}
 	<h2 class="panel-title">
-		<i class="fa fa-tag "></i>
-		<a href="/tags/{{ tag | downcase | replace: ' ', '-' }}.html">
+		<a href="{{ site.baseurl }}/tags/{{ tag | downcase | replace: ' ', '-' }}{% if site.permaext %}.html{% else %}/{% endif %}">
+			<img src="{{ site.baseurl }}/images/tag.png" width="16" height="16">
 			{{ tag }}
 		</a>
 	</h2></div>
 	{% for post in site.tags[tag] %}
-		<a class="list-group-item" href="{{ post.url}}">
+		<a class="list-group-item" href="{{ site.baseurl }}{{ post.url}}">
+			<img src="{{ site.baseurl }}/images/post.png" width="16" height="16">
 			{{ post.title }}
 		</a>
 	{% endfor %}

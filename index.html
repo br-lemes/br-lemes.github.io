@@ -8,33 +8,37 @@ layout: default
 
 <div class="panel panel-default">
 	<div class="panel-body">
-		<div class="text-center">Página: {{ paginator.page }} de {{ paginator.total_pages }}</div>
-		{% if paginator.next_page %}
+		<div class="text-center">{{ site.data[page.lang].page }}:
+		{{ paginator.page }} {{ site.data[page.lang].of }}
+		{{ paginator.total_pages }}</div>
+		{% if paginator.next_page or paginator.previous_page %}
 		<ul class="pager">
 			{% if paginator.previous_page %}
 				{% if paginator.previous_page == 1 %}
 					<li class="previous">
-						<a href="/index.html">
-							<i class="fa fa-chevron-circle-left fa-lg"></i>
-							Postagens mais recentes
+						<a href="{{ site.baseurl }}/index.html">
+							<img src="{{ site.baseurl }}/images/previous.png" width="16" height="16">
+							{{ site.data[page.lang].newerPost }}
 						</a>
 					</li>
 				{% else %}
 					<li class="previous">
-						<i class="fa fa-chevron-circle-left fa-lg"></i>
-						<a href="/page{{ paginator.previous_page }}">
-							Postagens mais recentes
+						<a href="{{ site.baseurl }}/page{{ paginator.previous_page }}">
+							<img src="{{ site.baseurl }}/images/previous.png" width="16" height="16">
+							{{ site.data[page.lang].newerPost }}
 						</a>
 					</li>
 				{% endif %}
 			{% endif %}
+			{% if paginator.next_page %}
 				<li class="next">
-					<a href="/page{{ paginator.next_page }}">
-						Postagens mais antigas
-						<i class="fa fa-chevron-circle-right fa-lg"></i>
+					<a href="{{ site.baseurl }}/page{{ paginator.next_page }}">
+						{{ site.data[page.lang].olderPost }}
+						<img src="{{ site.baseurl }}/images/next.png" width="16" height="16">
 					</a>
 				</li>
 			{% endif %}
 		</ul>
+		{% endif %}
 	</div>
 </div>

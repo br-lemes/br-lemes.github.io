@@ -4,16 +4,16 @@ title: Arquivo geral
 ---
 
 {% include open-panel.html %}
-	<div class="panel-title">
-		<i class="fa fa-archive pull-left"></i>
-	</div>
 	<h1 class="panel-title">
-		<a href="/archive/">{{ page.title }}</a>
+		<a href="{{ site.baseurl }}/archive/">
+			<img src="{{ site.baseurl }}/images/archive.png" width="16" height="16">
+			{{ site.data[page.lang].allArchives }}
+		</a>
 	</h1>
 </div></div>
 
 {% comment %}
-	Precisa abrir uma div para ter o que fechar na primeira interação.
+	Dummy div to close first loop step.
 {% endcomment %} <div>
 
 {%for post in site.posts %}
@@ -21,13 +21,14 @@ title: Arquivo geral
 		</div>
 		{% include open-panel.html %}
 		<h2 class="panel-title">
-			<i class="fa fa-calendar"></i>
-			<a href="/archive/{{ post.date | date: '%Y' }}.html">
+			<a href="{{ site.baseurl }}/archive/{{ post.date | date: '%Y' }}{% if site.permaext %}.html{% else %}/{% endif %}">
+				<img src="{{ site.baseurl }}/images/calendar.png" width="16" height="16">
 				{{ post.date | date: '%Y' }}
 			</a>
 		</h2></div>
 	{% endifchanged %}
-	<a class="list-group-item" href="{{ post.url}}">
+	<a class="list-group-item" href="{{ site.baseurl }}{{ post.url}}">
+		<img src="{{ site.baseurl }}/images/post.png" width="16" height="16">
 		{{ post.title }}
 	</a>
 {% endfor %}
