@@ -8,7 +8,7 @@ tags: [Programação, Traduções, Lua]
 <p class="text-center">Por Steve Donovan - Tradução Breno Ramalho Lemes</p>
 
 <p class="text-center">
-<a href="/2011/02/um-guia-basico-de-utilizacao-do-iuplua.html">Parte 1</a>
+<a href="{{ site.baseurl }}/2011/02/um-guia-basico-de-utilizacao-do-iuplua.html">Parte 1</a>
 | Parte 2</p>
 
 <h3>Saída Simples</h3>
@@ -27,7 +27,7 @@ iup.Message('Seu Aplicativo','Concluído com sucesso!')
 <!-- more -->
 
 <section id="more">
-<img class="center-block img-responsive" src="/images/screenshot1.png">
+<img class="center-block img-responsive" src="{{ site.baseurl }}/images/screenshot1.png">
 </section>
 
 <p>É claro que, muitas operações exigem a confirmação do usuário.
@@ -46,7 +46,7 @@ elseif b == 3 then
 end
 {% endhighlight %}
 
-<img class="center-block img-responsive" src="/images/screenshot2.png">
+<img class="center-block img-responsive" src="{{ site.baseurl }}/images/screenshot2.png">
 
 <p>Assim como <code>iup.Message</code>, o primeiro parâmetro aparece na
 barra de título da caixa de diálogo, o segundo parâmetro aparece acima dos
@@ -73,7 +73,7 @@ elseif err == -1 then
 end
 {% endhighlight %}
 
-<img class="center-block img-responsive" src="/images/screenshot3.png">
+<img class="center-block img-responsive" src="{{ site.baseurl }}/images/screenshot3.png">
 
 <p>Isto irá lhe apresentar a caixa de diálogo abrir arquivo padrão do Windows,
 e permitir que você escolha um nome de arquivo, ou cancele a operação. Note
@@ -93,7 +93,7 @@ if res ~= "" then
 end
 {% endhighlight %}
 
-<img class="center-block img-responsive" src="/images/screenshot4.png">
+<img class="center-block img-responsive" src="{{ site.baseurl }}/images/screenshot4.png">
 
 <p>Se usar esta janela, você pode inserir quantas linhas quiser, e
 pressionar OK.</p>
@@ -111,7 +111,7 @@ res, name = iup.GetParam("Título", nil, "Dê o seu nome: %s\n","")
 iup.Message("Olá!",name)
 {% endhighlight %}
 
-<img class="center-block img-responsive" src="/images/screenshot5.png">
+<img class="center-block img-responsive" src="{{ site.baseurl }}/images/screenshot5.png">
 
 <p>Há duas vantagens sobre a iup.GetText simples, você pode dar uma linha
 de comando, onde você pode pressionar enter depois de digitar o texto.</p>
@@ -133,7 +133,7 @@ res, prof = iup.GetParam("Título", nil,
 	"Dê sua profissão: %l|Professor|Explorador|Engenheiro|\n",0)
 {% endhighlight %}
 
-<img class="center-block img-responsive" src="/images/screenshot6.png">
+<img class="center-block img-responsive" src="{{ site.baseurl }}/images/screenshot6.png">
 
 <p>Observe a lista <code>|item1|item2|...|</code> após o formato <code>l%
 </code>, estas são as opções apresentadas para o usuário. O valor inicial
@@ -156,10 +156,10 @@ if res ~= 0 then
 end
 {% endhighlight %}
 
-<img class="center-block img-responsive" src="/images/screenshot7.png">
+<img class="center-block img-responsive" src="{{ site.baseurl }}/images/screenshot7.png">
 
 <p class="text-center">
-<a href="/2011/02/um-guia-basico-de-utilizacao-do-iuplua.html">Parte 1</a>
+<a href="{{ site.baseurl }}/2011/02/um-guia-basico-de-utilizacao-do-iuplua.html">Parte 1</a>
 | Parte 2</p>
 
 <hr>
@@ -167,6 +167,6 @@ end
 <p><strong>NOTAS DA TRADUÇÃO</strong>: você pode baixar um arquivo com
 todos exemplos desta parte do guia (com as mensagens traduzidas) e também
 um interpretador Lua e as bibliotecas IupLua para Windows:
-<a href="/downloads/guiaiuplua-parte2.zip">guiaiuplua-parte2.zip</a>.</p>
+<a href="{{ site.baseurl }}/downloads/guiaiuplua-parte2.zip">guiaiuplua-parte2.zip</a>.</p>
 
 <p>br_lemes, o Zumbi insano (Hipossônia)</p>
