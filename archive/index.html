@@ -14,21 +14,22 @@ title: Arquivo geral
 
 <div class="panel-group" id="accordion">
 
-{% assign first = true %}
+{% capture firstyear %}{{ site.posts[0].date | date: '%Y' }}{% endcapture %}
+
 {%for post in site.posts %}
 	{% ifchanged %}
-		{% unless first %}</div></div>{% endunless %}
+		{% capture postyear %}{{ post.date | date: '%Y' }}{% endcapture %}
+		{% if firstyear != postyear %}</div></div>{% endif %}
 		{% include open-panel.html %}
 		<h2 class="panel-title">
-			<a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ post.date | date: '%Y' }}" style="margin-right: 20px; text-decoration: none;">
+			<a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ postyear }}" style="margin-right: 20px; text-decoration: none;">
 				<img src="{{ site.baseurl }}/images/bullet_down.png" width="16" height="16">
 			</a>
-			<a href="{{ site.baseurl }}/archive/{{ post.date | date: '%Y' }}{% if site.permaext %}.html{% else %}/{% endif %}">
+			<a href="{{ site.baseurl }}/archive/{{ postyear }}{% if site.permaext %}.html{% else %}/{% endif %}">
 				<img src="{{ site.baseurl }}/images/calendar.png" width="16" height="16">
-				{{ post.date | date: '%Y' }}
+				{{ postyear }}
 			</a>
-		</h2></div><div id="collapse{{ post.date | date: '%Y' }}" class="panel-collapse collapse {% if first %}in{% endif %}">
-		{% if first %}{% assign first = false %}{% endif %}
+		</h2></div><div id="collapse{{ postyear }}" class="panel-collapse collapse {% if firstyear == postyear %}in{% endif %}">
 	{% endifchanged %}
 	<a class="list-group-item" href="{{ site.baseurl }}{{ post.url}}">
 		<img src="{{ site.baseurl }}/images/post.png" width="16" height="16">
