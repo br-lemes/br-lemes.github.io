@@ -15,19 +15,25 @@ title: All Tags
 {% capture tags %}{% for tag in site.tags %}{{ tag[0] }}!{% endfor %}{% endcapture %}
 {% assign sortedtags = tags | split:'!' | sort %}
 
+<div class="panel-group" id="accordion">
 {% for tag in sortedtags %}
 	{% include open-panel.html %}
 	<h2 class="panel-title">
+		<a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ tag | replace: ' ', '-' }}" style="margin-right: 20px; text-decoration: none;">
+			<img src="{{ site.baseurl }}/images/bullet_down.png" width="16" height="16">
+		</a>
 		<a href="{{ site.baseurl }}/tags/{{ tag | downcase | replace: ' ', '-' }}{% if site.permaext %}.html{% else %}/{% endif %}">
 			<img src="{{ site.baseurl }}/images/tag.png" width="16" height="16">
 			{{ tag }}
 		</a>
 	</h2></div>
+	<div id="collapse{{ tag | replace: ' ', '-' }}" class="panel-collapse collapse {% if tag == sortedtags[0] %}in{% endif %}">
 	{% for post in site.tags[tag] %}
 		<a class="list-group-item" href="{{ site.baseurl }}{{ post.url}}">
 			<img src="{{ site.baseurl }}/images/post.png" width="16" height="16">
 			{{ post.title }}
 		</a>
 	{% endfor %}
-	</div>
+	</div></div>
 {% endfor %}
+</div>

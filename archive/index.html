@@ -12,24 +12,29 @@ title: All Archives
 	</h1>
 </div></div>
 
-{% comment %}
-	Dummy div to close first loop step.
-{% endcomment %} <div>
+<div class="panel-group" id="accordion">
 
+{% assign first = true %}
 {%for post in site.posts %}
 	{% ifchanged %}
-		</div>
+		{% unless first %}</div></div>{% endunless %}
 		{% include open-panel.html %}
 		<h2 class="panel-title">
+			<a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ post.date | date: '%Y' }}" style="margin-right: 20px; text-decoration: none;">
+				<img src="{{ site.baseurl }}/images/bullet_down.png" width="16" height="16">
+			</a>
 			<a href="{{ site.baseurl }}/archive/{{ post.date | date: '%Y' }}{% if site.permaext %}.html{% else %}/{% endif %}">
 				<img src="{{ site.baseurl }}/images/calendar.png" width="16" height="16">
 				{{ post.date | date: '%Y' }}
 			</a>
-		</h2></div>
+		</h2></div><div id="collapse{{ post.date | date: '%Y' }}" class="panel-collapse collapse {% if first %}in{% endif %}">
+		{% if first %}{% assign first = false %}{% endif %}
 	{% endifchanged %}
 	<a class="list-group-item" href="{{ site.baseurl }}{{ post.url}}">
 		<img src="{{ site.baseurl }}/images/post.png" width="16" height="16">
 		{{ post.title }}
 	</a>
 {% endfor %}
+</div>
+</div>
 </div>
