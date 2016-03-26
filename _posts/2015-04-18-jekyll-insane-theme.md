@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "Jekyll Insane Theme"
+tags: [Readme]
 comments: true
 ---
 
