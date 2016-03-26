@@ -16,29 +16,3 @@ section {
 .btn-tag {
 	margin-bottom: 5px;
 }
-
-.footer {
-	display: none;
-}
-
-@media (min-width: 480px) {
-	.footer {
-		display: block;
-	}
-}
-
-/* O código abaixo precisa ser revisado (retirar cores) */
-
-.footer a {
-	color: #18bc9c;
-}
-
-.footer a:visited {
-	color: #18bc9c;
-}
-
-.footer p {
-	margin: 0;
-	text-align: center;
-	color: #fff;
-}
