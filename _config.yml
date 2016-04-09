@@ -16,10 +16,8 @@ gaaccount: ''
 # Set this to your disqus shortname to enable comments.
 disqus: 'br-lemes'
 
-permalink: /:year/:month/:title
+permalink: /:year/:month/:title/
 paginate: 5
-
-highlighter: rouge
 
 exclude: ['README.md', 'LICENSE']
 
@@ -34,4 +32,5 @@ defaults:
       lang: en
 
 gems:
+  - jekyll-paginate
   - jekyll-sitemap
