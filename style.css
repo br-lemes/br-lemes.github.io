@@ -1,6 +1,7 @@
 ---
 ---
-
+{% include css/bootstrap.min.css %}
+{% include css/syntax.css %}
 body {
 	padding-top: 70px;
 	padding-bottom: 70px;
