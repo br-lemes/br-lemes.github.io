@@ -11,9 +11,9 @@ layout: compress
 		{% if page.title %}{{ page.title }} - {% endif %}{{ site.data[page.lang].blogName }}
 	</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<script src="{{ site.baseurl }}/javascript.js"></script>
 	<link href="{{ site.baseurl }}/style.css" rel="stylesheet">
 	<link href="{{ site.baseurl }}/favicon.ico" rel="shortcut icon">
+	<script src="{{ site.baseurl }}/javascript.js"></script>
 </head>
 
 <body>
@@ -35,24 +35,24 @@ layout: compress
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
 						<li><a href="{{ site.baseurl }}/archive{% if site.permaext %}.html{% else %}/{% endif %}">
-							<img src="{{ site.baseurl }}/images/archive.png" width="16" height="16">
+							<i class="icon-archive"></i>
 							{{ site.data[page.lang].archive }}
 						</a></li>
 						<li><a href="{{ site.baseurl }}/tags{% if site.permaext %}.html{% else %}/{% endif %}">
-							<img src="{{ site.baseurl }}/images/tags.png" width="16" height="16">
+							<i class="icon-tags"></i>
 							{{ site.data[page.lang].tags }}
 						</a></li>
 						<li><a href="{{ site.baseurl }}/about{% if site.permaext %}.html{% else %}/{% endif %}">
-							<img src="{{ site.baseurl }}/images/about.png" width="16" height="16">
+							<i class="icon-about"></i>
 							{{ site.data[page.lang].about }}
 						</a></li>
 						<li><a href="{{ site.baseurl }}/feed.xml">
-							<img src="{{ site.baseurl }}/images/feed.png" width="16" height="16">
+							<i class="icon-feed"></i>
 							{{ site.data[page.lang].rss }}
 						</a></li>
 						{% if site.github and site.github != '' %}
 							<li><a href="https://github.com/{{ site.github }}">
-								<img src="{{ site.baseurl }}/images/github.png" width="16" height="16">
+								<i class="icon-github"></i>
 								{{ site.data[page.lang].github }}
 							</a></li>
 						{% endif %}

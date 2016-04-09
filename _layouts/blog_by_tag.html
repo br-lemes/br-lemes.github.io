@@ -5,12 +5,12 @@ layout: default
 {% include open-panel.html %}
 		<h1 class="panel-title">
 			<a href="{{ site.baseurl }}/tags/{{ page.title | downcase | replace: ' ', '-' }}{% if site.permaext %}.html{% else %}/{% endif %}">
-				<img src="{{ site.baseurl }}/images/tag.png" width="16" height="16">
+				<i class="icon-tag"></i>
 				{{ page.title }}
 			</a>
 			<a class="pull-right" href="{{ site.baseurl }}/tags/">
 				{{ site.data[page.lang].allTags }}
-				<img src="{{ site.baseurl }}/images/tags.png" width="16" height="16">
+				<i class="icon-tags"></i>
 			</a>
 		</h1>
 	</div>

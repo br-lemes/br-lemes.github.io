@@ -17,14 +17,14 @@ layout: default
 				{% if paginator.previous_page == 1 %}
 					<li class="previous">
 						<a href="{{ site.baseurl }}/index.html">
-							<img src="{{ site.baseurl }}/images/previous.png" width="16" height="16">
+							<i class="icon-previous"></i>
 							{{ site.data[page.lang].newerPost }}
 						</a>
 					</li>
 				{% else %}
 					<li class="previous">
 						<a href="{{ site.baseurl }}/page{{ paginator.previous_page }}">
-							<img src="{{ site.baseurl }}/images/previous.png" width="16" height="16">
+							<i class="icon-previous"></i>
 							{{ site.data[page.lang].newerPost }}
 						</a>
 					</li>
@@ -34,7 +34,7 @@ layout: default
 				<li class="next">
 					<a href="{{ site.baseurl }}/page{{ paginator.next_page }}">
 						{{ site.data[page.lang].olderPost }}
-						<img src="{{ site.baseurl }}/images/next.png" width="16" height="16">
+						<i class="icon-next"></i>
 					</a>
 				</li>
 			{% endif %}

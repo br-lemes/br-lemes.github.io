@@ -1,7 +1,7 @@
 {% include open-panel.html %}
 	<h1 class="panel-title">
 			<a href="{{ site.baseurl }}{{ include.post.url }}">
-				<img src="{{ site.baseurl }}/images/post.png" width="16" height="16">
+				<i class="icon-post"></i>
 				{{ include.post.title }}
 			</a>
 		</h1>
@@ -10,21 +10,21 @@
 		{% if include.post.date %}
 		<a class="btn btn-success btn-xs"
 			href="{{ site.baseurl }}/archive/{{ include.post.date | date: '%Y' }}{% if site.permaext %}.html{% else %}/{% endif %}">
-			<img src="{{ site.baseurl }}/images/calendar.png" width="16" height="16">
+			<i class="icon-calendar"></i>
 			{{ include.post.date | date: '%d/%m/%Y' }}
 		</a>
 		{% endif %}
 		{% for tag in include.post.tags %}
 		<a class="btn btn-success btn-xs"
 			href="{{ site.baseurl }}/tags/{{ tag | downcase | replace: ' ', '-' }}{% if site.permaext %}.html{% else %}/{% endif %}">
-			<img src="{{ site.baseurl }}/images/tag.png" width="16" height="16">
+			<i class="icon-tag"></i>
 			{{ tag }}
 		</a>
 		{% endfor %}
 		{% if site.disqus and site.disqus != '' and include.post.comments %}
 		<div class="btn-group">
 			<div class="btn btn-success btn-xs">
-				<img src="{{ site.baseurl }}/images/comments.png" width="16" height="16">
+				<i class="icon-comments"></i>
 			</div>
 			<a class="btn btn-success btn-xs"
 				href="{{ site.baseurl }}{{ include.post.url }}#disqus_thread">
