@@ -20,8 +20,6 @@ permalink: /:year/:month/:title.html
 permaext: true
 paginate: 5
 
-highlighter: rouge
-
 exclude: ['README.md', 'LICENSE']
 
 excerpt_separator: '<!-- more -->'
@@ -35,4 +33,5 @@ defaults:
       lang: pt-BR
 
 gems:
+  - jekyll-paginate
   - jekyll-sitemap

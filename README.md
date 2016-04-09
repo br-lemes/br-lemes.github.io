@@ -1,24 +1,26 @@
-Jekyll Clean
-============
+Jekyll Insane
+=============
 
-* Get it from [github](https://github.com/scotte/jekyll-clean).
-* See the [live demo](https://scotte.github.io/jekyll-clean).
-* See it [in action on my own blog](https://scotte.github.io).
+* Get it from [github](http://github.com/br-lemes/jekyll-insane/).
+* See the [live demo](http://www.br-lemes.net/jekyll-insane/).
+* See it [in action on my own blog](http://www.br-lemes.net/).
 
-A simple and clean Jekyll theme using [bootstrap](http://getbootstrap.com)
-(not to be confused with jekyll-bootstrap) that's easy to modify and very
-modular in component and element reuse.
+A simple and clean Jekyll theme using [bootstrap](http://getbootstrap.com/).
+Based on Scott Emmons' [Jekyll Clean](https://github.com/scotte/jekyll-clean/),
+included this text that's almost the same. See what differs:
 
+* Multi Language.
+* Support for archive and tags.
+* Custom bootstrap theme, icons and other cosmetics.
+
+<!-- more -->
 It uses Disqus for comments and includes Google Analytics support. Both of
-these features are disabled by default and can be enabled via \_config.yml. You
-can also rip this code out of the templates if you like (footer.html and post.html).
-The beauty of Jekyll - keep things clean... Jekyll Clean!
+these features are disabled by default and can be enabled via \_config.yml.
+You can also rip this code out of the templates if you like.
+The beauty of Jekyll and a pinch of insanity from Mr Hyde!
 
-The theme works well on mobile phones, using a collapsable nav bar and hiding the
-sidebar. The links pane in the sidebar is available on mobile through the nav menu,
-and you can do the same thing for any other sections added to the sidebar.
-
-Don't forget to occassionally merge against my upstream repository so you can get
+The theme works well on mobile phones, using a collapsable nav bar. Don't
+forget to occassionally merge against my upstream repository so you can get
 the latest changes. Pull requests are encouraged and accepted!
 
 Installation
@@ -43,9 +45,8 @@ pros and cons.
 You can setup an upstream tracking repository like so:
 
 ```
-$ git remote add upstream git@github.com:scotte/jekyll-clean.git
+$ git remote add upstream git@github.com:br-lemes/jekyll-insane.git
 ```
-
 And now when you wish to merge your own branch onto the latest version of the
 theme, simply do:
 
@@ -54,7 +55,7 @@ $ git fetch upstream
 $ git merge upstream/gh-pages
 ```
 
-Of course you will have to resolve conflicts for \_config.yml, \_includes/links-list.html,
+Of course you will have to resolve conflicts for \_config.yml,
 and \_posts, and so on, but in practice this is pretty simple.
 
 This is how I maintain my own blog which is based on this theme. The old history is
@@ -64,7 +65,6 @@ License
 =======
 
 The content of this theme is distributed and licensed under a
-![License Badge](/images/cc_by_88x31.png)
 [Creative Commons Attribution 4.0 License](https://creativecommons.org/licenses/by/4.0/legalcode)
 
     This license lets others distribute, remix, tweak, and build upon your work,
@@ -73,13 +73,12 @@ The content of this theme is distributed and licensed under a
     dissemination and use of licensed materials.
 
 In other words: you can do anything you want with this theme on any site, just please
-provide a link to [the original theme on github](https://github.com/scotte/jekyll-clean)
+provide a link to [the original theme on github](https://github.com/br-lemes/jekyll-insane)
 so I get credit for the original design. Beyond that, have at it!
 
 This theme includes the following files which are the properties of their
 respective owners:
 
-* js/bootstrap.min.js - [bootstrap](http://getbootstrap.com)
-* css/bootstrap.min.css - [bootstrap](http://getbootstrap.com)
-* js/jquery.min.js - [jquery](https://jquery.com)
-* images/cc_by_88x31.png - [creative commons](https://creativecommons.org)
+* js/bootstrap.min.js - [bootstrap](http://getbootstrap.com/)
+* css/bootstrap.min.css - [bootstrap](http://getbootstrap.com/)
+* js/jquery.min.js - [jquery](https://jquery.com/)
