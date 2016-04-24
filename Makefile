@@ -11,4 +11,4 @@ watch:
 serve:
 	@bundle exec jekyll serve
 
-.PHONY: build profile watch
+.PHONY: build profile watch serve

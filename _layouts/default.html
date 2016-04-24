@@ -11,11 +11,7 @@ layout: compress
 		{% if page.title %}{{ page.title }} - {% endif %}{{ site.data[page.lang].blogName }}
 	</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<script src="{{ site.baseurl }}/js/jquery.min.js"></script>
-	<script src="{{ site.baseurl }}/js/bootstrap.min.js"></script>
-	<link href="{{ site.baseurl }}/css/bootstrap.min.css" rel="stylesheet">
-	<link href="{{ site.baseurl }}/css/theme.css" rel="stylesheet">
-	<link href="{{ site.baseurl }}/css/syntax.css" rel="stylesheet">
+	<link href="{{ site.baseurl }}/style.css" rel="stylesheet">
 	<link href="{{ site.baseurl }}/favicon.ico" rel="shortcut icon">
 </head>
 
@@ -31,31 +27,31 @@ layout: compress
 						<span class="icon-bar"></span>
 					</button>
 					<a class="navbar-brand" href="{{ site.baseurl }}/">
-						<img src="{{ site.baseurl }}/images/logo.png" width="24" height="24">
+						<img alt="Logo" src="{{ site.baseurl }}/images/logo.png" width="24" height="24">
 						{{ site.data[page.lang].blogName }}
 					</a>
 				</div>
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
 						<li><a href="{{ site.baseurl }}/archive{% if site.permaext %}.html{% else %}/{% endif %}">
-							<img src="{{ site.baseurl }}/images/archive.png" width="16" height="16">
+							<i class="icon-archive"></i>
 							{{ site.data[page.lang].archive }}
 						</a></li>
 						<li><a href="{{ site.baseurl }}/tags{% if site.permaext %}.html{% else %}/{% endif %}">
-							<img src="{{ site.baseurl }}/images/tags.png" width="16" height="16">
+							<i class="icon-tags"></i>
 							{{ site.data[page.lang].tags }}
 						</a></li>
 						<li><a href="{{ site.baseurl }}/p/o-que-diabos.html">
-							<img src="{{ site.baseurl }}/images/about.png" width="16" height="16">
+							<i class="icon-about"></i>
 							{{ site.data[page.lang].about }}
 						</a></li>
 						<li><a href="{{ site.baseurl }}/feed.xml">
-							<img src="{{ site.baseurl }}/images/feed.png" width="16" height="16">
+							<i class="icon-feed"></i>
 							{{ site.data[page.lang].rss }}
 						</a></li>
 						{% if site.github and site.github != '' %}
 							<li><a href="https://github.com/{{ site.github }}">
-								<img src="{{ site.baseurl }}/images/github.png" width="16" height="16">
+								<i class="icon-github"></i>
 								{{ site.data[page.lang].github }}
 							</a></li>
 						{% endif %}
@@ -90,8 +86,11 @@ layout: compress
 		</div>
 	</div>
 
-{% include disqus-counts.html %}
-{% include analytics.html %}
+
+	<script src="{{ site.baseurl }}/javascript.js"></script>
+
+	{% include disqus-counts.html %}
+	{% include analytics.html %}
 
 </body>
 </html>
