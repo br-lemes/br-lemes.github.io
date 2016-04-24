@@ -20,6 +20,8 @@ included this text that's almost the same. See what differs:
 * Custom bootstrap theme, icons and other cosmetics.
 
 <!-- more -->
+<div id="more">{% include adsense.html %}</div>
+
 It uses Disqus for comments and includes Google Analytics support. Both of
 these features are disabled by default and can be enabled via \_config.yml.
 You can also rip this code out of the templates if you like.
@@ -53,6 +55,7 @@ You can setup an upstream tracking repository like so:
 ```
 $ git remote add upstream git@github.com:br-lemes/jekyll-insane.git
 ```
+
 And now when you wish to merge your own branch onto the latest version of the
 theme, simply do:
 
