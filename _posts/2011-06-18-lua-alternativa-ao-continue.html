@@ -17,8 +17,8 @@ alguma coisa no conteúdo dele e fechava novamente. Por fim, passava para
 o próximo nome na tabela. Seria algo assim:</p>
 
 <!-- more -->
+<div id="more">{% include adsense.html %}</div>
 
-<section id="more">
 {% highlight lua %}
 for i,v in ipairs(nomes) do
   local arq = io.open(v, "r")
@@ -29,7 +29,6 @@ for i,v in ipairs(nomes) do
   arq:close()
 end
 {% endhighlight %}
-</section>
 
 <p>Tudo bem até aqui, tem um laço <code>for</code> com uma função
 iteradora que vai abir e ler dados de todos os arquivos na tabela

@@ -34,8 +34,8 @@ Porém seu uso pode ser inconveniente por algumas razões, vou citar três:</p>
 </ol>
 
 <!-- more -->
+<div id="more">{% include adsense.html %}</div>
 
-<section id="more">
 <p>A lista de problemas poderia ser bem mais extensa, mas vamos nos ater
 ao meu caso. A ferramenta tem por objetivo simplificar as coisas, e
 precisar configurar uma variável de ambiente previamente não facilita
@@ -44,7 +44,6 @@ ambiente e carregar as bibliotecas. Mas esta é outra coisa que não
 funciona. O sistema verifica a <code>LD_LIBRARY_PATH</code> uma vez ao
 iniciar o programa e modificar a variável de ambiente não mudará
 nada a partir dai.</p>
-</section>
 
 <p>Mas relaxe, porque tem solução. Modificar a variável de ambiente,
 reiniciar o programa e carregar a biblioteca com <code>dlopen</code>.

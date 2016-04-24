@@ -20,8 +20,8 @@ o usam. A maioria deixa por conta do sistema encerrar os processos durante
 o desligamento ou reinicio.</p>
 
 <!-- more -->
+<div id="more">{% include adsense.html %}</div>
 
-<section id="more">
 <p>Então, se o seu addon não tem um <code>/etc/rc.d/pkgs/sd.*</code>, não
 há fórmula fácil. Use o <code>ps</code> para ver os processos rodando e o
 <code>kill</code> ou <code>killall</code> para se livrar deles. Encerrando
@@ -29,7 +29,6 @@ os processos, vamos remover os arquivos que pertencem ao addon. E quais
 são eles? Cada addon tem um arquivo com a lista de seus arquivos
 (incluindo a própria lista), este arquivo fica em <code>
 /var/lib/lrpkg/*.list</code>.
-</section>
 
 <p>Alguns addons listam seus arquivos um a um, mas outros usam coringas
 (*) e/ou diretórios. Então para remover vamos usar o <code>rm -ri</code>,

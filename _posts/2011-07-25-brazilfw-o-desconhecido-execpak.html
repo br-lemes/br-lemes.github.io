@@ -17,8 +17,8 @@ senso paranóico! O caso merece atenção, e resolvi até fazer um artigo extra
 só para expor isso. O procedimento foi realizado na versão 2.32.2.</p>
 
 <!-- more -->
+<div id="more">{% include adsense.html %}</div>
 
-<section id="more">
 <p>Consultando o execpak pude perceber que um addon pode ter mais que um
 arquivo <code>/etc/rc.d/pkgs/rc.*</code> e esse arquivo nem precisa ter o
 mesmo nome do addon. Pude ver também, que alguns addons contém módulos do
@@ -26,7 +26,6 @@ kernel que são iniciados chamando o <code>/etc/rc.d/pkgs/mod.*</code>,
 tarefa que durante a inicialização fica a cargo do <code>
 /etc/rc.d/rc.modules</code> que é um dos primeiros comandos executados
 pelo <code>/etc/rc.d/rc.S</code>.
-</section>
 
 <p>Para não confundir o que inicia o que, vamos revisar o que vimos
 antes. O computador liga e encontra o <code>syslinux</code> que passa o
