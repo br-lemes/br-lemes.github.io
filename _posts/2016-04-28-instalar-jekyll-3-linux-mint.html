@@ -1,0 +1,82 @@
+---
+comments: true
+layout: post
+title: "Como instalar Jekyll 3 no Linux Mint 17 (ou Ubuntu)"
+tags: [Linux]
+---
+
+<p>O serviço <a href="https://pages.github.com/">GitHub Pages</a>
+recentemente atualizou para a versão 3 do seu gerador de <em>site</em>
+estático <a href="https://jekyllrb.com/">Jekyll</a>. Logo fui atualizar no
+meu computador, mas não existem os pacotes disponíveis nos repositórios.</p>
+
+<p>E a questão é bem complicada. Pois o Jekyll 3 requer Ruby 2.0.0. Mas a
+versão 2.0.0 já é um pouco antiga e requer a versão 1.9.3, então ficamos
+com duas versões do Ruby. Eu já <a href="{{ site.baseurl }}{% post_url
+2013-11-09-linguagens-de-programacao-que-aprendi %}">não gosto de Ruby</a>
+sozinho, quem diria em dose dupla.</p>
+
+<p>O Ruby 2.3 já está disponível no recém lançado <a
+href="http://www.ubuntu.com/">Ubuntu</a> 16.04, porém até o momento ainda
+não no <a href="https://linuxmint.com/">Linux Mint</a>. Então realizei o
+procedimento descrito a seguir.</p>
+
+<!-- more -->
+<div id="more">{% include adsense.html %}</div>
+
+<h2>Primeiro passo: instalar Ruby</h2>
+
+<p>Se você já tem uma distribuição atualizada, que conta com o Ruby 2.3,
+então é só instalar a partir do repositório.</p>
+
+{% highlight console %}
+$ sudo apt-get install ruby2.3 ruby2.3-dev
+{% endhighlight %}
+
+<p>Porém eu precisei usar o PPA <a
+href="https://www.brightbox.com/docs/ruby/ubuntu/">Brightbox</a>. Primeiro
+devo dizer que uso PPA com muita restrição. Para ser exato, é o único que uso.
+É bem simples, faça o seguinte:</p>
+
+{% highlight console %}
+$ sudo apt-add-repository ppa:brightbox/ruby-ng
+$ sudo apt-get update
+$ sudo apt-get install ruby2.3 ruby2.3-dev
+{% endhighlight %}
+
+<h2>Segundo passo: instalar requisitos</h2>
+
+<p>O passo seguinte é instalar os seguintes requisitos:</p>
+
+{% highlight console %}
+$ sudo apt-get install autoconf build-essential zlibg1-dev
+$ sudo gem install bundle
+{% endhighlight %}
+
+<h2>Último passo: instalar Jekyll</h2>
+
+<p>Agora é necessário criar um Gemfile. As recomendações são colocar o
+arquivo no diretório do seu <em>site</em> Jekyll. Mas qualquer outro local
+vai servir. Eu não gosto dele no diretório do meu <em>site</em>. O conteúdo
+do arquivo <code>Gemfile</code> deve ser o seguinte:
+
+<pre>
+source 'https://rubygems.org'
+gem 'github-pages'
+</pre>
+
+<p>Por último o comando:</p>
+
+{% highlight console %}
+$ bundle install
+{% endhighlight %}
+
+<p>Se tudo correu bem, ao concluir o comando você terá o Jekyll instalado e
+pronto para usar. Eu dei as instruções mínimas. Existem instruções pela
+Internet listando mais requisitos e Gemfile mais elaborado. No entanto
+este procedimento foi experimentado e verificado numa distribuição limpa
+e recém instalada do Linux Mint 17.3. Se alguma coisa falhar uma pesquisa
+no Google pode resolver. Provavelmente algum requisito faltando em relação
+aos pacotes de desenvolvimento.</p>
+
+<p>br_lemes, o Centauro insano (Hipocondríaco)</p>
