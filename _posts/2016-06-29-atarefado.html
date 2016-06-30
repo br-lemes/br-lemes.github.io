@@ -1,0 +1,84 @@
+---
+comments: true
+layout: post
+title: "Atarefado versão Webapp"
+tags: [Programação, Lua]
+---
+
+<p>
+<img class="pull-left img-responsive" src="{{ site.baseurl }}/images/atarefado-webapp.png" style="margin-right: 15px;">
+Falta menos de um mês para completar um ano que criei esta versão do
+Atarefado e escrevi quase todo este artigo e ainda não tinha publicado.
+Então, antes de apresentar minha arma contra a procrastinação, começo
+ponderando: <a href="http://ano-zero.com/procrastinadores-procrastinam/">Por
+que procrastinadores procrastinam</a>?
+</p>
+
+<p>
+Já contei sobre o
+<a href="{{ site.baseurl }}{% post_url 2013-10-17-atarefado %}">Atarefado</a>,
+ferramenta que criei para dar um pouco de ordem à insanidade caótica da minha
+mente e conseguir realizar as minhas tarefas. Também contei que recentemente
+adquiri um <a href="{{ site.baseurl }}{% post_url 2015-03-03-muito-prazer-android %}">
+telefone celular com sistema operacional Android</a>. Então, nada melhor que
+ter as tarefas sempre a mão. No entanto, Android é baseado em Java. E já contei
+também o que penso de diversas linguagens de programação, e
+<a href="{{ site.baseurl }}{% post_url 2013-11-09-linguagens-de-programacao-que-aprendi %}">
+Java não está entre as minhas preferências</a>, mas Lua está. E porque
+criar uma versão específica para um sistema operacional, enquanto posso
+criar uma que pode rodar em qualquer sistema que possua um navegador?
+</p>
+
+<p>
+Foi então que resolvi criar uma versão Web do Atarefado. Mas não abandonei
+a versão tradicional. Agora no código fonte há um código comum e os códigos
+desktop e webapp. Para a interface usei HTML5 com o framework
+<a href="http://getbootstrap.com.br/">Bootstrap</a>.
+No servidor usei web usei <a href="http://haserl.sourceforge.net/">Haserl</a>
+e <a href="http://www.lua.org/">Lua</a>. O Haserl funciona de forma semelhante
+ao PHP, porém usando ou shell script ou Lua. No Meu caso, a escolha é óbvia.
+</p>
+
+<!-- more -->
+<div id="more">{% include adsense.html %}</div>
+
+<p>
+O servidor web que escolhi para rodar no Android, é o
+<a href="https://github.com/cesanta/mongoose">Mongoose</a>. Na época era a
+versão <a href="https://github.com/cesanta/mongoose/releases/tag/5.6">5.6</a>.
+As versões mais novas não funcionam mais da mesma forma. Utilizei o
+<a href="https://developer.android.com/ndk/index.html">NDK do Android</a>
+para compilar os componentes. Criei um repositório especial com um Makefile
+para comilar esses componentes: <a href="https://github.com/br-lemes/luaw">
+luaw</a>. Não escrevi muita informação de como fazer, mas se você já
+tiver prática com compilação de software e estiver interessado não será
+difícil.
+</p>
+
+<p>
+Para rodar tudo isso no Android, inicio o servidor web manualmente com um
+emulador de terminal. O aplicativo que gosto de usar para este fim chama-se
+<a href="https://play.google.com/store/apps/details?id=sk.vx.connectbot">
+VX ConnectBot</a>. Eu testei muitos servidores web para Android, alguns
+aplicativos que rodam servidores tradicionais como o Lighttpd ou Apache e
+outros servidores programados diretamente em Java. Surpreendentemente, o
+Mongoose mesmo sendo um processo normal sujeito a ser encerrado pelo
+Android ao liberar recursos, é muito mais estável que qualquer outro
+aplicativo que inclui um ícone de notificação para manter ativo.
+</p>
+
+<p>
+Enfim. Menos é mais. Eu nunca gostei de Java. Não me entra na cabeça porque
+o sistema é em Java, se a API é específica e os aplicativos para Android não
+rodam em nenhum outro sistema. A única vantagem do Java que seria rodar em
+várias plataforma com o mesmo código e sem precisar recompilar fica
+descartada. Então porque submeter às penalidades de uma máquina virtual
+complexa como o Java (overhead, bloatware)? Lua também é uma máquina virtual,
+no entanto bem mais simples e mais eficiente.
+</p>
+
+<p><strong>
+<a href="https://github.com/br-lemes/atarefado">
+https://github.com/br-lemes/atarefado</a></strong></p>
+
+<p>br_lemes, o Golem insano (Depressivo)</p>
