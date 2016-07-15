@@ -2,6 +2,14 @@
 ---
 {% include css/bootstrap.min.css %}
 {% include css/syntax.css %}
+a.list-group-item { color: #18bc9c; }
+a.list-group-item:hover, a.list-group-item:focus { color: #18bc9c; }
+.panel { border-radius: 0px; }
+.panel-heading { border-top-right-radius: 0px; border-top-left-radius: 0px; }
+.panel-group .panel { border-radius: 0px; }
+a:visited { color: #551a8b; }
+p { text-align: justify; margin-top: 20px; }
+.navbar-brand > img { display: inline; }
 body {
 	padding-top: 70px;
 	padding-bottom: 70px;
