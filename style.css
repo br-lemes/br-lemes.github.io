@@ -1,6 +1,6 @@
 ---
 ---
 {% include css/bootstrap.min.css %}
-{% include css/syntax.css %}
-{% include css/icons.css %}
-{% include css/custom.css %}
+{% include css/syntax.min.css %}
+{% include css/icons.min.css %}
+{% include css/custom.min.css %}
