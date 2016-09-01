@@ -29,6 +29,7 @@ defaults:
   -
     values:
       comments: true
+      layout: post
       lang: en
 
 gems:
