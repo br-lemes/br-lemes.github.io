@@ -30,6 +30,7 @@ defaults:
   -
     values:
       comments: true
+      layout: post
       lang: pt-BR
 
 gems:

@@ -1,14 +1,14 @@
 
 build:
-	@bundle exec jekyll build
+	@jekyll build
 
 profile:
-	@bundle exec jekyll build --profile
+	@jekyll build --profile
 
 watch:
-	@bundle exec jekyll build --watch
+	@jekyll build --watch
 
 serve:
-	@bundle exec jekyll serve
+	@jekyll serve
 
 .PHONY: build profile watch serve
