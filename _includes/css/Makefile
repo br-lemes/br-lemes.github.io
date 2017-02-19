@@ -11,6 +11,6 @@ icons.min.css: icons.css
 syntax.min.css: syntax.css
 
 %.min.css: %.css
-	yuicompressor-2.4.8.jar $< -o $@
+	yui-compressor $< -o $@
 
 .PHONY: all clean
