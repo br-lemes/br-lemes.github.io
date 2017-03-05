@@ -1,0 +1,170 @@
+---
+comments: true
+layout: post
+title: "Acesso SSH ao Saraiva Lev"
+tags: [Aleatoriedades]
+---
+
+<p><a href="{{ site.baseurl }}{% post_url 2015-05-23-o-peso-do-lev %}">Já
+contei sobre o Lev</a>, o leitor de livros digitais da Saraiva. Mas como
+bom nerd, eu queria fazer o que não dava para fazer: acessar o sistema
+operacional <a href="https://pt.wikipedia.org/wiki/Linux">Linux</a> por
+dentro dele através do
+<a href="https://pt.wikipedia.org/wiki/Secure_Shell">SSH</a>.
+O Lev é fabricado pela <a href="http://www.bookeen.com/en/">Bookeen</a> e
+as instruções a seguir podem ser usadas em outros leitores tais como Cybook
+Muse, Cybook Odyssey e Nolimbook. Mas não testei em nenhum deles, pois o
+único equipamento que possuo é o Lev.</p>
+
+<p>É claro que comecei pesquisando na Internet por <em>&ldquo;SSH
+Bookeen&rdquo;</em>. O que resultou no seguinte artigo:
+<a href="http://blog.soutade.fr/post/2015/03/game_over.html">GAME OVER</a>.
+Nele explica como usar uma versão modificada do arquivo de atualização desses
+equipamentos para obter o desejado acesso remoto SSH. Essa atualização
+é aquela que o Lev te oferece ao ligar o WiFi. O que o Lev faz automaticamente
+é baixar um arquivo na memória interna, reiniciar e atualizar através desse
+arquivo. Então vamos colocar um arquivo ali para forjar uma atualização
+<em>offline</em>.</p>
+
+<!-- more -->
+<div id="more">{% include adsense.html %}</div>
+
+<p>Apesar do uso da palavra forjar, essa atualização <em>offline</em>
+é realmente um recurso do equipamento. O arquivo de atualização original
+do Lev pode ser baixado pelo site da Saraiva até com direito a instruções:
+<a href="http://www.saraiva.com.br/lev/atualizacao">Atualizações do
+Lev</a>. Então o que vamos fazer é modificar esse arquivo, colocando um
+servidor SSH, o <a href="https://matt.ucc.asn.au/dropbear/dropbear.html">
+Dropbear</a>. Note que da próxima vez que seu Lev avisar que existe uma
+nova atualização disponível e você aceitar, você vai perder sua atualização
+personalizada e seu acesso SSH. Mas se isso acontecer, é só você fazer
+o que descrevo novamente.</p>
+
+<p>O caminho mais fácil, é pegar o arquivo pronto no
+<a href="http://blog.soutade.fr/post/2015/03/game_over.html">site citado</a>.
+A versão correta é o arquivo para Cybook Muse/Odyssey/Nolimbook versão
+6.3.2326 ou 6.3.2350. O problema é que os dicionários são os franceses, a
+versão do Dropbear é um pouco antiga, assim como a versão do próprio
+<em>firmware</em> que para o Lev atualmente é a 6.3.2360. E com isso seu
+Lev vai notificar que existe uma nova atualização disponível, a qual vai
+lhe tirar o SSH conforme expliquei acima. É claro que você não precisa
+aceitar essa atualização.</p>
+
+<p>O caminho mais difícil é criar o seu próprio arquivo de atualização. Nem
+é tão mais difícil assim, pois eu criei o repositório
+<a href="https://github.com/br-lemes/lev-jailbreak/">lev-jailbreak</a> no
+GitHub. Tudo o que você precisa é um Linux com algumas ferramentas como: make,
+sudo, loop mount, tar, bzip2, normalmente parte de qualquer distribuição.
+E os seguintes comandos:</p>
+
+{% highlight console %}
+$ git clone https://github.com/br-lemes/lev-jailbreak.git
+$ cd lev-jailbreak
+$ make
+{% endhighlight %}
+
+<p>Os comandos acima vão criar um arquivo chamado
+<code>lev-jailbreak.bin</code>. Você deve copiar para o Lev esse arquivo,
+através de um cabo USB. Renomeie o arquivo para <code>CybUpdate.bin</code>.
+Desconecte o USB e o Lev vai detectar o arquivo de atualização e perguntar
+se deseja atualizar. Responda que sim e aguarde. Demora um bom tempo. Quando
+terminar e reiniciar, ative o WiFi e conecte-se. Descubra o IP do Lev pelo
+seu roteador.</p>
+
+<p>Então é só conectar: <code>ssh root@IP_DO_LEV</code>. O usuário root não
+tem senha. No Windows você pode usar o
+<a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/">putty</a> ou
+<a href="https://winscp.net/">WinSCP</a>. Você pode querer colocar uma
+senha, para evitar acesso não autorizado. Para que seja possível alterar a
+senha, é necessário que o sistema de arquivo raiz seja montado para leitura
+e escrita. Mas é bom que o sistema de arquivos permaneça somente para
+leitura depois. Então faça o seguinte:</p>
+
+{% highlight console %}
+$ mount -o remount,rw /
+$ passwd
+$ mount -o remount,ro /
+{% endhighlight %}
+
+<p>O Lev automaticamente desliga o WiFi depois de um tempo e entra em modo
+de descanso. Se quiser permanecer conectado por um tempo mais longo, para
+evitar isso pode <em>matar</em> os processos <code>ebrmain</code> e
+<code>boordr</code> (o primeiro reinicia o segundo). Digite os comandos
+<code>killall ebrmain</code> e <code>killall boordr</code>. Quando fizer isso
+o Lev vai passar a funcionar somente pelo acesso remoto, a tela e os botões
+vão parar de responder. Quando terminar o que estiver fazendo, digite o
+comando <code>/mnt/app/ebrmain &amp;</code>. O Lev vai voltar a funcionar
+normalmente, a tela e os botões vão realizar suas funções normais. Porém o
+WiFi vai ser desligado. Basta ligar e conectar novamente (ou não, se já
+terminou).</p>
+
+<p>Você pode copiar arquivos de e para o Lev através do
+<a href="https://pt.wikipedia.org/wiki/SCP">SCP</a>. Porém se você copiar
+novos livros em <code>/mnt/fat</code> o Lev não vai reconhecer automaticamente.
+Você pode conectar e desconectar o cabo USB ou reiniciar o Lev. Mas o modo
+mais prático é reiniciar o <code>boordr</code>. É só <em>matar</em> o processo
+com o comando <code>killall boordr</code>. Lembra que o processo
+<code>ebrmain</code> reinicia o <code>boordr</code>? Então nem precisa fazer
+mais nada. Ao reiniciar o <code>boordr</code> o WiFi desliga, e o Lev
+reconhece seus novos livros. Você pode religar o WiFi se precisar.</p>
+
+<p>Agora vou explicar o que aquele <em>mágico</em> comando <code>make</code>
+faz. Primeiro ele baixa o arquivo de atualização do Lev diretamente da Saraiva.
+O arquivo CybUpdate.bin. Você pode copiar manualmente um outro arquivo ali,
+se estiver interessado em fazer o procedimento com uma versão diferente.
+Seria o caso se você tem algum dos outros modelos compatíveis da Bookeen.</p>
+
+<p>O arquivo de atualização é simplesmente um
+<a href="https://pt.wikipedia.org/wiki/TAR">arquivo tar</a> comprimido com o
+<a href="https://pt.wikipedia.org/wiki/Bzip2">bzip2</a>. Então o próximo passo
+é extrair esse arquivo. <em>Dentro</em> do arquivo de atualização tem quatro
+arquivos. Somente dois deles nos interessam aqui: <code>contents</code> e
+<code>rootfs.fex</code>. Este último é um arquivo de imagem com um sistema de
+arquivos <a href="https://pt.wikipedia.org/wiki/Ext2">ext2</a>. O próximo passo
+então é montar em <em><a href="https://pt.wikipedia.org/wiki/Loop_device">
+loop</a></em> e copiar os arquivos necessários ao servidor SSH Dropbear nele.
+Em seguida, desmontar.</p>
+
+<p>O arquivo <code>contents</code> possui uma descrição dos arquivos, com
+o seu tamanho em bytes e seu <a href="https://pt.wikipedia.org/wiki/Md5sum">
+md5sum</a>. Então o próximo passo é atualizar o arquivo <code>contents</code>
+para conter as novas informações. Na verdade, o tamanho do arquivo nem vai
+mudar, mas o seu md5sum sim.</p>
+
+<p>Por fim, o último passo é empacotar e compactar o arquivo de volta ao
+formato tar com bzip2. E pronto, você tem um arquivo de atualização capaz
+de injetar um servidor SSH no seu Lev.</p>
+
+<p>No repositório há uma versão binária pré-compilada do Dropbear, para
+não adicionar requisitos como compiladores. Mas o <code>make</code> também
+é capaz de baixar e compilar o Dropbear se você quiser. Você pode estar
+atualizando para uma versão mais recente, por exemplo. Se for o caso, vai
+precisar editar o arquivo <code>Makefile</code> para indicar qual a versão
+do Dropbear. Você vai precisar de um compilador arm-linux-gnueabi e sua
+respectiva glibc. No Ubuntu está tudo disponível nos repositórios, você pode
+instalar com o <code>apt-get</code>. Para que o <code>make</code> reconheça
+a necessidade de compilar o Dropbear, você deve apagar o arquivo
+<code>src/usr/bin/dropbearmulti</code>.</p>
+
+<p>Então porque afinal eu tive o trabalho de criar um
+<a href="https://pt.wikipedia.org/wiki/Make#Estrutura_do_makefile">Makefile</a>
+tão complexo ao invés de simplesmente disponibilizar um link para baixar o
+arquivo pronto? Em primeiro lugar, porque com o Makefile eu tenho uma rotina
+automática programável que posso reutilizar para acrescentar novas coisas
+ou atualizar a versão dos softwares facilmente no futuro. E em segundo lugar,
+mas talvez mais importante, o arquivo de atualização contém software não livre
+sobre os quais eu não tenho o direito de redistribuir. Como o Adobe Reader
+Mobile (Adobe Digital Editions), Boo Reader e provavelmente outros códigos
+de propriedade da Bookeen e da Saraiva.</p>
+
+<p><strong>ATENÇÃO</strong>: todas as instruções acima tem por objetivo
+ensinar, porém sem nenhuma garantia da minha parte. Use-as por sua conta e
+risco. Em especial tome muito cuidado ao realizar alterações no sistema
+de arquivo raiz se você o montar para escrita, bem como no arquivo de
+atualização. Todo o processo está baseado no correto funcionamento das
+rotinas de atualização. Se você criar um <em>script</em> de inicialização
+e por algum erro ele impedir de inicializar o sistema, você vai perder o
+recurso de atualização para que possa corrigir. Tornando seu Lev inacessível
+e inútil. Não preciso dizer que a garantia não vai cobrir algo assim.</p>
+
+<p>br_lemes, o Ciclope insano (Sonâmbulo)</p>
