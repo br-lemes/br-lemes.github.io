@@ -1,0 +1,179 @@
+---
+comments: true
+layout: post
+title: "Navegando com o Lev"
+tags: [Aleatoriedades]
+---
+
+<p><a href="{{ site.baseurl }}{% post_url 2015-05-23-o-peso-do-lev %}">Já
+contei sobre o Lev</a>, sobre como obter
+<a href="{{ site.baseurl }}{% post_url 2017-03-04-ssh-no-lev %}">
+acesso SSH</a> ao seu sistema operacional Linux. E agora quero explicar como
+usar seu Lev para navegar na Internet. Está claro nas especificações do Lev
+que ele possui WiFi, pode-se conectar à Internet porém que o único acesso
+que o mesmo possui é à loja da Saraiva. Também está claro nas especificações
+dos seus irmãos Bookeen
+<a href="http://www.bookeen.com/en/cybook-muse-frontlight">Cybook Muse</a> e
+<a href="https://www.bookeen.com/en/cybook-odyssey-frontlight2">Cybook
+Odyssey</a> que os mesmos possuem um navegador e podem acessar qualquer site
+na Internet. Então porque no Lev não? Só porque a Saraiva quer?</p>
+
+<p>É claro que não. Vamos resolver isso.</p>
+
+<!-- more -->
+<div id="more">{% include adsense.html %}</div>
+
+<p>O <em>software</em> tanto do Lev quanto do Cybook Muse, Cybook Odyssey
+e Nolimbook (possivelmente outros) é o mesmo. Se você procurar por fotos,
+pode ver diferenças entre eles. O Cybook Muse é quase idêntico ao Lev,
+enquanto o Cybook Odyssey possui umas linhas arredondadas diferentes. Mas
+não são <em>softwares</em> diferentes, nem sequer versões diferentes do
+mesmo <em>software</em>. O que distingue um modelo de outro é o número de
+série dele. O <em>software</em> verifica o número de série para determinar
+o modelo e se comporta diferente para cada caso. Então o que define que o
+seu Lev não pode acessar à Internet é apenas uma arbitrariedade do
+fabricante, dizendo que seu modelo não possui navegador ou que outro
+(Nolimbook) não possui modo noturno ou acesso às pastas.</p>
+
+<p>Não é uma diferença física como os modelos com luz ou sem luz. Não há
+nenhum custo envolvido nas diferenças entre os modelos. Não há lógica no
+fabricante me impor restrições arbitrárias. Vamos derrubar isso, alterando
+nosso número de série. Para fazer isso você vai precisar do
+<a href="{{ site.baseurl }}{% post_url 2017-03-04-ssh-no-lev %}">
+acesso SSH</a> ao seu Lev. A partir daqui vou considerar que você já
+possui o acesso e está conectado ao Lev.</p>
+
+<p>Você pode consultar o número de série através do comando:
+<code>nvram -s</code>. Então troque o SA615 no início do seu número de série
+por BK646 mantendo os 13 dígitos restantes inalterados. Use o comando:
+<code>nvram -S BK646&lt;restante do número de série&gt;</code>. Em seguida
+reinicie o <em>software</em> do Lev digitando <code>killall boordr</code> ou
+reiniciando o sistema todo com <code>reboot</code>. Nesse momento o Lev vai
+desligar o WiFi. Liberar o navegador e trocar a loja da Saraiva pela Bookeen
+Store, pensando que seu Lev é um Cybook Muse. Veja as diferenças na tela
+inicial, e repare onde está o acesso ao navegador ao lado de onde está
+escrito &ldquo;Loja&rdquo;:</p>
+
+<div class="row">
+	<div class="col-xs-6">
+		<a href="{{ site.baseurl }}/images/lev/home1.png">
+		<img alt="Original" class="img-responsive"
+		src="{{ site.baseurl }}/images/lev/home1.png">
+		</a>
+	</div>
+	<div class="col-xs-6">
+		<a href="{{ site.baseurl }}/images/lev/home2.png">
+		<img alt="Modificado" class="img-responsive"
+		src="{{ site.baseurl }}/images/lev/home2.png">
+		</a>
+	</div>
+</div>
+
+<p><strong>ATENÇÃO</strong>: cuidado com o comando <code>nvram</code>,
+gravar informação incorreta na nvram pode impedir o funcionamento do Lev
+(obviamente eu não testei a veracidade dessa informação). Para evitar um
+erro acidental num esbarrão, eu criei <em>
+<a href="https://pt.wikipedia.org/wiki/Shell_script">shell script</a></em>
+abaixo. Ele alterna entre o número de série modificado e o original, para
+reverter o processo. Confira:</p>
+
+{% highlight sh %}
+{% include sh/levtogglesn %}
+{% endhighlight %}
+
+<p>O navegador é bem simples e o resultado não é muito surpreendente. A
+Internet foi desenvolvida em torno de computadores <em>desktop</em> com
+grandes telas coloridas. Mesmo os <em>sites</em> adaptados a telas menores
+não estão pensando numa tela monocromática de <em>
+<a href="https://pt.wikipedia.org/wiki/Papel_eletr%C3%B4nico">e-Ink</a></em>
+como público alvo. Veja nos exemplos como quase não dá para distinguir onde
+tem um link, exceto pelos que estão sublinhados. Leve em consideração que a
+tela do Lev é ainda menos nítida do que as imagens
+(<em><a href="https://pt.wikipedia.org/wiki/Screenshot">screenshot</a></em>),
+que foram geradas com o <a href="https://github.com/jwilk/fbcat">fbcat</a>.
+</p>
+
+<div class="row">
+	<div class="col-xs-6">
+		<a href="{{ site.baseurl }}/images/lev/aurelio.png">
+		<img alt="Blog do Aurelio" class="img-responsive"
+		src="{{ site.baseurl }}/images/lev/aurelio.png">
+		</a>
+	</div>
+	<div class="col-xs-6">
+		<a href="{{ site.baseurl }}/images/lev/br-lemes.png">
+		<img alt="Meu blog" class="img-responsive"
+		src="{{ site.baseurl }}/images/lev/br-lemes.png">
+		</a>
+	</div>
+</div>
+
+<br>
+
+<div class="row">
+	<div class="col-xs-6">
+		<a href="{{ site.baseurl }}/images/lev/wikipedia.png">
+		<img alt="Wikipédia no Lev" class="img-responsive"
+		src="{{ site.baseurl }}/images/lev/wikipedia.png">
+		</a>
+		<p class="text-center">Wikipédia no Lev</p>
+	</div>
+	<div class="col-xs-6">
+		<a href="{{ site.baseurl }}/images/lev/wikipedia-firefox.png">
+		<img alt="Modificado" class="img-responsive"
+		src="{{ site.baseurl }}/images/lev/wikipedia-firefox.png">
+		</a>
+		<p class="text-center">Wikipédia no Firefox</p>
+	</div>
+</div>
+
+<p>Como eu já disse, em consequência da troca do número de série a loja que
+era a Saraiva foi trocada pela Bookeen Store. E seus livros com DRM já não
+podem ser abertos. Você pode trocar o número de série novamente e ter tudo
+como antes, o meu <em>script</em> justamente alterna entre o número original
+e o modificado. Porém veremos a seguir como recuperar o acesso aos livros
+com DRM. Veja como fica identificado o equipamento:</p>
+
+<div class="row">
+	<div class="col-xs-6">
+		<a href="{{ site.baseurl }}/images/lev/about1.png">
+		<img alt="Original" class="img-responsive"
+		src="{{ site.baseurl }}/images/lev/about1.png">
+		</a>
+	</div>
+	<div class="col-xs-6">
+		<a href="{{ site.baseurl }}/images/lev/about2.png">
+		<img alt="Modificado" class="img-responsive"
+		src="{{ site.baseurl }}/images/lev/about2.png">
+		</a>
+	</div>
+</div>
+
+<p>Você pode fazer login (ou criar uma conta) na Bookeen Store que em
+seguida vai pedir uma Adobe ID. Se não tiver uma Adobe ID, como eu que só
+usava a Saraiva, pode criar uma, com o Lev mesmo ao acessar a loja. É em
+francês, mas não tem muito o que errar, só preencher os locais indicados.
+Com a nova Adobe ID, ao tentar ler um livro com DRM o Lev vai pedir para
+fazer uma sincronização. É só responder que sim e confirmar o e-mail e
+senha. Para garantir eu usei o mesmo e-mail e senha que uso na Saraiva,
+mas não sei se isso é necessário.</p>
+
+<p>Agora você tem acesso aos seus livros com DRM, mas não à Saraiva. Mas
+ainda pode acessar a Saraiva pelo navegador. Pena que a Saraiva não permite
+o download dos livros pelo navegador. Você vai precisar usar o
+<a href="http://www.saraiva.com.br/saraiva-reader">Saraiva Reader</a> para
+Windows, Mac, Android ou iOS e copiar os arquivos para o Lev.</p>
+
+<p>Não se esqueça de que pode facilmente voltar a usar a Saraiva no seu Lev
+revertendo o processo com aquele <em>script</em> citado anteriormente.
+Alternando quantas vezes desejar entre o uso do navegador e o uso da
+Saraiva.</p>
+
+<p>Se você achou difícil, ou por algum motivo não pode usar o meu
+sistema para gerar um arquivo de atualização com acesso SSH. Pode usar o
+arquivo pronto disponibilizado no site francês. Usar o SSH para alterar o
+número de série. Depois baixar e realizar uma atualização manual com o
+arquivo original do Lev. Porém vai ficar sem o acesso SSH e a facilidade
+de alternar o número de série.</p>
+
+<p>br_lemes, o Clérigo insano (Fobia)</p>
