@@ -1,0 +1,195 @@
+---
+comments: true
+layout: post
+title: "Razão, proporção e regra de três"
+tags: [Matemática]
+---
+
+<p>O quê? Matemática num blog de tecnologia? Esse cara ficou louco? Hum...
+pensando bem, o blog se chama <em>Insanidade Aleatória</em>, então o cara já
+é louco mesmo...</p>
+
+<p>A questão é que estou fazendo Tecnologia em Sistemas para Internet pela
+<a href="https://pt.wikipedia.org/wiki/Instituto_Federal_de_Mato_Grosso">
+IFMT</a>. E uma das disciplinas é matemática. E meu conhecimento em matemática
+sempre foi cheio de buracos. Eu tenho bastante conhecimento em alguns conceitos
+até bem avançados, mas várias lacunas em conceitos até bem mais simples. Por
+exemplo, a <a href="https://pt.wikipedia.org/wiki/Tabuada_de_multiplicar">
+tabuada</a> que nunca decorei. Agora preciso de fazer uma prova e escrever é
+um dos truques para fixar o conhecimento. Não escrevo para ensinar, mas para
+decorar. Se alguém aprender aqui será um bônus.</p>
+
+<p>Uma dessas lacunas era a proporção inversa na famosa
+<a href="https://pt.wikipedia.org/wiki/Regra_de_três">regra de três</a>.
+Então vou explicar o assunto completo de forma bem simples, diferente
+dos livros de matemática que trazem os conceitos de um jeito tão formal que
+geralmente ficam ininteligíveis.</p>
+
+<!-- more -->
+<div id="more">{% include adsense.html %}</div>
+
+<p>Antes de tudo, vou convencionar o sinal de multiplicação por asterisco. E
+o de divisão por barra. Como é o padrão em programação. Cinco vezes três
+dividido por dois fica assim: <code>5 * 3 / 2</code>.</p>
+
+<h2>Razão</h2>
+
+<p>Razão é uma divisão, ou o seu resultado. Por exemplo <code>1 / 5</code> ou
+<code>0,2</code>. Considerando que uma divisão também é uma fração, podemos
+dizer um quinto, um para cinco, etc.</p>
+
+<h2>Proporção</h2>
+
+<p>Quando as características de duas ou mais coisas possuem a mesma razão,
+dizemos que são proporcionais. Um monitor de vídeo com <code>1366</code> por
+<code>768</code> <em>pixeis</em> possui a mesma razão que outro de
+<code>1280</code> por <code>720</code>. Portanto são proporcionais.
+
+<h2>Proporção direta</h2>
+
+<p>A proporção é direta quando ao aumentar uma grandeza também haverá aumento
+da outra. Ou o contrário, quando diminuir uma também diminuirá a outra. Como
+é o caso do exemplo acima das resoluções de monitores de vídeo.<p>
+
+<p>A razão da proporção direta é encontrada dividindo o primeiro termo pelo
+segundo. No caso <code>1366 / 768 = 1,77</code> (para ser mais exato seria
+<code>16 / 9</code>). Sabendo a razão e qualquer um dos termos, podemos
+descobrir o outro. Por exemplo:</p>
+
+<pre><code>1280 / x = (16 / 9)
+x = 1280 / (16 / 9)
+x = 720
+
+x / 1080 = (16 / 9)
+x = 1080 * (16 / 9)
+x = 1920
+</code></pre>
+
+<h2>Proporção inversa</h2>
+
+<p>Chamamos de inversamente proporcional quando ao aumentar uma grandeza a
+outra diminui. Ou o contrário, quando diminuir uma grandeza a outra aumenta.
+Por exemplo, se dois operários realizam uma obra em vinte dias. Se
+aumentarmos o número de operários, diminuímos o tempo necessário.</p>
+
+<p>A razão da proporção inversa é encontrada multiplicando o primeiro termo
+pelo segundo (operação inversa da proporção direta). No caso <code>2 * 20 = 40
+</code>. Sabendo a razão e qualquer um dos termos, podemos descobrir o outro.
+Por exemplo:</p>
+
+<pre><code>4 * x = 40
+x = 40 / 4
+x = 10 (4 operários em 10 dias)
+
+x * 5 = 40
+x = 40 / 5
+x = 8 (8 operários em 5 dias)
+</code></pre>
+
+<h2>Regra de três simples</h2>
+
+<p>A regra de três não é nada novo, é só proporção. Não precisa ser complicado,
+esquece aquele negócio de seta para cima, seta para baixo, passar termo de um
+lado para o outro invertendo o sinal (operação inversa). A regra de três é
+só um atalho, uma forma de calcular sem desenvolver passo a passo toda a
+matemática envolvida, se fizer todas essas coisas perde a objetividade e
+estará usando proporção com outro nome.</p>
+
+<p>Simplesmente montamos uma tabela com a proporção conhecida na parte de cima.
+O outro termo conhecido e a incógnita (o <em>x</em>) na parte debaixo, cuidando
+para alinhar as grandezas iguais (deixar na mesma coluna). Então:<p>
+
+<p>Na proporção direta multiplicamos cruzado e dividimos pelo último termo.</p>
+
+<pre><code>Larg.	Altura
+1366	768
+1280	x
+------------
+1280 * 768 / 1366 = 720
+
+Larg.	Altura
+1366	768
+x	1080
+------------
+1366 * 1080 / 768 = 1920
+</code></pre>
+
+<p>Na proporção inversa multiplicamos os termos de cima e dividimos pelo termo
+restante.</p>
+
+<pre></code>Trab.	Dias
+2	20
+4	x
+------------
+2 * 20 / 4 = 10 (4 operários em 10 dias)
+
+Trab.	Dias
+2	20
+x	5
+------------
+2 * 20 / 5 = 8 (8 operários em 5 dias)
+</code></pre>
+
+<p>
+<div class="alert alert-danger">Não precisa complicar, é só isso.
+<strong><u>Direta</u>: multiplica cruzado e divide pelo termo restante.
+<u>Inversa</u>: multiplica o de cima e divide pelo termo restante.
+</strong></div>
+</p>
+
+<h2>Regra de três composta</h2>
+
+<p>A regra de três composta é quando temos um problema de proporção
+envolvendo três ou mais grandezas. Não bagunce sua cabeça com setas para
+cima, para baixo, tabela com três colunas. É só usar a regra de três simples
+por duas ou mais vezes consecutivas.</p>
+
+<p>Se dois operários trabalhando dez horas por dia levam vinte dias para
+executar uma obra, quantos operários serão necessários para executar a
+obra em cinco dias trabalhando oito horas por dia?</p>
+
+<p>Se eu descartar as horas por dia, e somente calcular quantos operários
+serão necessários para executar a obra em cinco dias significa que estarei
+mantendo as dez horas. Já calculamos algo parecido lá em cima,
+<code>2 * 20 / 5 = 8</code>. Então serão oito operários para executar em
+cinco dias trabalhando dez horas por dia.</p>
+
+<p>Então o problema passa a ser, se oito operários trabalhando dez horas
+por dia levam cinco dias para executar uma obra, quantos operários serão
+necessários para executar a obra se trabalharem oito horas por dia.
+Lembrando que é uma proporção inversa, pois quanto mais horas por dia, menos
+operários serão necessários.</p>
+
+<pre><code>Trab.	Horas
+8	10
+x	8
+------------
+8 * 10 / 8 = 10 (10 operários trabalhando 8 horas)
+</code></pre>
+
+<p>Simples assim. Só ir repetindo de duas em duas grandezas, sem esquecer que
+a cada vez você deve se atentar se a proporção é direta ou inversa. Se for
+um problema envolvendo muitas grandezas, pode ser cansativo fazer várias
+pequenas contas. Mas também é cansativo fazer uma grande e complexa conta de
+qualquer jeito.</p>
+
+<p>
+<div class="alert alert-danger">
+Não esqueça. Regra de três composta é a repetição da regra de três simples.
+E regra de três simples é: <strong><u>Direta</u>: multiplica cruzado e divide
+pelo termo restante. <u>Inversa</u>: multiplica o de cima e divide pelo termo
+restante.</strong></div>
+</p>
+
+<p>Eu achei um vídeo no YouTube que torna a regra de três composta ainda mais
+fácil. Principalmente se envolverem muitas grandezas (quatro ou mais):</p>
+
+<p>
+<div class="embed-responsive embed-responsive-16by9">
+	<iframe class="embed-responsive-item"
+		src="https://www.youtube.com/embed/NVLx8lWGeDE">
+	</iframe>
+</div>
+</p>
+
+<p>br_lemes, o Caipora insano (Fantasia)</p>
