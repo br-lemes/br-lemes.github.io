@@ -32,6 +32,6 @@ defaults:
       layout: post
       lang: en
 
-gems:
+plugins:
   - jekyll-paginate
   - jekyll-sitemap
