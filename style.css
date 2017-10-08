@@ -1,4 +1,5 @@
 ---
+layout: null
 ---
 {% include css/bootstrap.min.css %}
 {% include css/syntax.min.css %}

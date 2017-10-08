@@ -33,6 +33,6 @@ defaults:
       layout: post
       lang: pt-BR
 
-gems:
+plugins:
   - jekyll-paginate
   - jekyll-sitemap
